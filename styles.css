@@ -847,3 +847,13 @@ body.panel-open #species-panel{
     html{ scroll-behavior:auto; }
 
 }
+
+#species-globe{
+
+    width:400px;
+
+    height:320px;
+
+    border-left:
+        1px solid rgba(0,0,0,.08);
+}
