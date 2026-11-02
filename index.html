@@ -3,272 +3,188 @@
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Evolución Humana</title>
+    <title>Evolución Humana | 3 millones de años</title>
 
-<link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css">
 
 </head>
 
 <body>
 
-<div id="canvas">
+    <!-- SVG GENERADO POR JS -->
 
-    <svg id="connections"></svg>
+    <svg id="evolution-svg"></svg>
 
-    <section class="hero">
+    <!-- HERO -->
 
-        <h1>Evolución Humana</h1>
+    <header class="hero">
 
-        <p>
-            3 millones de años de evolución
-            hasta la civilización sumeria
-        </p>
+        <div class="hero-inner">
 
-    </section>
+            <div class="hero-period">
+                3.000.000 años
+            </div>
 
-    <div id="timeline">
+            <h1>
+                Evolución Humana
+            </h1>
+
+            <p>
+                Desde los primeros Australopitecos
+                hasta las primeras ciudades sumerias
+                hacia el 3000 BC.
+            </p>
+
+        </div>
+
+    </header>
+
+    <!-- TIMELINE -->
+
+    <main id="timeline">
+
+        <!-- PALEOLÍTICO INFERIOR -->
+
+        <section class="era">
+            <div class="era-label">
+                PALEOLÍTICO INFERIOR
+            </div>
+        </section>
 
         <!-- AUSTRALOPITHECUS -->
 
-        <div class="species left" id="afarensis">
-
-            <div class="aura"></div>
+        <article class="species left" id="afarensis">
 
             <div class="node">
 
-                <img src="assets/afarensis.jpg">
+                <div class="photo">
+                    <img src="assets/afarensis.jpg" alt="">
+                </div>
+
+                <div class="info">
+
+                    <span class="date">
+                        3.9 - 2.9 millones de años
+                    </span>
+
+                    <h2>
+                        Australopithecus afarensis
+                    </h2>
+
+                    <p>
+                        Bipedismo consolidado.
+                        Adaptación a ambientes abiertos.
+                    </p>
+
+                </div>
 
             </div>
 
-            <div class="label">
+            <div class="satellites">
 
-                <h2>Australopithecus afarensis</h2>
+                <div class="satellite">
+                    Bipedismo
+                </div>
 
-                <span>3.9 - 2.9 millones de años</span>
+                <div class="satellite">
+                    Sabana Africana
+                </div>
 
             </div>
 
-            <div class="satellite top">
-                Bipedismo
-            </div>
-
-            <div class="satellite right">
-                Sabana Africana
-            </div>
-
-        </div>
+        </article>
 
         <!-- HABILIS -->
 
-        <div class="species right" id="habilis">
-
-            <div class="aura"></div>
+        <article class="species right" id="habilis">
 
             <div class="node">
 
-                <img src="assets/habilis.jpg">
+                <div class="photo">
+                    <img src="assets/habilis.jpg" alt="">
+                </div>
+
+                <div class="info">
+
+                    <span class="date">
+                        2.6 - 1.5 millones de años
+                    </span>
+
+                    <h2>
+                        Homo habilis
+                    </h2>
+
+                    <p>
+                        Primer fabricante conocido
+                        de herramientas líticas.
+                    </p>
+
+                </div>
 
             </div>
 
-            <div class="label">
+            <div class="satellites">
 
-                <h2>Homo habilis</h2>
+                <div class="satellite">
+                    Industria Oldowan
+                </div>
 
-                <span>2.6 millones de años</span>
+                <div class="satellite">
+                    Herramientas
+                </div>
+
+                <div class="satellite">
+                    Carnes
+                </div>
 
             </div>
 
-            <div class="satellite left">
-                Herramientas
-            </div>
-
-            <div class="satellite top">
-                Oldowan
-            </div>
-
-        </div>
+        </article>
 
         <!-- ERGASTER -->
 
-        <div class="species left" id="ergaster">
-
-            <div class="aura"></div>
+        <article class="species left" id="ergaster">
 
             <div class="node">
 
-                <img src="assets/ergaster.jpg">
+                <div class="photo">
+                    <img src="assets/ergaster.jpg" alt="">
+                </div>
+
+                <div class="info">
+
+                    <span class="date">
+                        1.9 - 1.4 millones
+                    </span>
+
+                    <h2>
+                        Homo ergaster
+                    </h2>
+
+                    <p>
+                        Proporciones corporales
+                        modernas y cooperación avanzada.
+                    </p>
+
+                </div>
 
             </div>
 
-            <div class="label">
+            <div class="satellites">
 
-                <h2>Homo ergaster</h2>
+                <div class="satellite">
+                    Cooperación
+                </div>
 
-                <span>1.9 millones</span>
-
-            </div>
-
-            <div class="satellite right">
-                Cooperación
-            </div>
-
-        </div>
-
-        <!-- ERECTUS -->
-
-        <div class="species right" id="erectus">
-
-            <div class="aura"></div>
-
-            <div class="node">
-
-                <img src="assets/erectus.jpg">
+                <div class="satellite">
+                    Caza
+                </div>
 
             </div>
 
-            <div class="label">
+        </article>
 
-                <h2>Homo erectus</h2>
-
-                <span>1.9M - 200k</span>
-
-            </div>
-
-            <div class="satellite top">
-                Fuego
-            </div>
-
-            <div class="satellite left">
-                Migraciones
-            </div>
-
-            <div class="satellite right">
-                Bifaces
-            </div>
-
-        </div>
-
-        <!-- HEIDELBERGENSIS -->
-
-        <div class="species left" id="heidelbergensis">
-
-            <div class="aura"></div>
-
-            <div class="node">
-
-                <img src="assets/heidelbergensis.jpg">
-
-            </div>
-
-            <div class="label">
-
-                <h2>Homo heidelbergensis</h2>
-
-                <span>700k - 200k</span>
-
-            </div>
-
-            <div class="satellite right">
-                Caza organizada
-            </div>
-
-        </div>
-
-        <!-- NEANDERTAL -->
-
-        <div class="species right" id="neanderthal">
-
-            <div class="aura"></div>
-
-            <div class="node">
-
-                <img src="assets/neanderthal.jpg">
-
-            </div>
-
-            <div class="label">
-
-                <h2>Neanderthalensis</h2>
-
-                <span>400k - 40k</span>
-
-            </div>
-
-            <div class="satellite top">
-                Enterramientos
-            </div>
-
-        </div>
-
-        <!-- SAPIENS -->
-
-        <div class="species left" id="sapiens">
-
-            <div class="aura"></div>
-
-            <div class="node">
-
-                <img src="assets/sapiens.jpg">
-
-            </div>
-
-            <div class="label">
-
-                <h2>Homo sapiens</h2>
-
-                <span>300k - presente</span>
-
-            </div>
-
-            <div class="satellite right">
-                Arte
-            </div>
-
-            <div class="satellite top">
-                Lenguaje
-            </div>
-
-            <div class="satellite left">
-                Simbolismo
-            </div>
-
-        </div>
-
-        <!-- HITOS -->
-
-        <div class="milestone">
-            Revolución Cognitiva · 70.000 años
-        </div>
-
-        <div class="milestone">
-            Agricultura · 10.000 BC
-        </div>
-
-        <div class="milestone">
-            Aldeas Permanentes · 8.000 BC
-        </div>
-
-        <div class="milestone">
-            Metalurgia · 6.000 BC
-        </div>
-
-        <div class="milestone">
-            Ciudades · 4.000 BC
-        </div>
-
-        <div class="milestone final">
-            SUMERIA · 3.000 BC
-        </div>
-
-    </div>
-
-</div>
-
-<script src="app.js"></script>
-
-</body>
-
-</html>
+     
