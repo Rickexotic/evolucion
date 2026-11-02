@@ -5,6 +5,9 @@
       "id": "sahelanthropus",
       "name": "Sahelanthropus tchadensis",
       "clade": "hominins",
+      "type": "ancestor",
+      "level": 1,
+      "column": 0,
       "start": -7000000,
       "end": -6000000,
       "parent": null,
@@ -20,6 +23,9 @@
       "id": "orrorin",
       "name": "Orrorin tugenensis",
       "clade": "hominins",
+      "type": "ancestor",
+      "level": 2,
+      "column": 0,
       "start": -6100000,
       "end": -5700000,
       "parent": "sahelanthropus",
@@ -35,11 +41,13 @@
       "id": "ardipithecus",
       "name": "Ardipithecus ramidus",
       "clade": "hominins",
+      "type": "ancestor",
+      "level": 3,
+      "column": 0,
       "start": -4400000,
       "end": -4400000,
       "parent": "orrorin",
       "connections": [],
-      "evidence": "moderate",
       "brain_cc": 350,
       "regions": ["Etiopía"],
       "innovations": ["Bipedismo parcial"],
@@ -50,11 +58,13 @@
       "id": "anamensis",
       "name": "Australopithecus anamensis",
       "clade": "australopithecus",
+      "type": "ancestor",
+      "level": 4,
+      "column": 0,
       "start": -4200000,
       "end": -3900000,
       "parent": "ardipithecus",
       "connections": [],
-      "evidence": "strong",
       "brain_cc": 370,
       "regions": ["África Oriental"],
       "innovations": ["Bipedismo consolidado"],
@@ -65,6 +75,9 @@
       "id": "afarensis",
       "name": "Australopithecus afarensis",
       "clade": "australopithecus",
+      "type": "ancestor",
+      "level": 5,
+      "column": 0,
       "start": -3900000,
       "end": -2900000,
       "parent": "anamensis",
@@ -78,10 +91,10 @@
           "type": "hypothesis"
         }
       ],
-      "evidence": "strong",
       "brain_cc": 450,
       "regions": ["Etiopía", "Tanzania"],
       "innovations": [
+        "Lucy",
         "Bipedismo",
         "Marcha eficiente"
       ],
@@ -92,26 +105,30 @@
       "id": "africanus",
       "name": "Australopithecus africanus",
       "clade": "australopithecus",
+      "type": "branch",
+      "level": 6,
+      "column": -1,
       "start": -3300000,
       "end": -2100000,
       "parent": "afarensis",
       "connections": [],
-      "evidence": "moderate",
       "brain_cc": 500,
       "regions": ["Sudáfrica"],
       "innovations": ["Mayor encefalización"],
-      "description": "Probable ancestro próximo del género Homo."
+      "description": "Posible ancestro del género Homo."
     },
 
     {
       "id": "sediba",
       "name": "Australopithecus sediba",
       "clade": "australopithecus",
+      "type": "branch",
+      "level": 6,
+      "column": 1,
       "start": -1980000,
       "end": -1980000,
       "parent": "afarensis",
       "connections": [],
-      "evidence": "hypothesis",
       "brain_cc": 420,
       "regions": ["Sudáfrica"],
       "innovations": ["Rasgos Homo tempranos"],
@@ -122,11 +139,13 @@
       "id": "habilis",
       "name": "Homo habilis",
       "clade": "homo",
+      "type": "ancestor",
+      "level": 7,
+      "column": 0,
       "start": -2400000,
       "end": -1400000,
       "parent": "africanus",
       "connections": [],
-      "evidence": "strong",
       "brain_cc": 650,
       "regions": ["África"],
       "innovations": [
@@ -140,11 +159,13 @@
       "id": "rudolfensis",
       "name": "Homo rudolfensis",
       "clade": "homo",
+      "type": "ancestor",
+      "level": 8,
+      "column": 0,
       "start": -2400000,
       "end": -1800000,
       "parent": "habilis",
       "connections": [],
-      "evidence": "debated",
       "brain_cc": 750,
       "regions": ["África"],
       "innovations": [],
@@ -155,17 +176,15 @@
       "id": "erectus",
       "name": "Homo erectus",
       "clade": "homo",
+      "type": "ancestor",
+      "level": 9,
+      "column": 0,
       "start": -1900000,
       "end": -200000,
       "parent": "rudolfensis",
       "connections": [],
-      "evidence": "strong",
       "brain_cc": 1000,
-      "regions": [
-        "África",
-        "Europa",
-        "Asia"
-      ],
+      "regions": ["África","Europa","Asia"],
       "innovations": [
         "Fuego",
         "Bifaces",
@@ -178,6 +197,9 @@
       "id": "heidelbergensis",
       "name": "Homo heidelbergensis",
       "clade": "homo",
+      "type": "ancestor",
+      "level": 10,
+      "column": 0,
       "start": -700000,
       "end": -200000,
       "parent": "erectus",
@@ -195,12 +217,8 @@
           "type": "direct"
         }
       ],
-      "evidence": "strong",
       "brain_cc": 1250,
-      "regions": [
-        "África",
-        "Europa"
-      ],
+      "regions": ["África","Europa"],
       "innovations": [
         "Caza organizada",
         "Refugios"
@@ -212,6 +230,9 @@
       "id": "neanderthal",
       "name": "Homo neanderthalensis",
       "clade": "homo",
+      "type": "extinct",
+      "level": 11,
+      "column": -2,
       "start": -400000,
       "end": -40000,
       "parent": "heidelbergensis",
@@ -222,10 +243,7 @@
         }
       ],
       "brain_cc": 1500,
-      "regions": [
-        "Europa",
-        "Asia Occidental"
-      ],
+      "regions": ["Europa","Asia Occidental"],
       "innovations": [
         "Enterramientos",
         "Cuidado social"
@@ -237,6 +255,9 @@
       "id": "denisova",
       "name": "Denisovanos",
       "clade": "homo",
+      "type": "extinct",
+      "level": 11,
+      "column": 0,
       "start": -300000,
       "end": -50000,
       "parent": "heidelbergensis",
@@ -247,9 +268,7 @@
         }
       ],
       "brain_cc": null,
-      "regions": [
-        "Asia"
-      ],
+      "regions": ["Asia"],
       "innovations": [],
       "description": "Conocidos principalmente por ADN."
     },
@@ -258,14 +277,15 @@
       "id": "sapiens",
       "name": "Homo sapiens",
       "clade": "homo",
+      "type": "modern",
+      "level": 11,
+      "column": 2,
       "start": -300000,
       "end": 0,
       "parent": "heidelbergensis",
       "connections": [],
       "brain_cc": 1350,
-      "regions": [
-        "Global"
-      ],
+      "regions": ["Global"],
       "innovations": [
         "Arte",
         "Lenguaje",
@@ -274,5 +294,6 @@
       ],
       "description": "Única especie humana superviviente."
     }
+
   ]
 }
