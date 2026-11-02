@@ -1,13 +1,10 @@
 const SVG_NS = "http://www.w3.org/2000/svg";
 
-const tree =
-document.getElementById("tree");
-
-const svg =
-document.getElementById("tree-svg");
-
-const panel =
-document.getElementById("info-content");
+const tree = document.getElementById("tree");
+const svg = document.getElementById("tree-svg");
+const panel = document.getElementById("info-content");
+const infoPanel = document.getElementById("info-panel");
+const mobileQuery = window.matchMedia("(max-width: 760px)");
 
 let evolutionData = null;
 
@@ -15,9 +12,14 @@ let evolutionData = null;
    CONFIG
 ===================================================== */
 
-const LEVEL_HEIGHT = 320;
-const COLUMN_WIDTH = 360;
-const TREE_CENTER = 1200;
+const LEVEL_HEIGHT = 330;
+const COLUMN_WIDTH = 340;
+const CARD_WIDTH = 300;
+const MOBILE_ROW_HEIGHT = 215;
+const TOP_PADDING = 50;
+
+const PLACEHOLDER =
+`<div class="placeholder">Selecciona una especie</div>`;
 
 /* =====================================================
    IMAGES
@@ -30,24 +32,15 @@ async function fetchWikipediaImage(name){
 
     try{
 
-        const title =
-        encodeURIComponent(
-            name.replaceAll(" ","_")
+        const title = encodeURIComponent(name.replaceAll(" ","_"));
+
+        const response = await fetch(
+            `https://en.wikipedia.org/api/rest_v1/page/summary/${title}`
         );
 
-        const url =
-        `https://en.wikipedia.org/api/rest_v1/page/summary/${title}`;
+        const data = await response.json();
 
-        const response =
-        await fetch(url);
-
-        const data =
-        await response.json();
-
-        return (
-            data.thumbnail?.source ||
-            FALLBACK_IMAGE
-        );
+        return data.thumbnail?.source || FALLBACK_IMAGE;
 
     }
     catch{
@@ -64,59 +57,23 @@ async function fetchWikipediaImage(name){
 
 function formatMillions(value){
 
-    if(value === 0){
+    if(value === 0) return "Presente";
 
-        return "Presente";
-
-    }
-
-    const abs =
-    Math.abs(value);
+    const abs = Math.abs(value);
 
     if(abs >= 1000000){
 
-        return (
-            abs / 1000000
-        ).toFixed(1) + " Ma";
+        return (abs / 1000000).toFixed(1) + " Ma";
 
     }
 
-    return (
-        abs / 1000
-    ).toFixed(0) + " ka";
+    return (abs / 1000).toFixed(0) + " ka";
 
 }
 
 function formatPeriod(species){
 
-    return `
-    ${formatMillions(species.start)}
-    —
-    ${formatMillions(species.end)}
-    `;
-
-}
-
-/* =====================================================
-   POSITION
-===================================================== */
-
-function getX(species){
-
-    return (
-        TREE_CENTER +
-        species.column *
-        COLUMN_WIDTH
-    );
-
-}
-
-function getY(species){
-
-    return (
-        species.level *
-        LEVEL_HEIGHT
-    );
+    return `${formatMillions(species.start)} — ${formatMillions(species.end)}`;
 
 }
 
@@ -126,76 +83,33 @@ function getY(species){
 
 async function createSpecies(species){
 
-    const card =
-    document.createElement("section");
+    const card = document.createElement("section");
 
-    card.className =
-    `species ${species.type || ""}`;
+    card.className = `species ${species.type || ""}`;
+    card.id = species.id;
 
-    card.id =
-    species.id;
-
-    card.style.left =
-    `${getX(species)}px`;
-
-    card.style.top =
-    `${getY(species)}px`;
-
-    const image =
-    await fetchWikipediaImage(
-        species.name
-    );
+    const image = await fetchWikipediaImage(species.name);
 
     card.innerHTML = `
-
         <div class="node">
-
-            <img
-                src="${image}"
-                alt="${species.name}">
-
+            <img src="${image}" alt="${species.name}" loading="lazy">
         </div>
-
-        <div class="species-name">
-
-            ${species.name}
-
-        </div>
-
-        <div class="species-period">
-
-            ${formatPeriod(species)}
-
-        </div>
-
-        <div class="details">
-
-            ${species.description || ""}
-
-        </div>
-
+        <div class="species-name">${species.name}</div>
+        <div class="species-period">${formatPeriod(species)}</div>
+        <div class="details">${species.description || ""}</div>
     `;
 
-    card.addEventListener(
-        "click",
-        e=>{
+    card.addEventListener("click", e=>{
 
-            e.stopPropagation();
+        e.stopPropagation();
 
-            selectSpecies(
-                species.id
-            );
+        selectSpecies(species.id);
 
-        }
-    );
+    });
 
     return card;
 
 }
-
-/* =====================================================
-   RENDER NODES
-===================================================== */
 
 async function renderSpecies(){
 
@@ -203,33 +117,66 @@ async function renderSpecies(){
     .querySelectorAll(".species")
     .forEach(node=>node.remove());
 
-    let maxLevel = 0;
+    const nodes = await Promise.all(
+        evolutionData.species.map(createSpecies)
+    );
 
-    for(
-        const species
-        of
-        evolutionData.species
-    ){
+    nodes.forEach(node=>tree.appendChild(node));
 
-        maxLevel =
-        Math.max(
-            maxLevel,
-            species.level
-        );
+}
 
-        const node =
-        await createSpecies(
-            species
-        );
+/* =====================================================
+   LAYOUT
+===================================================== */
 
-        tree.appendChild(
-            node
-        );
+function layout(){
 
-    }
+    const width = tree.clientWidth;
+    const mobile = mobileQuery.matches;
 
-    tree.style.height =
-    `${(maxLevel+2)*LEVEL_HEIGHT}px`;
+    let bottom = 0;
+
+    evolutionData.species.forEach((species, index)=>{
+
+        const card = document.getElementById(species.id);
+
+        if(!card) return;
+
+        let x;
+        let y;
+        let cardWidth;
+
+        if(mobile){
+
+            const offset = species.column * 22;
+
+            x = width / 2 + offset;
+            y = TOP_PADDING + index * MOBILE_ROW_HEIGHT;
+            cardWidth = width - 32 - Math.abs(offset) * 2;
+
+        }
+        else{
+
+            const step = Math.min(
+                COLUMN_WIDTH,
+                (width - CARD_WIDTH) / 4
+            );
+
+            x = width / 2 + species.column * step;
+            y = TOP_PADDING + (species.level - 1) * LEVEL_HEIGHT;
+            cardWidth = CARD_WIDTH;
+
+        }
+
+        card.style.left = `${x}px`;
+        card.style.top = `${y}px`;
+        card.style.width = `${cardWidth}px`;
+
+        bottom = Math.max(bottom, y + card.offsetHeight);
+
+    });
+
+    tree.style.height = `${bottom + TOP_PADDING + 70}px`;
 
 }
 
@@ -237,112 +184,33 @@ async function renderSpecies(){
    PANEL
 ===================================================== */
 
+function list(items){
+
+    return items && items.length ? items.join("<br>") : "-";
+
+}
+
 function updatePanel(species){
 
     const descendants =
-
         evolutionData.species
-        .filter(
-
-            x =>
-            x.parent === species.id
-
-        )
-
-        .map(
-            x => x.name
-        );
+        .filter(x => x.parent === species.id)
+        .map(x => x.name);
 
     panel.innerHTML = `
-
-        <h2>
-
-            ${species.name}
-
-        </h2>
-
-        <p>
-
-            ${formatPeriod(species)}
-
-        </p>
-
+        <h2>${species.name}</h2>
+        <p>${formatPeriod(species)}</p>
         <hr>
-
-        <h3>
-            Capacidad Craneal
-        </h3>
-
-        <p>
-
-            ${
-                species.brain_cc
-                ?
-                species.brain_cc + " cc"
-                :
-                "Sin dato"
-            }
-
-        </p>
-
-        <h3>
-            Regiones
-        </h3>
-
-        <p>
-
-            ${
-                species.regions
-                ?
-                species.regions.join("<br>")
-                :
-                "-"
-            }
-
-        </p>
-
-        <h3>
-            Innovaciones
-        </h3>
-
-        <p>
-
-            ${
-                species.innovations
-                ?
-                species.innovations.join("<br>")
-                :
-                "-"
-            }
-
-        </p>
-
-        <h3>
-            Descendientes
-        </h3>
-
-        <p>
-
-            ${
-                descendants.length
-                ?
-                descendants.join("<br>")
-                :
-                "-"
-            }
-
-        </p>
-
-        <h3>
-            Descripción
-        </h3>
-
-        <p>
-
-            ${species.description}
-
-        </p>
-
+        <h3>Capacidad Craneal</h3>
+        <p>${species.brain_cc ? species.brain_cc + " cc" : "Sin dato"}</p>
+        <h3>Regiones</h3>
+        <p>${list(species.regions)}</p>
+        <h3>Innovaciones</h3>
+        <p>${list(species.innovations)}</p>
+        <h3>Descendientes</h3>
+        <p>${list(descendants)}</p>
+        <h3>Descripción</h3>
+        <p>${species.description}</p>
     `;
 
 }
@@ -353,19 +221,13 @@ function updatePanel(species){
 
 function clearSelection(){
 
-    document.body
-    .classList
-    .remove("tree-focus");
+    document.body.classList.remove("tree-focus");
 
     document
     .querySelectorAll(".species")
-    .forEach(node=>{
+    .forEach(node=>node.classList.remove("selected"));
 
-        node.classList.remove(
-            "selected"
-        );
-
-    });
+    panel.innerHTML = PLACEHOLDER;
 
 }
 
@@ -373,244 +235,146 @@ function selectSpecies(id){
 
     clearSelection();
 
-    document.body
-    .classList
-    .add("tree-focus");
+    document.body.classList.add("tree-focus");
 
-    const node =
-    document.getElementById(id);
+    const node = document.getElementById(id);
 
-    node.classList.add(
-        "selected"
+    node.classList.add("selected");
+
+    if(mobileQuery.matches){
+
+        // Deja libre la mitad inferior, ocupada por la ficha
+        const rect = node.getBoundingClientRect();
+
+        window.scrollTo({
+            top: window.scrollY + rect.top - window.innerHeight * 0.1,
+            behavior: "smooth"
+        });
+
+    }
+    else{
+
+        node.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+    }
+
+    updatePanel(
+        evolutionData.species.find(x => x.id === id)
     );
 
-    node.scrollIntoView({
+}
 
-        behavior:"smooth",
+document.addEventListener("click", clearSelection);
 
-        block:"center"
+infoPanel.addEventListener("click", e=>e.stopPropagation());
 
-    });
+document
+.getElementById("panel-close")
+.addEventListener("click", clearSelection);
 
-    const species =
+/* =====================================================
+   CONNECTIONS
+===================================================== */
 
-        evolutionData.species.find(
+// Offsets ignore CSS transforms, so lines stay stable while a card is scaled.
+function anchor(id, side){
 
-            x =>
-            x.id === id
+    const card = document.getElementById(id);
 
+    if(!card) return null;
+
+    const x = parseFloat(card.style.left);
+    const top = parseFloat(card.style.top);
+
+    if(side === "top"){
+
+        return { x, y: top + card.querySelector(".node").offsetTop };
+
+    }
+
+    const period = card.querySelector(".species-period");
+
+    return { x, y: top + period.offsetTop + period.offsetHeight };
+
+}
+
+function drawLine(from, to, type){
+
+    const a = anchor(from, "bottom");
+    const b = anchor(to, "top");
+
+    if(!a || !b) return;
+
+    const path = document.createElementNS(SVG_NS, "path");
+
+    const sameRow =
+        document.getElementById(from).style.top ===
+        document.getElementById(to).style.top;
+
+    if(sameRow){
+
+        // Misma fila: arco por debajo de los textos hasta la base del destino
+        const end = anchor(to, "bottom");
+        const drop = 64;
+
+        path.setAttribute(
+            "d",
+            `M ${a.x} ${a.y + 6}
+             C ${a.x} ${a.y + drop} ${end.x} ${end.y + drop} ${end.x} ${end.y + 6}`
         );
 
-    updatePanel(species);
+    }
+    else{
 
-}
+        const curve = Math.max(b.y - a.y, 40) * .5;
 
-/* =====================================================
-   CLICK OUTSIDE
-===================================================== */
-
-document.addEventListener(
-
-    "click",
-
-    ()=>{
-
-        clearSelection();
-
-        panel.innerHTML = `
-
-            <div class="placeholder">
-
-                Selecciona una especie
-
-            </div>
-
-        `;
+        path.setAttribute(
+            "d",
+            `M ${a.x} ${a.y + 6}
+             C ${a.x} ${a.y + curve} ${b.x} ${b.y - curve} ${b.x} ${b.y - 6}`
+        );
 
     }
 
-);
-
-/* =====================================================
-   SVG HELPERS
-===================================================== */
-
-function getNodePoint(id, side){
-
-    const el =
-    document
-    .getElementById(id)
-    ?.querySelector(".node");
-
-    if(!el) return null;
-
-    const r =
-    el.getBoundingClientRect();
-
-    const svgRect =
-    svg.getBoundingClientRect();
-
-    return {
-
-        x:
-        r.left +
-        r.width/2 +
-        - svgRect.left,
-
-        y:
-        (side === "bottom" ? r.bottom : r.top) -
-        svgRect.top
-
-    };
-
-}
-
-/* =====================================================
-   CURVES
-===================================================== */
-
-function drawLine(
-    from,
-    to,
-    type="direct"
-){
-const a =
-getNodePoint(from, "bottom");
-
-const b =
-getNodePoint(to, "top");
-
-    if(
-        !a ||
-        !b
-    ){
-        return;
-    }
-
-    const path =
-    document.createElementNS(
-        SVG_NS,
-        "path"
-    );
-
-    const curve =
-    Math.abs(
-        b.y-a.y
-    ) * .45;
-
-    path.setAttribute(
-
-        "d",
-
-        `
-        M ${a.x} ${a.y}
-
-        C
-
-        ${a.x}
-        ${a.y+curve}
-
-        ${b.x}
-        ${b.y-curve}
-
-        ${b.x}
-        ${b.y}
-        `
-
-    );
-
-    path.setAttribute(
-        "fill",
-        "none"
-    );
-
-    path.setAttribute(
-        "class",
-        `connection-line connection-${type}`
-    );
+    path.setAttribute("fill", "none");
+    path.setAttribute("class", `connection-line connection-${type}`);
 
     svg.appendChild(path);
 
 }
 
-/* =====================================================
-   DRAW TREE
-===================================================== */
-
 function drawTree(){
 
     svg.innerHTML = "";
 
-    svg.setAttribute(
-        "width",
-        tree.clientWidth
-    );
+    svg.setAttribute("width", tree.clientWidth);
+    svg.setAttribute("height", tree.clientHeight);
 
-    svg.setAttribute(
-        "height",
-        tree.clientHeight
-    );
+    evolutionData.species.forEach(species=>{
 
-    evolutionData.species.forEach(
+        if(species.parent){
 
-        species=>{
-
-            if(species.parent){
-
-                drawLine(
-
-                    species.parent,
-
-                    species.id,
-
-                    "direct"
-
-                );
-
-            }
-
-            if(species.connections){
-
-                species.connections.forEach(
-
-                    c=>{
-
-                        drawLine(
-
-                            species.id,
-
-                            c.target,
-
-                            c.type
-
-                        );
-
-                    }
-
-                );
-
-            }
+            drawLine(species.parent, species.id, "direct");
 
         }
 
-    );
+        (species.connections || []).forEach(c=>{
+
+            drawLine(species.id, c.target, c.type);
+
+        });
+
+    });
 
 }
 
-/* =====================================================
-   LOAD JSON
-===================================================== */
+function refresh(){
 
-async function loadJson(){
-
-    const response =
-
-        await fetch(
-            "evolution.json"
-        );
-
-    evolutionData =
-        await response.json();
+    layout();
+    drawTree();
 
 }
 
@@ -620,20 +384,28 @@ async function loadJson(){
 
 async function init(){
 
-    await loadJson();
+    const response = await fetch("evolution.json");
+
+    evolutionData = await response.json();
 
     await renderSpecies();
 
-    drawTree();
+    refresh();
 
 }
 
-window.addEventListener(
-    "load",
-    init
-);
+window.addEventListener("load", init);
 
-window.addEventListener(
-    "resize",
-    drawTree
-);
+let resizeTimer;
+
+window.addEventListener("resize", ()=>{
+
+    clearTimeout(resizeTimer);
+
+    resizeTimer = setTimeout(()=>{
+
+        if(evolutionData) refresh();
+
+    }, 80);
+
+});

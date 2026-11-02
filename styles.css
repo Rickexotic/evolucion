@@ -4,16 +4,13 @@
 
     --paper:#f1f0ec;
     --text:#202020;
-    --muted:#87877e;
+    --muted:#7d7d74;
+    --node-size:148px;
 
     --shadow:
         0 12px 32px rgba(47,45,38,.12);
 
 }
-
-/* ======================================
-   RESET
-====================================== */
 
 *{
     margin:0;
@@ -35,14 +32,11 @@ body{
 
     color:var(--text);
 
-    overflow-x:auto;
-    overflow-y:auto;
+    overflow-x:hidden;
 }
 
 img{
-
     display:block;
-
     width:100%;
 }
 
@@ -52,29 +46,24 @@ img{
 
 .hero{
 
-    min-height:38vh;
-
     display:flex;
-
     justify-content:center;
-
     align-items:center;
 
     text-align:center;
 
-    padding:54px 32px;
+    padding:64px 24px 48px;
 }
 
 .hero-inner{
-
-    max-width:1200px;
+    max-width:900px;
 }
 
 .hero-period{
 
     text-transform:uppercase;
 
-    letter-spacing:12px;
+    letter-spacing:.5em;
 
     color:var(--muted);
 
@@ -85,19 +74,18 @@ img{
 
 .hero h1{
 
-    font-size:
-        clamp(58px,7vw,112px);
+    font-size:clamp(44px,7vw,104px);
 
     font-weight:300;
 
-    line-height:.9;
+    line-height:.95;
 
     margin-bottom:20px;
 }
 
 .hero p{
 
-    font-size:21px;
+    font-size:clamp(17px,2vw,21px);
 
     color:#666;
 }
@@ -110,11 +98,11 @@ img{
 
     position:relative;
 
-    width:2400px;
+    width:calc(100% - 32px);
 
-    min-height:1200px;
+    max-width:1500px;
 
-    margin:auto;
+    margin:0 auto 32px;
 
     background:#fff;
 
@@ -123,18 +111,11 @@ img{
     border-radius:28px;
 
     isolation:isolate;
-
-    z-index:20;
 }
-
-/* ======================================
-   SVG
-====================================== */
 
 #tree-svg{
 
     position:absolute;
-
     top:0;
     left:0;
 
@@ -145,38 +126,28 @@ img{
     z-index:1;
 }
 
+/* Líneas suaves: se leen como guía y quedan detrás del texto */
 .connection-line{
 
     stroke-linecap:round;
 
-    opacity:.9;
-
-    transition:
-        opacity .25s ease,
-        stroke-width .25s ease;
+    stroke-width:1.4;
 }
 
 .connection-direct{
-
-    stroke:rgba(48,57,51,.58);
-
-    stroke-width:2.2;
+    stroke:rgba(48,57,51,.26);
 }
 
 .connection-hypothesis{
 
-    stroke:rgba(113,119,100,.68);
+    stroke:rgba(113,119,100,.3);
 
-    stroke-width:1.6;
-
-    stroke-dasharray:6 7;
+    stroke-dasharray:5 7;
 }
 
 .connection-genetic{
 
-    stroke:#638e8b;
-
-    stroke-width:1.8;
+    stroke:rgba(99,142,139,.4);
 
     stroke-dasharray:2 6;
 }
@@ -192,31 +163,27 @@ img{
     transform:translateX(-50%);
 
     display:flex;
-
     flex-direction:column;
-
     align-items:center;
 
     text-align:center;
 
     transition:
-        transform .4s ease,
-        opacity .4s ease,
-        filter .4s ease;
+        transform .35s ease,
+        opacity .35s ease,
+        filter .35s ease;
 
     cursor:pointer;
 
     z-index:20;
 }
 
-/* ======================================
-   NODE
-====================================== */
-
 .node{
 
-    width:148px;
-    height:148px;
+    width:var(--node-size);
+    height:var(--node-size);
+
+    flex:none;
 
     border-radius:50%;
 
@@ -224,94 +191,54 @@ img{
 
     background:#e9e5d5;
 
-    border:5px solid rgba(255,255,255,.92);
+    border:5px solid #fff;
 
     box-shadow:var(--shadow);
-
-    position:relative;
-
-    z-index:40;
 }
 
-.species.branch .node{
-    background:#d8e6e2;
-}
-
-.species.extinct .node{
-    background:#e9d8d1;
-}
-
-.species.modern .node{
-    background:#d9dfc2;
-}
+.species.branch .node{ background:#d8e6e2; }
+.species.extinct .node{ background:#e9d8d1; }
+.species.modern .node{ background:#d9dfc2; }
 
 .node img{
 
-    width:100%;
     height:100%;
 
     object-fit:cover;
 }
 
-/* ======================================
-   TEXT
-====================================== */
+.species-name,
+.species-period,
+.details{
+
+    background:rgba(255,255,255,.92);
+}
 
 .species-name{
 
-    margin-top:12px;
+    margin-top:10px;
 
-    font-size:28px;
+    padding:2px 8px 0;
 
-    line-height:1;
+    font-size:26px;
 
-    font-weight:400;
+    line-height:1.05;
 
-    max-width:340px;
+    font-weight:500;
 }
 
 .species-period{
 
-    margin-top:7px;
+    padding:4px 8px 3px;
 
     font-size:10px;
 
-    letter-spacing:3px;
+    letter-spacing:.25em;
 
     text-transform:uppercase;
 
     color:var(--muted);
 }
-
-/* ======================================
-   SELECTED
-====================================== */
-
-.species.selected{
-
-    transform:
-        translateX(-50%)
-        scale(1.35);
-
-    z-index:999;
-}
-
-.species.selected .node{
-
-    box-shadow:
-        0 50px 140px rgba(0,0,0,.22);
-}
-
-.tree-focus .species:not(.selected){
-
-    opacity:.15;
-
-    filter:blur(2px);
-}
-
-/* ======================================
-   DETAILS
-====================================== */
 
 .details{
 
@@ -321,24 +248,40 @@ img{
 
     opacity:0;
 
-    transition:.4s;
+    transition:.35s;
 
-    max-width:520px;
+    padding:0 12px;
 
     font-size:16px;
 
-    line-height:1.6;
+    line-height:1.5;
+}
 
-    margin-top:0;
+.species.selected{
+
+    transform:translateX(-50%) scale(1.15);
+
+    z-index:999;
+}
+
+.species.selected .node{
+    box-shadow:0 30px 80px rgba(0,0,0,.22);
 }
 
 .species.selected .details{
 
     opacity:1;
 
-    max-height:500px;
+    max-height:300px;
 
-    margin-top:20px;
+    padding:8px 12px;
+}
+
+.tree-focus .species:not(.selected){
+
+    opacity:.25;
+
+    filter:blur(1.5px);
 }
 
 /* ======================================
@@ -352,21 +295,18 @@ img{
     top:0;
     right:0;
 
-    width:400px;
-
+    width:360px;
     height:100vh;
 
     background:white;
 
-    border-left:
-        1px solid rgba(0,0,0,.08);
+    border-left:1px solid rgba(0,0,0,.08);
 
     overflow-y:auto;
 
     z-index:10000;
 
-    box-shadow:
-        -15px 0 40px rgba(0,0,0,.08);
+    box-shadow:-15px 0 40px rgba(0,0,0,.08);
 }
 
 body:not(.tree-focus) #info-panel{
@@ -375,39 +315,63 @@ body:not(.tree-focus) #info-panel{
 
 .panel-header{
 
-    padding:24px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 
-    border-bottom:
-        1px solid rgba(0,0,0,.08);
+    padding:18px 24px;
+
+    border-bottom:1px solid rgba(0,0,0,.08);
 
     text-transform:uppercase;
 
-    letter-spacing:4px;
+    letter-spacing:.3em;
 
     font-size:12px;
 
     color:#777;
+
+    position:sticky;
+    top:0;
+
+    background:#fff;
+}
+
+#panel-close{
+
+    border:0;
+
+    background:none;
+
+    font-size:28px;
+
+    line-height:1;
+
+    color:#555;
+
+    cursor:pointer;
+
+    padding:4px 8px;
 }
 
 #info-content{
-
-    padding:30px;
+    padding:24px;
 }
 
 #info-content h2{
 
-    font-size:42px;
+    font-size:36px;
 
     line-height:1.1;
 
-    margin-bottom:20px;
+    margin-bottom:14px;
 }
 
 #info-content h3{
 
-    margin-top:26px;
+    margin-top:22px;
 
-    margin-bottom:8px;
+    margin-bottom:6px;
 
     font-size:13px;
 
@@ -420,65 +384,89 @@ body:not(.tree-focus) #info-panel{
 
 #info-content p{
 
-    font-size:15px;
+    font-size:16px;
 
-    line-height:1.7;
+    line-height:1.6;
+}
+
+#info-content hr{
+    margin-top:12px;
+    border:0;
+    border-top:1px solid rgba(0,0,0,.1);
 }
 
 .placeholder{
-
     color:#999;
-}
-
-/* ======================================
-   TIME AXIS
-====================================== */
-
-.time-axis{
-
-    position:fixed;
-
-    left:25px;
-
-    top:150px;
-
-    z-index:200;
 }
 
 /* ======================================
    RESPONSIVE
 ====================================== */
 
-@media(max-width:1600px){
+@media(max-width:1100px){
 
-    #info-panel{
+    :root{ --node-size:120px; }
 
-        width:320px;
-    }
+    .species-name{ font-size:22px; }
 
-    .species-name{
-
-        font-size:25px;
-
-    }
+    #info-panel{ width:300px; }
 
 }
 
-@media(max-width:1200px){
+/* Móvil: línea de tiempo vertical y ficha como panel inferior */
+@media(max-width:760px){
 
-    #info-panel{
+    :root{ --node-size:92px; }
 
-        display:none;
+    .hero{ padding:40px 20px 28px; }
+
+    .hero-period{ letter-spacing:.3em; }
+
+    #tree{
+
+        width:100%;
+
+        border-radius:0;
+
+        border-left:0;
+        border-right:0;
     }
 
     .species-name{
 
-        font-size:23px;
+        font-size:20px;
 
+        margin-top:8px;
     }
 
-    #tree{
-        border-radius:20px;
+    .species-period{ letter-spacing:.15em; }
+
+    .details{ display:none; }
+
+    .species.selected{ transform:translateX(-50%) scale(1.06); }
+
+    #info-panel{
+
+        top:auto;
+        bottom:0;
+
+        width:100%;
+        height:52vh;
+
+        border-left:0;
+
+        border-top:1px solid rgba(0,0,0,.1);
+
+        border-radius:18px 18px 0 0;
+
+        box-shadow:0 -10px 40px rgba(0,0,0,.15);
     }
+
+    #info-content{ padding:18px 20px 32px; }
+
+    #info-content h2{ font-size:28px; }
+
+    /* Margen para que la última especie no quede bajo la ficha */
+    body.tree-focus{ padding-bottom:52vh; }
 
 }
