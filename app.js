@@ -1,11 +1,93 @@
 const SVG_NS = "http://www.w3.org/2000/svg";
 
-const svg =
-document.getElementById("tree-svg");
+const svg = document.getElementById("tree-svg");
 
-/* =========================================
-   HELPERS
-========================================= */
+/* =====================================================
+   WIKIPEDIA IMAGES
+===================================================== */
+
+const FALLBACK_IMAGE =
+"https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Question_Mark.svg/512px-Question_Mark.svg.png";
+
+async function fetchWikipediaImage(species){
+
+    try{
+
+        const title =
+        encodeURIComponent(
+            species.replaceAll(" ","_")
+        );
+
+        const url =
+        `https://en.wikipedia.org/api/rest_v1/page/summary/${title}`;
+
+        const response =
+        await fetch(url);
+
+        if(!response.ok)
+            return FALLBACK_IMAGE;
+
+        const data =
+        await response.json();
+
+        if(
+            data.thumbnail &&
+            data.thumbnail.source
+        ){
+
+            return data.thumbnail.source;
+
+        }
+
+        return FALLBACK_IMAGE;
+
+    }
+    catch{
+
+        return FALLBACK_IMAGE;
+
+    }
+
+}
+
+/* =====================================================
+   IMAGE LOADER
+===================================================== */
+
+async function loadSpeciesImages(){
+
+    const images =
+    document.querySelectorAll(
+        "img[data-species]"
+    );
+
+    const promises = [];
+
+    images.forEach(img=>{
+
+        const species =
+        img.dataset.species;
+
+        promises.push(
+
+            fetchWikipediaImage(species)
+            .then(src=>{
+
+                img.src = src;
+
+            })
+
+        );
+
+    });
+
+    await Promise.all(promises);
+
+}
+
+/* =====================================================
+   SVG HELPERS
+===================================================== */
 
 function center(el){
 
@@ -23,8 +105,8 @@ function center(el){
         r.top +
         r.height/2 +
         window.scrollY
-    };
 
+    };
 }
 
 function clearSVG(){
@@ -33,11 +115,7 @@ function clearSVG(){
 
 }
 
-/* =========================================
-   DRAW PATH
-========================================= */
-
-function drawPath(
+function drawCurve(
 
     from,
     to,
@@ -45,18 +123,29 @@ function drawPath(
 
 ){
 
-    const p1 =
-    center(
-        document.getElementById(from)
-    );
+    const start =
+    document.getElementById(from);
 
-    const p2 =
-    center(
-        document.getElementById(to)
-    );
+    const end =
+    document.getElementById(to);
 
-    const cp =
-    Math.abs(p2.y-p1.y)*.4;
+    if(
+        !start ||
+        !end
+    ){
+        return;
+    }
+
+    const a =
+    center(start);
+
+    const b =
+    center(end);
+
+    const curve =
+    Math.abs(
+        b.y-a.y
+    ) * .45;
 
     const path =
     document.createElementNS(
@@ -69,12 +158,17 @@ function drawPath(
         "d",
 
         `
-        M ${p1.x} ${p1.y}
+        M ${a.x} ${a.y}
 
         C
-        ${p1.x} ${p1.y+cp}
-        ${p2.x} ${p2.y-cp}
-        ${p2.x} ${p2.y}
+        ${a.x}
+        ${a.y+curve}
+
+        ${b.x}
+        ${b.y-curve}
+
+        ${b.x}
+        ${b.y}
         `
     );
 
@@ -90,7 +184,7 @@ function drawPath(
 
     path.setAttribute(
         "stroke-width",
-        options.width || 3
+        options.width || 2.5
     );
 
     path.setAttribute(
@@ -98,30 +192,30 @@ function drawPath(
         options.opacity || .18
     );
 
-    path.setAttribute(
-        "data-from",
-        from
-    );
+    if(options.dash){
 
-    path.setAttribute(
-        "data-to",
-        to
-    );
+        path.setAttribute(
+            "stroke-dasharray",
+            "8 6"
+        );
+
+    }
 
     path.classList.add(
-        "tree-line"
+        "tree-path"
     );
 
     svg.appendChild(path);
+
 }
 
-/* =========================================
+/* =====================================================
    MAIN EVOLUTION
-========================================= */
+===================================================== */
 
-function drawEarlyEvolution(){
+function drawEarlyTree(){
 
-    const flow = [
+    const chain = [
 
         "sahelanthropus",
 
@@ -137,106 +231,95 @@ function drawEarlyEvolution(){
 
     for(
         let i=0;
-        i<flow.length-1;
+        i<chain.length-1;
         i++
     ){
 
-        drawPath(
-            flow[i],
-            flow[i+1]
+        drawCurve(
+            chain[i],
+            chain[i+1]
         );
 
     }
 
 }
 
-/* =========================================
+/* =====================================================
    AUSTRALOPITHECUS BRANCH
-========================================= */
+===================================================== */
 
-function drawAustralBranch(){
+function drawAustralopithecusTree(){
 
-    drawPath(
+    drawCurve(
         "afarensis",
-        "africanus",
-        {opacity:.22}
+        "africanus"
     );
 
-    drawPath(
+    drawCurve(
         "afarensis",
-        "sediba",
-        {opacity:.22}
+        "sediba"
     );
 
 }
 
-/* =========================================
+/* =====================================================
    HOMO
-========================================= */
+===================================================== */
 
-function drawHomoBranch(){
+function drawHomoTree(){
 
-    drawPath(
+    drawCurve(
         "afarensis",
         "habilis"
     );
 
-    drawPath(
+    drawCurve(
         "habilis",
         "rudolfensis"
     );
 
-    drawPath(
+    drawCurve(
         "rudolfensis",
         "erectus"
     );
 
-    drawPath(
+    drawCurve(
         "erectus",
         "heidelbergensis"
     );
 
 }
 
-/* =========================================
-   LATE HUMANS
-========================================= */
+/* =====================================================
+   MODERN HUMANS
+===================================================== */
 
-function drawLateHumans(){
+function drawModernTree(){
 
-    drawPath(
+    drawCurve(
         "heidelbergensis",
-        "neanderthal",
-        {
-            opacity:.24
-        }
+        "neanderthal"
     );
 
-    drawPath(
+    drawCurve(
         "heidelbergensis",
-        "denisova",
-        {
-            opacity:.24
-        }
+        "denisova"
     );
 
-    drawPath(
+    drawCurve(
         "heidelbergensis",
-        "sapiens",
-        {
-            opacity:.24
-        }
+        "sapiens"
     );
 
 }
 
-/* =========================================
+/* =====================================================
    CIVILIZATION
-========================================= */
+===================================================== */
 
-function drawCivilization(){
+function drawCivilizationTree(){
 
-    const flow = [
+    const chain = [
 
         "sapiens",
 
@@ -256,22 +339,22 @@ function drawCivilization(){
 
     for(
         let i=0;
-        i<flow.length-1;
+        i<chain.length-1;
         i++
     ){
 
-        drawPath(
-            flow[i],
-            flow[i+1]
+        drawCurve(
+            chain[i],
+            chain[i+1]
         );
 
     }
 
 }
 
-/* =========================================
+/* =====================================================
    SATELLITES
-========================================= */
+===================================================== */
 
 function drawSatelliteLinks(){
 
@@ -284,9 +367,10 @@ function drawSatelliteLinks(){
             ".node"
         );
 
-        if(!node) return;
+        if(!node)
+            return;
 
-        const n =
+        const p =
         center(node);
 
         species
@@ -309,15 +393,15 @@ function drawSatelliteLinks(){
                 "d",
 
                 `
-                M ${n.x} ${n.y}
+                M ${p.x} ${p.y}
 
                 Q
-                ${(n.x+t.x)/2}
-                ${(n.y+t.y)/2}
+                ${(p.x+t.x)/2}
+                ${(p.y+t.y)/2}
 
-                ${t.x} ${t.y}
+                ${t.x}
+                ${t.y}
                 `
-
             );
 
             path.setAttribute(
@@ -337,7 +421,7 @@ function drawSatelliteLinks(){
 
             path.setAttribute(
                 "opacity",
-                ".15"
+                ".12"
             );
 
             svg.appendChild(path);
@@ -348,9 +432,9 @@ function drawSatelliteLinks(){
 
 }
 
-/* =========================================
-   FOCUS
-========================================= */
+/* =====================================================
+   ZOOM / FOCUS
+===================================================== */
 
 function clearFocus(){
 
@@ -376,82 +460,88 @@ function setupFocus(){
     .querySelectorAll(".species")
     .forEach(node=>{
 
-        node.onclick=()=>{
+        node.addEventListener(
+            "click",
+            ()=>{
 
-            const active=
-            node.classList.contains(
-                "selected"
-            );
+                const active =
+                node.classList.contains(
+                    "selected"
+                );
 
-            clearFocus();
+                clearFocus();
 
-            if(active)
-                return;
+                if(active)
+                    return;
 
-            document.body
-            .classList
-            .add("tree-focus");
+                document.body
+                .classList
+                .add("tree-focus");
 
-            node.classList.add(
-                "selected"
-            );
+                node.classList.add(
+                    "selected"
+                );
 
-            node.scrollIntoView({
+                node.scrollIntoView({
 
-                block:"center",
+                    behavior:"smooth",
 
-                behavior:"smooth"
+                    block:"center"
 
-            });
+                });
 
-        };
+            }
+        );
 
     });
 
 }
 
-/* =========================================
-   DRAW ALL
-========================================= */
+/* =====================================================
+   REDRAW
+===================================================== */
 
-function redraw(){
+function redrawTree(){
 
     clearSVG();
 
     svg.setAttribute(
         "width",
-        document.body.scrollWidth
+        document.documentElement.scrollWidth
     );
 
     svg.setAttribute(
         "height",
-        document.body.scrollHeight
+        document.documentElement.scrollHeight
     );
 
-    drawEarlyEvolution();
+    drawEarlyTree();
 
-    drawAustralBranch();
+    drawAustralopithecusTree();
 
-    drawHomoBranch();
+    drawHomoTree();
 
-    drawLateHumans();
+    drawModernTree();
 
-    drawCivilization();
+    drawCivilizationTree();
 
     drawSatelliteLinks();
+
 }
 
-/* =========================================
+/* =====================================================
    INIT
-========================================= */
+===================================================== */
 
 window.addEventListener(
 
     "load",
 
-    ()=>{
+    async ()=>{
 
-        redraw();
+        await loadSpeciesImages();
+
+        redrawTree();
 
         setupFocus();
 
@@ -463,6 +553,10 @@ window.addEventListener(
 
     "resize",
 
-    redraw
+    ()=>{
+
+        redrawTree();
+
+    }
 
 );
