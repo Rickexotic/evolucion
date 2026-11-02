@@ -3,531 +3,415 @@
 
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Evolución Humana | 3 millones de años</title>
+<title>Evolución Humana</title>
 
-    <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css">
 
 </head>
 
 <body>
 
-    <!-- SVG GENERADO POR JS -->
+<svg id="tree-svg"></svg>
 
-    <svg id="evolution-svg"></svg>
+<header class="hero">
 
-    <!-- HERO -->
+    <div class="hero-inner">
 
-    <header class="hero">
-
-        <div class="hero-inner">
-
-            <div class="hero-period">
-                3.000.000 años
-            </div>
-
-            <h1>
-                Evolución Humana
-            </h1>
-
-            <p>
-                Desde los primeros Australopitecos
-                hasta las primeras ciudades sumerias
-                hacia el 3000 BC.
-            </p>
-
+        <div class="hero-period">
+            3.000.000 AÑOS
         </div>
 
-    </header>
+        <h1>
+            Evolución Humana
+        </h1>
 
-    <!-- TIMELINE -->
-
-    <main id="timeline">
-
-        <!-- PALEOLÍTICO INFERIOR -->
-
-        <section class="era">
-            <div class="era-label">
-                PALEOLÍTICO INFERIOR
-            </div>
-        </section>
-
-        <!-- AUSTRALOPITHECUS -->
-
-        <article class="species left" id="afarensis">
-
-            <div class="node">
-
-                <div class="photo">
-                    <img src="assets/afarensis.jpg" alt="">
-                </div>
-
-                <div class="info">
-
-                    <span class="date">
-                        3.9 - 2.9 millones de años
-                    </span>
-
-                    <h2>
-                        Australopithecus afarensis
-                    </h2>
-
-                    <p>
-                        Bipedismo consolidado.
-                        Adaptación a ambientes abiertos.
-                    </p>
-
-                </div>
-
-            </div>
-
-            <div class="satellites">
-
-                <div class="satellite">
-                    Bipedismo
-                </div>
-
-                <div class="satellite">
-                    Sabana Africana
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- HABILIS -->
-
-        <article class="species right" id="habilis">
-
-            <div class="node">
-
-                <div class="photo">
-                    <img src="assets/habilis.jpg" alt="">
-                </div>
-
-                <div class="info">
-
-                    <span class="date">
-                        2.6 - 1.5 millones de años
-                    </span>
-
-                    <h2>
-                        Homo habilis
-                    </h2>
-
-                    <p>
-                        Primer fabricante conocido
-                        de herramientas líticas.
-                    </p>
-
-                </div>
-
-            </div>
-
-            <div class="satellites">
-
-                <div class="satellite">
-                    Industria Oldowan
-                </div>
-
-                <div class="satellite">
-                    Herramientas
-                </div>
-
-                <div class="satellite">
-                    Carnes
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- ERGASTER -->
-
-        <article class="species left" id="ergaster">
-
-            <div class="node">
-
-                <div class="photo">
-                    <img src="assets/ergaster.jpg" alt="">
-                </div>
-
-                <div class="info">
-
-                    <span class="date">
-                        1.9 - 1.4 millones
-                    </span>
-
-                    <h2>
-                        Homo ergaster
-                    </h2>
-
-                    <p>
-                        Proporciones corporales
-                        modernas y cooperación avanzada.
-                    </p>
-
-                </div>
-
-            </div>
-
-            <div class="satellites">
-
-                <div class="satellite">
-                    Cooperación
-                </div>
-
-                <div class="satellite">
-                    Caza
-                </div>
-
-            </div>
-
-        </article>
-
-     <!-- ERECTUS -->
-
-<article class="species right" id="erectus">
-
-    <div class="node large">
-
-        <div class="photo">
-            <img src="assets/erectus.jpg" alt="">
-        </div>
-
-        <div class="info">
-
-            <span class="date">
-                1.9 millones - 200.000 años
-            </span>
-
-            <h2>
-                Homo erectus
-            </h2>
-
-            <p>
-                Dominio del fuego, expansión fuera de África
-                y herramientas achelenses.
-            </p>
-
-        </div>
+        <p>
+            Desde los primeros Australopitecos
+            hasta las primeras ciudades de Sumeria
+        </p>
 
     </div>
 
-    <div class="satellites">
+</header>
 
-        <div class="satellite">
-            Fuego
-        </div>
+<main id="tree">
 
-        <div class="satellite">
-            Migraciones
-        </div>
+    <!-- ================================================= -->
+    <!-- AUSTRALOPITHECUS -->
+    <!-- ================================================= -->
 
-        <div class="satellite">
-            Bifaces
-        </div>
+    <section class="species" id="afarensis">
 
-        <div class="satellite">
-            Campamentos
-        </div>
+        <div class="node">
 
-    </div>
-
-</article>
-
-<!-- HEIDELBERGENSIS -->
-
-<article class="species left" id="heidelbergensis">
-
-    <div class="node">
-
-        <div class="photo">
-            <img src="assets/heidelbergensis.jpg" alt="">
-        </div>
-
-        <div class="info">
-
-            <span class="date">
-                700.000 - 200.000 años
-            </span>
-
-            <h2>
-                Homo heidelbergensis
-            </h2>
-
-            <p>
-                Ancestro probable de neandertales y sapiens.
-            </p>
+            <img
+                src="assets/afarensis.jpg"
+                alt="Australopithecus afarensis">
 
         </div>
 
-    </div>
+        <div class="species-name">
 
-    <div class="satellites">
-
-        <div class="satellite">
-            Caza organizada
-        </div>
-
-        <div class="satellite">
-            Refugios
-        </div>
-
-    </div>
-
-</article>
-
-<!-- RAMIFICACIÓN -->
-
-<section class="branch">
-
-    <div class="branch-label">
-        Divergencia Evolutiva
-    </div>
-
-</section>
-
-<!-- NEANDERTAL -->
-
-<article class="species right" id="neanderthal">
-
-    <div class="node">
-
-        <div class="photo">
-            <img src="assets/neanderthal.jpg" alt="">
-        </div>
-
-        <div class="info">
-
-            <span class="date">
-                400.000 - 40.000 años
-            </span>
-
-            <h2>
-                Homo neanderthalensis
-            </h2>
-
-            <p>
-                Adaptación extrema al clima frío europeo.
-            </p>
+            Australopithecus afarensis
 
         </div>
 
-    </div>
+        <div class="species-period">
 
-    <div class="satellites">
-
-        <div class="satellite">
-            Enterramientos
-        </div>
-
-        <div class="satellite">
-            Cuidado Social
-        </div>
-
-    </div>
-
-</article>
-
-<!-- SAPIENS -->
-
-<article class="species left" id="sapiens">
-
-    <div class="node large">
-
-        <div class="photo">
-            <img src="assets/sapiens.jpg" alt="">
-        </div>
-
-        <div class="info">
-
-            <span class="date">
-                300.000 años - presente
-            </span>
-
-            <h2>
-                Homo sapiens
-            </h2>
-
-            <p>
-                Lenguaje complejo, cultura simbólica,
-                cooperación masiva y civilización.
-            </p>
+            3.9 - 2.9 millones de años
 
         </div>
 
-    </div>
+        <div class="satellites">
 
-    <div class="satellites">
+            <span>Bipedismo</span>
+            <span>Sabana africana</span>
 
-        <div class="satellite">
-            Arte
         </div>
 
-        <div class="satellite">
-            Mitos
+    </section>
+
+    <!-- ================================================= -->
+    <!-- HABILIS -->
+    <!-- ================================================= -->
+
+    <section class="species" id="habilis">
+
+        <div class="node">
+
+            <img
+                src="assets/habilis.jpg"
+                alt="Homo habilis">
+
         </div>
 
-        <div class="satellite">
-            Lenguaje
+        <div class="species-name">
+
+            Homo habilis
+
         </div>
 
-        <div class="satellite">
-            Religión
+        <div class="species-period">
+
+            2.6 - 1.5 millones de años
+
         </div>
 
-    </div>
+        <div class="satellites">
 
-</article>
+            <span>Oldowan</span>
+            <span>Herramientas</span>
+            <span>Carne</span>
 
-<!-- REVOLUCIÓN COGNITIVA -->
+        </div>
 
-<section class="milestone" id="cognitive">
+    </section>
 
-    <div class="milestone-content">
+    <!-- ================================================= -->
+    <!-- ERGASTER -->
+    <!-- ================================================= -->
 
-        <div class="milestone-date">
+    <section class="species" id="ergaster">
 
+        <div class="node">
+
+            <img
+                src="assets/ergaster.jpg"
+                alt="Homo ergaster">
+
+        </div>
+
+        <div class="species-name">
+
+            Homo ergaster
+
+        </div>
+
+        <div class="species-period">
+
+            1.9 - 1.4 millones
+
+        </div>
+
+        <div class="satellites">
+
+            <span>Cooperación</span>
+            <span>Caza</span>
+
+        </div>
+
+    </section>
+
+    <!-- ================================================= -->
+    <!-- ERECTUS -->
+    <!-- ================================================= -->
+
+    <section class="species major" id="erectus">
+
+        <div class="node">
+
+            <img
+                src="assets/erectus.jpg"
+                alt="Homo erectus">
+
+        </div>
+
+        <div class="species-name">
+
+            Homo erectus
+
+        </div>
+
+        <div class="species-period">
+
+            1.9 millones - 200 mil años
+
+        </div>
+
+        <div class="satellites">
+
+            <span>Fuego</span>
+            <span>Migraciones</span>
+            <span>Bifaces</span>
+            <span>Campamentos</span>
+
+        </div>
+
+    </section>
+
+    <!-- ================================================= -->
+    <!-- HEIDELBERGENSIS -->
+    <!-- ================================================= -->
+
+    <section class="species" id="heidelbergensis">
+
+        <div class="node">
+
+            <img
+                src="assets/heidelbergensis.jpg"
+                alt="Homo heidelbergensis">
+
+        </div>
+
+        <div class="species-name">
+
+            Homo heidelbergensis
+
+        </div>
+
+        <div class="species-period">
+
+            700.000 - 200.000 años
+
+        </div>
+
+        <div class="satellites">
+
+            <span>Caza organizada</span>
+            <span>Refugios</span>
+
+        </div>
+
+    </section>
+
+    <!-- ================================================= -->
+    <!-- BIFURCACIÓN -->
+    <!-- ================================================= -->
+
+    <section class="branch-zone">
+
+        <div class="branch-label">
+
+            Divergencia Evolutiva
+
+        </div>
+
+        <div class="branch-row">
+
+            <!-- ====================== -->
+            <!-- NEANDERTAL -->
+            <!-- ====================== -->
+
+            <section
+                class="species branch-node"
+                id="neanderthal">
+
+                <div class="node">
+
+                    <img
+                        src="assets/neanderthal.jpg"
+                        alt="Neanderthal">
+
+                </div>
+
+                <div class="species-name">
+
+                    Homo neanderthalensis
+
+                </div>
+
+                <div class="species-period">
+
+                    400.000 - 40.000 años
+
+                </div>
+
+                <div class="satellites">
+
+                    <span>Enterramientos</span>
+                    <span>Cuidado social</span>
+
+                </div>
+
+            </section>
+
+            <!-- ====================== -->
+            <!-- SAPIENS -->
+            <!-- ====================== -->
+
+            <section
+                class="species branch-node sapiens"
+                id="sapiens">
+
+                <div class="node">
+
+                    <img
+                        src="assets/sapiens.jpg"
+                        alt="Homo sapiens">
+
+                </div>
+
+                <div class="species-name">
+
+                    Homo sapiens
+
+                </div>
+
+                <div class="species-period">
+
+                    300.000 años - presente
+
+                </div>
+
+                <div class="satellites">
+
+                    <span>Arte</span>
+                    <span>Lenguaje</span>
+                    <span>Mitos</span>
+                    <span>Religión</span>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </section>
+
+    <!-- ================================================= -->
+    <!-- HITOS HUMANIDAD -->
+    <!-- ================================================= -->
+
+    <section class="event" id="cognitive">
+
+        <div class="event-date">
             70.000 años
-
         </div>
 
-        <h3>
-
+        <div class="event-title">
             Revolución Cognitiva
+        </div>
 
-        </h3>
+    </section>
 
-    </div>
+    <section class="event" id="agriculture">
 
-</section>
-
-<!-- AGRICULTURA -->
-
-<section class="milestone" id="agriculture">
-
-    <div class="milestone-content">
-
-        <div class="milestone-date">
-
+        <div class="event-date">
             10.000 BC
-
         </div>
 
-        <h3>
-
+        <div class="event-title">
             Agricultura
+        </div>
 
-        </h3>
+    </section>
 
-    </div>
+    <section class="event" id="villages">
 
-</section>
-
-<!-- ALDEAS -->
-
-<section class="milestone" id="villages">
-
-    <div class="milestone-content">
-
-        <div class="milestone-date">
-
+        <div class="event-date">
             8.000 BC
-
         </div>
 
-        <h3>
-
+        <div class="event-title">
             Aldeas Permanentes
+        </div>
 
-        </h3>
+    </section>
 
-    </div>
+    <section class="event" id="metallurgy">
 
-</section>
-
-<!-- METALURGIA -->
-
-<section class="milestone" id="metallurgy">
-
-    <div class="milestone-content">
-
-        <div class="milestone-date">
-
+        <div class="event-date">
             6.000 BC
-
         </div>
 
-        <h3>
-
+        <div class="event-title">
             Metalurgia del Cobre
+        </div>
 
-        </h3>
+    </section>
 
-    </div>
+    <section class="event" id="cities">
 
-</section>
-
-<!-- CIUDADES -->
-
-<section class="milestone" id="cities">
-
-    <div class="milestone-content">
-
-        <div class="milestone-date">
-
+        <div class="event-date">
             4.000 BC
-
         </div>
 
-        <h3>
-
+        <div class="event-title">
             Ciudades e Irrigación
+        </div>
 
-        </h3>
+    </section>
 
-    </div>
+    <!-- ================================================= -->
+    <!-- SUMERIA -->
+    <!-- ================================================= -->
 
-</section>
+    <section id="sumeria">
 
-<!-- SUMERIA -->
+        <div class="node civilization">
 
-<section class="civilization" id="sumeria">
-
-    <div class="civilization-inner">
-
-        <img
-            src="assets/sumeria.jpg"
-            alt="Sumeria">
-
-        <div class="civilization-info">
-
-            <span>
-                3000 BC
-            </span>
-
-            <h2>
-                Sumeria
-            </h2>
-
-            <p>
-
-                Escritura cuneiforme,
-                ciudades estado,
-                burocracia,
-                irrigación,
-                comercio y administración.
-
-            </p>
+            <img
+                src="assets/sumeria.jpg"
+                alt="Sumeria">
 
         </div>
 
-    </div>
+        <div class="species-name">
 
-</section>
+            Sumeria
+
+        </div>
+
+        <div class="species-period">
+
+            3000 BC
+
+        </div>
+
+        <div class="civilization-text">
+
+            Escritura cuneiforme ·
+            Ciudades Estado ·
+            Burocracia ·
+            Comercio ·
+            Irrigación
+
+        </div>
+
+    </section>
 
 </main>
 
