@@ -1,40 +1,42 @@
 const SVG_NS = "http://www.w3.org/2000/svg";
 
-function center(el){
+const svg = document.getElementById("tree-svg");
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function point(el){
 
     const r = el.getBoundingClientRect();
 
     return {
 
         x:
-        r.left + r.width / 2 + window.scrollX,
+        r.left +
+        r.width / 2 +
+        window.scrollX,
 
         y:
-        r.top + r.height / 2 + window.scrollY
+        r.top +
+        r.height / 2 +
+        window.scrollY
     };
+
 }
 
 function clearSVG(){
 
-    document.getElementById(
-        "evolution-svg"
-    ).innerHTML = "";
+    svg.innerHTML = "";
+
 }
 
-function curve(
-    x1,
-    y1,
-    x2,
-    y2,
-    stroke="#111",
-    width=3,
+function createPath(
+    d,
+    color="#1f1f1f",
+    width=2,
     opacity=.18
 ){
-
-    const svg =
-    document.getElementById(
-        "evolution-svg"
-    );
 
     const path =
     document.createElementNS(
@@ -42,73 +44,167 @@ function curve(
         "path"
     );
 
-    const cp =
-    Math.abs(y2-y1) * .4;
-
     path.setAttribute(
         "d",
-        `
-        M ${x1} ${y1}
-        C ${x1} ${y1+cp}
-        ${x2} ${y2-cp}
-        ${x2} ${y2}
-        `
+        d
     );
 
-    path.setAttribute("fill","none");
-    path.setAttribute("stroke",stroke);
-    path.setAttribute("stroke-width",width);
-    path.setAttribute("stroke-linecap","round");
-    path.setAttribute("opacity",opacity);
+    path.setAttribute(
+        "fill",
+        "none"
+    );
+
+    path.setAttribute(
+        "stroke",
+        color
+    );
+
+    path.setAttribute(
+        "stroke-width",
+        width
+    );
+
+    path.setAttribute(
+        "stroke-linecap",
+        "round"
+    );
+
+    path.setAttribute(
+        "opacity",
+        opacity
+    );
 
     svg.appendChild(path);
+
 }
 
-/* ==========================
-   CONEXIÓN ESPECIES
-========================== */
+/* =====================================================
+   CURVA
+===================================================== */
 
-function connectSpecies(
-    sourceId,
-    targetId
-){
-
-    const a =
-    document.getElementById(sourceId);
-
-    const b =
-    document.getElementById(targetId);
-
-    if(!a || !b){
-        return;
-    }
+function connect(a,b){
 
     const p1 =
-    center(a);
+    point(document.getElementById(a));
 
     const p2 =
-    center(b);
+    point(document.getElementById(b));
 
-    curve(
-        p1.x,
-        p1.y,
-        p2.x,
-        p2.y
+    const c =
+    Math.abs(
+        p2.y - p1.y
+    ) * .45;
+
+    createPath(
+
+        `
+        M ${p1.x} ${p1.y}
+
+        C
+        ${p1.x} ${p1.y + c}
+        ${p2.x} ${p2.y - c}
+        ${p2.x} ${p2.y}
+
+        `,
+
+        "#1b1b1b",
+        3,
+        .18
     );
+
 }
 
-/* ==========================
-   BIFURCACIÓN
-========================== */
+/* =====================================================
+   CONEXION SATELITE
+===================================================== */
+
+function connectSatellites(){
+
+    document
+    .querySelectorAll(".species")
+    .forEach(species=>{
+
+        const node =
+        species.querySelector(".node");
+
+        if(!node) return;
+
+        const n =
+        point(node);
+
+        species
+        .querySelectorAll(".satellites span")
+        .forEach(tag=>{
+
+            const t =
+            point(tag);
+
+            createPath(
+
+                `
+                M ${n.x} ${n.y}
+
+                Q
+                ${(n.x+t.x)/2}
+                ${(n.y+t.y)/2}
+
+                ${t.x}
+                ${t.y}
+                `,
+
+                "#666",
+                1.1,
+                .15
+            );
+
+        });
+
+    });
+
+}
+
+/* =====================================================
+   TRONCO PRINCIPAL
+===================================================== */
+
+function drawMainEvolution(){
+
+    const chain = [
+
+        "afarensis",
+
+        "habilis",
+
+        "ergaster",
+
+        "erectus",
+
+        "heidelbergensis"
+
+    ];
+
+    for(
+        let i=0;
+        i<chain.length-1;
+        i++
+    ){
+
+        connect(
+            chain[i],
+            chain[i+1]
+        );
+
+    }
+
+}
+
+/* =====================================================
+   BIFURCACION
+===================================================== */
 
 function drawBranch(){
 
-    const svg =
-    document.getElementById(
-        "evolution-svg"
-    );
-
-    const origin =
+    const root =
     document.getElementById(
         "heidelbergensis"
     );
@@ -124,37 +220,49 @@ function drawBranch(){
     );
 
     if(
-        !origin ||
+        !root ||
         !neo ||
         !sap
     ){
         return;
     }
 
-    const o =
-    center(origin);
+    const r =
+    point(root);
 
     const n =
-    center(neo);
+    point(neo);
 
     const s =
-    center(sap);
+    point(sap);
 
-    curve(
-        o.x,
-        o.y,
-        n.x,
-        n.y,
+    createPath(
+
+        `
+        M ${r.x} ${r.y}
+
+        C
+        ${r.x-250} ${r.y+180}
+        ${n.x+180} ${n.y-100}
+        ${n.x} ${n.y}
+        `,
+
         "#111",
         3,
         .25
     );
 
-    curve(
-        o.x,
-        o.y,
-        s.x,
-        s.y,
+    createPath(
+
+        `
+        M ${r.x} ${r.y}
+
+        C
+        ${r.x+250} ${r.y+180}
+        ${s.x-180} ${s.y-100}
+        ${s.x} ${s.y}
+        `,
+
         "#111",
         3,
         .25
@@ -162,97 +270,13 @@ function drawBranch(){
 
 }
 
-/* ==========================
-   SATÉLITES
-========================== */
+/* =====================================================
+   RAMA SAPIENS
+===================================================== */
 
-function connectSatellites(){
+function drawSapiensLine(){
 
-    const svg =
-    document.getElementById(
-        "evolution-svg"
-    );
-
-    document
-    .querySelectorAll(
-        ".species"
-    )
-    .forEach(species=>{
-
-        const photo =
-        species.querySelector(
-            ".photo"
-        );
-
-        if(!photo){
-            return;
-        }
-
-        const p =
-        center(photo);
-
-        species
-        .querySelectorAll(
-            ".satellite"
-        )
-        .forEach(item=>{
-
-            const s =
-            center(item);
-
-            const line =
-            document.createElementNS(
-                SVG_NS,
-                "path"
-            );
-
-            line.setAttribute(
-                "d",
-                `
-                M ${p.x} ${p.y}
-                Q ${(p.x+s.x)/2}
-                  ${(p.y+s.y)/2}
-                  ${s.x} ${s.y}
-                `
-            );
-
-            line.setAttribute(
-                "fill",
-                "none"
-            );
-
-            line.setAttribute(
-                "stroke",
-                "#999"
-            );
-
-            line.setAttribute(
-                "stroke-width",
-                "1"
-            );
-
-            line.setAttribute(
-                "opacity",
-                ".3"
-            );
-
-            svg.appendChild(
-                line
-            );
-
-        });
-
-    });
-
-}
-
-/* ==========================
-   HITOS HUMANIDAD
-========================== */
-
-function connectMilestones(){
-
-    const chain = [
+    const sapiensFlow = [
 
         "sapiens",
 
@@ -267,109 +291,191 @@ function connectMilestones(){
         "cities",
 
         "sumeria"
+
     ];
 
     for(
         let i=0;
-        i<chain.length-1;
+        i<sapiensFlow.length-1;
         i++
     ){
 
-        connectSpecies(
-            chain[i],
-            chain[i+1]
+        connect(
+
+            sapiensFlow[i],
+
+            sapiensFlow[i+1]
+
         );
 
     }
 
 }
 
-/* ==========================
-   MAIN TRUNK
-========================== */
+/* =====================================================
+   ORIGEN
+===================================================== */
 
-function connectMainEvolution(){
+function drawOriginCircle(){
 
-    const chain = [
+    const first =
+    document.getElementById(
+        "afarensis"
+    );
 
-        "afarensis",
-        "habilis",
-        "ergaster",
-        "erectus",
-        "heidelbergensis"
+    if(!first)
+        return;
 
-    ];
+    const p =
+    point(first);
 
-    for(
-        let i=0;
-        i<chain.length-1;
-        i++
-    ){
+    const circle =
+    document.createElementNS(
+        SVG_NS,
+        "circle"
+    );
 
-        connectSpecies(
-            chain[i],
-            chain[i+1]
-        );
+    circle.setAttribute(
+        "cx",
+        p.x
+    );
 
-    }
+    circle.setAttribute(
+        "cy",
+        p.y-160
+    );
+
+    circle.setAttribute(
+        "r",
+        12
+    );
+
+    circle.setAttribute(
+        "fill",
+        "#111"
+    );
+
+    circle.setAttribute(
+        "opacity",
+        ".35"
+    );
+
+    svg.appendChild(
+        circle
+    );
 
 }
 
-/* ==========================
-   RENDER
-========================== */
+/* =====================================================
+   FIN SUMERIA
+===================================================== */
+
+function drawEndCircle(){
+
+    const last =
+    document.getElementById(
+        "sumeria"
+    );
+
+    if(!last)
+        return;
+
+    const p =
+    point(last);
+
+    const circle =
+    document.createElementNS(
+        SVG_NS,
+        "circle"
+    );
+
+    circle.setAttribute(
+        "cx",
+        p.x
+    );
+
+    circle.setAttribute(
+        "cy",
+        p.y+180
+    );
+
+    circle.setAttribute(
+        "r",
+        12
+    );
+
+    circle.setAttribute(
+        "fill",
+        "#111"
+    );
+
+    circle.setAttribute(
+        "opacity",
+        ".35"
+    );
+
+    svg.appendChild(
+        circle
+    );
+
+}
+
+/* =====================================================
+   DRAW
+===================================================== */
 
 function drawTree(){
-
-    const svg =
-    document.getElementById(
-        "evolution-svg"
-    );
 
     clearSVG();
 
     svg.setAttribute(
         "width",
-        document.body.scrollWidth
+        document.documentElement.scrollWidth
     );
 
     svg.setAttribute(
         "height",
-        document.body.scrollHeight
+        document.documentElement.scrollHeight
     );
 
-    connectMainEvolution();
+    drawOriginCircle();
+
+    drawMainEvolution();
 
     drawBranch();
 
-    connectMilestones();
+    drawSapiensLine();
 
     connectSatellites();
+
+    drawEndCircle();
+
 }
 
-/* ==========================
-   LOAD
-========================== */
+/* =====================================================
+   INIT
+===================================================== */
 
 window.addEventListener(
+
     "load",
-    drawTree
-);
 
-window.addEventListener(
-    "resize",
-    drawTree
-);
-
-window.addEventListener(
-    "scroll",
     ()=>{
 
-        if(window.scrollY % 100 === 0){
-
-            drawTree();
-
-        }
+        drawTree();
 
     }
+
+);
+
+window.addEventListener(
+
+    "resize",
+
+    ()=>{
+
+        drawTree();
+
+    }
+
 );
