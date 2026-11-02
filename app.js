@@ -433,16 +433,15 @@ document.addEventListener(
    SVG HELPERS
 ===================================================== */
 
-function center(id){
+function getBottom(id){
 
-    const node =
+    const el =
     document.getElementById(id);
 
-    if(!node)
-        return null;
+    if(!el) return null;
 
     const r =
-    node.getBoundingClientRect();
+    el.getBoundingClientRect();
 
     return {
 
@@ -453,10 +452,37 @@ function center(id){
 
         y:
         r.top +
-        r.height/2 +
+        r.height +
         window.scrollY
 
     };
+
+}
+
+function getTop(id){
+
+    const el =
+    document.getElementById(id);
+
+    if(!el) return null;
+
+    const r =
+    el.getBoundingClientRect();
+
+    return {
+
+        x:
+        r.left +
+        r.width/2 +
+        window.scrollX,
+
+        y:
+        r.top +
+        window.scrollY
+
+    };
+
+}
 
 }
 
@@ -469,12 +495,11 @@ function drawLine(
     to,
     type="direct"
 ){
+const a =
+getBottom(from);
 
-    const a =
-    center(from);
-
-    const b =
-    center(to);
+const b =
+getTop(to);
 
     if(
         !a ||
@@ -527,58 +552,56 @@ function drawLine(
 
     switch(type){
 
-        case "direct":
+      case "direct":
 
-            path.setAttribute(
-                "stroke",
-                "rgba(0,0,0,.18)"
-            );
+    path.setAttribute(
+        "stroke",
+        "rgba(0,0,0,.32)"
+    );
 
-            path.setAttribute(
-                "stroke-width",
-                "1.6"
-            );
+    path.setAttribute(
+        "stroke-width",
+        "2"
+    );
 
-            break;
+    break;
 
-        case "hypothesis":
+      case "hypothesis":
 
-            path.setAttribute(
-                "stroke",
-                "rgba(0,0,0,.14)"
-            );
+    path.setAttribute(
+        "stroke",
+        "rgba(0,0,0,.22)"
+    );
 
-            path.setAttribute(
-                "stroke-width",
-                "1.4"
-            );
+    path.setAttribute(
+        "stroke-width",
+        "1.7"
+    );
 
-            path.setAttribute(
-                "stroke-dasharray",
-                "10 10"
-            );
+    path.setAttribute(
+        "stroke-dasharray",
+        "8 8"
+    );
 
-            break;
+    break;
+      case "genetic":
 
-        case "genetic":
+    path.setAttribute(
+        "stroke",
+        "#4c76ba"
+    );
 
-            path.setAttribute(
-                "stroke",
-                "#5f8ac8"
-            );
+    path.setAttribute(
+        "stroke-width",
+        "1.7"
+    );
 
-            path.setAttribute(
-                "stroke-width",
-                "1.4"
-            );
+    path.setAttribute(
+        "stroke-dasharray",
+        "2 8"
+    );
 
-            path.setAttribute(
-                "stroke-dasharray",
-                "3 8"
-            );
-
-            break;
-
+    break;
     }
 
     svg.appendChild(path);
@@ -593,10 +616,15 @@ function drawTree(){
 
     svg.innerHTML = "";
 
-    svg.setAttribute(
-        "height",
-        tree.scrollHeight
-    );
+   svg.setAttribute(
+    "width",
+    tree.scrollWidth
+);
+
+svg.setAttribute(
+    "height",
+    tree.scrollHeight
+);
 
     evolutionData.species.forEach(
 
