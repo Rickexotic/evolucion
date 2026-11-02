@@ -9,99 +9,96 @@
         name="viewport"
         content="width=device-width, initial-scale=1.0">
 
-    <title>
-        Evolución Humana
-    </title>
+    <title>Evolución Humana</title>
 
-    <link
-        rel="stylesheet"
-        href="styles.css">
+    <link rel="stylesheet" href="styles.css">
 
 </head>
 
 <body>
 
-    <!-- ========================== -->
-    <!-- HERO -->
-    <!-- ========================== -->
-
     <header class="hero">
 
         <div class="hero-inner">
 
-            <div class="hero-period">
+            <div class="hero-period">7 MILLONES DE AÑOS</div>
 
-                7 MILLONES DE AÑOS
-
-            </div>
-
-            <h1>
-
-                Evolución Humana
-
-            </h1>
+            <h1>Evolución Humana</h1>
 
             <p>
-
                 Desde los primeros homininos
                 hasta Homo sapiens y el surgimiento
                 de la civilización.
-
             </p>
 
         </div>
 
     </header>
 
-    <!-- ========================== -->
-    <!-- ÁRBOL GENERADO POR JS -->
-    <!-- ========================== -->
-
     <main id="tree">
         <svg id="tree-svg" aria-hidden="true"></svg>
     </main>
 
-    <!-- ========================== -->
-    <!-- PANEL LATERAL -->
-    <!-- ========================== -->
+    <!-- Escenario: especie seleccionada, centrada sobre el panel -->
+    <div id="stage" aria-hidden="true">
 
-  <section id="species-modal">
+        <div class="stage-area">
 
-    <button id="close-panel">
+            <div class="stage-line"></div>
 
-        ✕
+            <figure class="stage-figure">
 
-    </button>
+                <div class="stage-halo"></div>
 
-    <div id="species-modal-content">
+                <div class="stage-image">
+                    <img id="stage-img" src="" alt="">
+                </div>
+
+                <figcaption>
+                    <h2 id="stage-name"></h2>
+                    <p id="stage-period"></p>
+                </figcaption>
+
+            </figure>
+
+        </div>
 
     </div>
 
-</section>
+    <!-- Panel inferior con la ficha -->
+    <section
+        id="species-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="stage-name">
 
+        <div class="panel-bar">
 
-        <div class="panel-header">
+            <div class="panel-nav">
 
-            <span>Ficha Especie</span>
+                <button id="panel-prev" class="panel-btn" type="button">
+                    Anterior
+                </button>
 
-            <button
-                id="panel-close"
-                type="button"
-                aria-label="Cerrar ficha">&times;</button>
+                <span id="panel-count" class="panel-count"></span>
 
-        </div>
-
-        <div id="info-content">
-
-            <div class="placeholder">
-
-                Selecciona una especie
+                <button id="panel-next" class="panel-btn" type="button">
+                    Siguiente
+                </button>
 
             </div>
 
+            <button id="panel-close" class="panel-btn" type="button">
+                Cerrar panel
+            </button>
+
         </div>
 
-    </aside>
+        <div id="panel-body" class="panel-body">
+            <div id="panel-content" class="panel-grid"></div>
+        </div>
+
+    </section>
 
     <script src="app.js"></script>
 
