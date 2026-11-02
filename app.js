@@ -1,21 +1,30 @@
 const SVG_NS = "http://www.w3.org/2000/svg";
 
-const svg = document.getElementById("tree-svg");
+const tree =
+document.getElementById("tree");
 
-/* =====================================================
-   WIKIPEDIA IMAGES
-===================================================== */
+const svg =
+document.getElementById("tree-svg");
+
+const panel =
+document.getElementById("info-content");
+
+let evolutionData = null;
+
+/* ======================================================
+   WIKIPEDIA
+====================================================== */
 
 const FALLBACK_IMAGE =
 "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Question_Mark.svg/512px-Question_Mark.svg.png";
 
-async function fetchWikipediaImage(species){
+async function fetchWikipediaImage(name){
 
     try{
 
         const title =
         encodeURIComponent(
-            species.replaceAll(" ","_")
+            name.replaceAll(" ","_")
         );
 
         const url =
@@ -24,72 +33,297 @@ async function fetchWikipediaImage(species){
         const response =
         await fetch(url);
 
-        if(!response.ok)
-            return FALLBACK_IMAGE;
-
         const data =
         await response.json();
 
-        if(
-            data.thumbnail &&
-            data.thumbnail.source
-        ){
-
-            return data.thumbnail.source;
-
-        }
-
-        return FALLBACK_IMAGE;
+        return (
+            data.thumbnail?.source ||
+            FALLBACK_IMAGE
+        );
 
     }
     catch{
 
         return FALLBACK_IMAGE;
+    }
+}
+
+/* ======================================================
+   SPECIES CARD
+====================================================== */
+
+async function createSpecies(species){
+
+    const card =
+    document.createElement("section");
+
+    card.className =
+    `species ${species.clade}`;
+
+    card.id =
+    species.id;
+
+    const image =
+    await fetchWikipediaImage(
+        species.name
+    );
+
+    card.innerHTML = `
+
+        <div class="node">
+
+            <img
+             src="${image}"
+             alt="${species.name}">
+
+        </div>
+
+        <div class="species-name">
+
+            ${species.name}
+
+        </div>
+
+        <div class="species-period">
+
+            ${formatPeriod(species)}
+
+        </div>
+
+        <div class="details">
+
+            ${species.description || ""}
+
+        </div>
+
+    `;
+
+    card.addEventListener(
+        "click",
+        ()=>showSpecies(
+            species.id
+        )
+    );
+
+    return card;
+}
+
+/* ======================================================
+   PERIOD
+====================================================== */
+
+function formatMillions(v){
+
+    if(v === 0)
+        return "Presente";
+
+    const abs =
+    Math.abs(v);
+
+    if(abs >= 1000000){
+
+        return (
+            abs / 1000000
+        ).toFixed(1) + " Ma";
+
+    }
+
+    return (
+        abs / 1000
+    ).toFixed(0) + " ka";
+}
+
+function formatPeriod(species){
+
+    return `
+        ${formatMillions(species.start)}
+        –
+        ${formatMillions(species.end)}
+    `;
+
+}
+
+/* ======================================================
+   HTML RENDER
+====================================================== */
+
+async function renderSpecies(){
+
+    tree.innerHTML = "";
+
+    for
+    (
+      const species
+      of
+      evolutionData.species
+    ){
+
+        const node =
+        await createSpecies(
+            species
+        );
+
+        tree.appendChild(
+            node
+        );
 
     }
 
 }
 
-/* =====================================================
-   IMAGE LOADER
-===================================================== */
+/* ======================================================
+   INFO PANEL
+====================================================== */
 
-async function loadSpeciesImages(){
+function showSpecies(id){
 
-    const images =
-    document.querySelectorAll(
-        "img[data-species]"
+    const species =
+    evolutionData.species.find(
+        x => x.id === id
     );
 
-    const promises = [];
+    if(!species)
+        return;
 
-    images.forEach(img=>{
+    document.body
+    .classList
+    .add("tree-focus");
 
-        const species =
-        img.dataset.species;
+    document
+    .querySelectorAll(".species")
+    .forEach(el=>{
 
-        promises.push(
-
-            fetchWikipediaImage(species)
-            .then(src=>{
-
-                img.src = src;
-
-            })
-
+        el.classList.remove(
+            "selected"
         );
 
     });
 
-    await Promise.all(promises);
+    document
+    .getElementById(id)
+    .classList
+    .add("selected");
+
+    const descendants =
+    evolutionData.species
+    .filter(
+        x =>
+        x.parent === species.id
+    )
+    .map(
+        x=>x.name
+    );
+
+    panel.innerHTML = `
+
+        <h2>
+
+            ${species.name}
+
+        </h2>
+
+        <p>
+
+            ${formatPeriod(species)}
+
+        </p>
+
+        <hr>
+
+        <p>
+
+            <strong>
+            Clado
+            </strong><br>
+
+            ${species.clade}
+
+        </p>
+
+        <p>
+
+            <strong>
+            Capacidad craneal
+            </strong><br>
+
+            ${
+            species.brain_cc ||
+            "Sin dato"
+            }
+
+        </p>
+
+        <p>
+
+            <strong>
+            Regiones
+            </strong><br>
+
+            ${
+            species.regions
+            ?
+            species.regions.join("<br>")
+            :
+            "-"
+            }
+
+        </p>
+
+        <p>
+
+            <strong>
+            Innovaciones
+            </strong><br>
+
+            ${
+            species.innovations
+            ?
+            species.innovations.join("<br>")
+            :
+            "-"
+            }
+
+        </p>
+
+        <p>
+
+            <strong>
+            Descendientes
+            </strong><br>
+
+            ${
+            descendants.length
+            ?
+            descendants.join("<br>")
+            :
+            "-"
+            }
+
+        </p>
+
+        <p>
+
+            ${species.description}
+
+        </p>
+
+    `;
 
 }
 
-/* =====================================================
-   SVG HELPERS
-===================================================== */
+/* ======================================================
+   SVG
+====================================================== */
 
-function center(el){
+function center(id){
+
+    const el =
+    document.getElementById(
+        id
+    );
+
+    if(!el)
+        return null;
 
     const r =
     el.getBoundingClientRect();
@@ -98,54 +332,35 @@ function center(el){
 
         x:
         r.left +
-        r.width/2 +
+        r.width / 2 +
         window.scrollX,
 
         y:
         r.top +
-        r.height/2 +
+        r.height / 2 +
         window.scrollY
-
     };
-}
-
-function clearSVG(){
-
-    svg.innerHTML = "";
 
 }
 
-function drawCurve(
+/* ======================================================
+   SVG LINE
+====================================================== */
 
+function drawLine(
     from,
     to,
-    options={}
-
+    type="direct"
 ){
 
-    const start =
-    document.getElementById(from);
-
-    const end =
-    document.getElementById(to);
-
-    if(
-        !start ||
-        !end
-    ){
-        return;
-    }
-
     const a =
-    center(start);
+    center(from);
 
     const b =
-    center(end);
+    center(to);
 
-    const curve =
-    Math.abs(
-        b.y-a.y
-    ) * .45;
+    if(!a || !b)
+        return;
 
     const path =
     document.createElementNS(
@@ -153,10 +368,13 @@ function drawCurve(
         "path"
     );
 
+    const curve =
+    Math.abs(
+        b.y-a.y
+    )*.5;
+
     path.setAttribute(
-
         "d",
-
         `
         M ${a.x} ${a.y}
 
@@ -177,237 +395,23 @@ function drawCurve(
         "none"
     );
 
-    path.setAttribute(
-        "stroke",
-        options.color || "#111"
-    );
+    switch(type){
 
-    path.setAttribute(
-        "stroke-width",
-        options.width || 2.5
-    );
+        case "direct":
 
-    path.setAttribute(
-        "opacity",
-        options.opacity || .18
-    );
-
-    if(options.dash){
-
-        path.setAttribute(
-            "stroke-dasharray",
-            "8 6"
-        );
-
-    }
-
-    path.classList.add(
-        "tree-path"
-    );
-
-    svg.appendChild(path);
-
-}
-
-/* =====================================================
-   MAIN EVOLUTION
-===================================================== */
-
-function drawEarlyTree(){
-
-    const chain = [
-
-        "sahelanthropus",
-
-        "orrorin",
-
-        "ardipithecus",
-
-        "anamensis",
-
-        "afarensis"
-
-    ];
-
-    for(
-        let i=0;
-        i<chain.length-1;
-        i++
-    ){
-
-        drawCurve(
-            chain[i],
-            chain[i+1]
-        );
-
-    }
-
-}
-
-/* =====================================================
-   AUSTRALOPITHECUS BRANCH
-===================================================== */
-
-function drawAustralopithecusTree(){
-
-    drawCurve(
-        "afarensis",
-        "africanus"
-    );
-
-    drawCurve(
-        "afarensis",
-        "sediba"
-    );
-
-}
-
-/* =====================================================
-   HOMO
-===================================================== */
-
-function drawHomoTree(){
-
-    drawCurve(
-        "afarensis",
-        "habilis"
-    );
-
-    drawCurve(
-        "habilis",
-        "rudolfensis"
-    );
-
-    drawCurve(
-        "rudolfensis",
-        "erectus"
-    );
-
-    drawCurve(
-        "erectus",
-        "heidelbergensis"
-    );
-
-}
-
-/* =====================================================
-   MODERN HUMANS
-===================================================== */
-
-function drawModernTree(){
-
-    drawCurve(
-        "heidelbergensis",
-        "neanderthal"
-    );
-
-    drawCurve(
-        "heidelbergensis",
-        "denisova"
-    );
-
-    drawCurve(
-        "heidelbergensis",
-        "sapiens"
-    );
-
-}
-
-/* =====================================================
-   CIVILIZATION
-===================================================== */
-
-function drawCivilizationTree(){
-
-    const chain = [
-
-        "sapiens",
-
-        "cognitive",
-
-        "agriculture",
-
-        "villages",
-
-        "metallurgy",
-
-        "cities",
-
-        "sumeria"
-
-    ];
-
-    for(
-        let i=0;
-        i<chain.length-1;
-        i++
-    ){
-
-        drawCurve(
-            chain[i],
-            chain[i+1]
-        );
-
-    }
-
-}
-
-/* =====================================================
-   SATELLITES
-===================================================== */
-
-function drawSatelliteLinks(){
-
-    document
-    .querySelectorAll(".species")
-    .forEach(species=>{
-
-        const node =
-        species.querySelector(
-            ".node"
-        );
-
-        if(!node)
-            return;
-
-        const p =
-        center(node);
-
-        species
-        .querySelectorAll(
-            ".satellites span"
-        )
-        .forEach(tag=>{
-
-            const t =
-            center(tag);
-
-            const path =
-            document.createElementNS(
-                SVG_NS,
-                "path"
+            path.setAttribute(
+                "stroke",
+                "#111"
             );
 
             path.setAttribute(
-
-                "d",
-
-                `
-                M ${p.x} ${p.y}
-
-                Q
-                ${(p.x+t.x)/2}
-                ${(p.y+t.y)/2}
-
-                ${t.x}
-                ${t.y}
-                `
+                "stroke-width",
+                "3"
             );
 
-            path.setAttribute(
-                "fill",
-                "none"
-            );
+            break;
+
+        case "hypothesis":
 
             path.setAttribute(
                 "stroke",
@@ -416,147 +420,128 @@ function drawSatelliteLinks(){
 
             path.setAttribute(
                 "stroke-width",
-                "1"
+                "2"
             );
 
             path.setAttribute(
-                "opacity",
-                ".12"
+                "stroke-dasharray",
+                "14 10"
             );
 
-            svg.appendChild(path);
+            break;
 
-        });
+        case "genetic":
 
-    });
+            path.setAttribute(
+                "stroke",
+                "#2563eb"
+            );
 
-}
+            path.setAttribute(
+                "stroke-width",
+                "2"
+            );
 
-/* =====================================================
-   ZOOM / FOCUS
-===================================================== */
+            path.setAttribute(
+                "stroke-dasharray",
+                "3 8"
+            );
 
-function clearFocus(){
-
-    document.body
-    .classList
-    .remove("tree-focus");
-
-    document
-    .querySelectorAll(".species")
-    .forEach(el=>{
-
-        el.classList.remove(
-            "selected"
-        );
-
-    });
-
-}
-
-function setupFocus(){
-
-    document
-    .querySelectorAll(".species")
-    .forEach(node=>{
-
-        node.addEventListener(
-            "click",
-            ()=>{
-
-                const active =
-                node.classList.contains(
-                    "selected"
-                );
-
-                clearFocus();
-
-                if(active)
-                    return;
-
-                document.body
-                .classList
-                .add("tree-focus");
-
-                node.classList.add(
-                    "selected"
-                );
-
-                node.scrollIntoView({
-
-                    behavior:"smooth",
-
-                    block:"center"
-
-                });
-
-            }
-        );
-
-    });
-
-}
-
-/* =====================================================
-   REDRAW
-===================================================== */
-
-function redrawTree(){
-
-    clearSVG();
-
-    svg.setAttribute(
-        "width",
-        document.documentElement.scrollWidth
-    );
-
-    svg.setAttribute(
-        "height",
-        document.documentElement.scrollHeight
-    );
-
-    drawEarlyTree();
-
-    drawAustralopithecusTree();
-
-    drawHomoTree();
-
-    drawModernTree();
-
-    drawCivilizationTree();
-
-    drawSatelliteLinks();
-
-}
-
-/* =====================================================
-   INIT
-===================================================== */
-
-window.addEventListener(
-
-    "load",
-
-    async ()=>{
-
-        await loadSpeciesImages();
-
-        redrawTree();
-
-        setupFocus();
+            break;
 
     }
 
+    svg.appendChild(path);
+
+}
+
+/* ======================================================
+   TREE DRAW
+====================================================== */
+
+function drawTree(){
+
+    svg.innerHTML = "";
+
+    for(
+        const species
+        of
+        evolutionData.species
+    ){
+
+        if(species.parent){
+
+            drawLine(
+
+                species.parent,
+
+                species.id,
+
+                "direct"
+
+            );
+
+        }
+
+        if(species.connections){
+
+            species.connections
+            .forEach(c=>{
+
+                drawLine(
+
+                    species.id,
+
+                    c.target,
+
+                    c.type
+
+                );
+
+            });
+
+        }
+
+    }
+
+}
+
+/* ======================================================
+   LOAD
+====================================================== */
+
+async function loadJson(){
+
+    const response =
+    await fetch(
+        "evolution.json"
+    );
+
+    evolutionData =
+    await response.json();
+
+}
+
+/* ======================================================
+   INIT
+====================================================== */
+
+async function init(){
+
+    await loadJson();
+
+    await renderSpecies();
+
+    drawTree();
+
+}
+
+window.addEventListener(
+    "load",
+    init
 );
 
 window.addEventListener(
-
     "resize",
-
-    ()=>{
-
-        redrawTree();
-
-    }
-
+    drawTree
 );
