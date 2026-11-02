@@ -444,12 +444,9 @@
       "evolution": {
         "ancestor": "Australopithecus afarensis",
         "descendants": []
-      }
-    }
-
-  ]
+     
+  }
 },
-
 {
   "id": "habilis",
   "name": "Homo habilis",
