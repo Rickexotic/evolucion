@@ -2,12 +2,12 @@
 
 :root{
 
-    --paper:#f6f6f4;
+    --paper:#f1f0ec;
     --text:#202020;
-    --muted:#9a9a9a;
+    --muted:#87877e;
 
     --shadow:
-        0 20px 60px rgba(0,0,0,.12);
+        0 12px 32px rgba(47,45,38,.12);
 
 }
 
@@ -52,7 +52,7 @@ img{
 
 .hero{
 
-    min-height:50vh;
+    min-height:38vh;
 
     display:flex;
 
@@ -62,7 +62,7 @@ img{
 
     text-align:center;
 
-    padding:60px;
+    padding:54px 32px;
 }
 
 .hero-inner{
@@ -86,7 +86,7 @@ img{
 .hero h1{
 
     font-size:
-        clamp(70px,9vw,160px);
+        clamp(58px,7vw,112px);
 
     font-weight:300;
 
@@ -97,7 +97,7 @@ img{
 
 .hero p{
 
-    font-size:24px;
+    font-size:21px;
 
     color:#666;
 }
@@ -112,9 +112,17 @@ img{
 
     width:2400px;
 
-    min-height:6500px;
+    min-height:1200px;
 
     margin:auto;
+
+    background:#fff;
+
+    border:1px solid #e6e3db;
+
+    border-radius:28px;
+
+    isolation:isolate;
 
     z-index:20;
 }
@@ -130,12 +138,47 @@ img{
     top:0;
     left:0;
 
-    width:100%;
-    height:100%;
+    display:block;
 
     pointer-events:none;
 
     z-index:1;
+}
+
+.connection-line{
+
+    stroke-linecap:round;
+
+    opacity:.9;
+
+    transition:
+        opacity .25s ease,
+        stroke-width .25s ease;
+}
+
+.connection-direct{
+
+    stroke:rgba(48,57,51,.58);
+
+    stroke-width:2.2;
+}
+
+.connection-hypothesis{
+
+    stroke:rgba(113,119,100,.68);
+
+    stroke-width:1.6;
+
+    stroke-dasharray:6 7;
+}
+
+.connection-genetic{
+
+    stroke:#638e8b;
+
+    stroke-width:1.8;
+
+    stroke-dasharray:2 6;
 }
 
 /* ======================================
@@ -172,20 +215,34 @@ img{
 
 .node{
 
-    width:210px;
-    height:210px;
+    width:148px;
+    height:148px;
 
     border-radius:50%;
 
     overflow:hidden;
 
-    background:white;
+    background:#e9e5d5;
+
+    border:5px solid rgba(255,255,255,.92);
 
     box-shadow:var(--shadow);
 
     position:relative;
 
     z-index:40;
+}
+
+.species.branch .node{
+    background:#d8e6e2;
+}
+
+.species.extinct .node{
+    background:#e9d8d1;
+}
+
+.species.modern .node{
+    background:#d9dfc2;
 }
 
 .node img{
@@ -202,24 +259,24 @@ img{
 
 .species-name{
 
-    margin-top:18px;
+    margin-top:12px;
 
-    font-size:42px;
+    font-size:28px;
 
     line-height:1;
 
     font-weight:400;
 
-    max-width:700px;
+    max-width:340px;
 }
 
 .species-period{
 
-    margin-top:10px;
+    margin-top:7px;
 
-    font-size:11px;
+    font-size:10px;
 
-    letter-spacing:6px;
+    letter-spacing:3px;
 
     text-transform:uppercase;
 
@@ -312,6 +369,10 @@ img{
         -15px 0 40px rgba(0,0,0,.08);
 }
 
+body:not(.tree-focus) #info-panel{
+    display:none;
+}
+
 .panel-header{
 
     padding:24px;
@@ -397,7 +458,8 @@ img{
 
     .species-name{
 
-        font-size:34px;
+        font-size:25px;
+
     }
 
 }
@@ -411,7 +473,12 @@ img{
 
     .species-name{
 
-        font-size:30px;
+        font-size:23px;
+
+    }
+
+    #tree{
+        border-radius:20px;
     }
 
 }

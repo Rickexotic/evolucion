@@ -15,8 +15,8 @@ let evolutionData = null;
    CONFIG
 ===================================================== */
 
-const LEVEL_HEIGHT = 450;
-const COLUMN_WIDTH = 420;
+const LEVEL_HEIGHT = 320;
+const COLUMN_WIDTH = 360;
 const TREE_CENTER = 1200;
 
 /* =====================================================
@@ -199,7 +199,9 @@ async function createSpecies(species){
 
 async function renderSpecies(){
 
-    tree.innerHTML = "";
+    tree
+    .querySelectorAll(".species")
+    .forEach(node=>node.remove());
 
     let maxLevel = 0;
 
@@ -433,58 +435,35 @@ document.addEventListener(
    SVG HELPERS
 ===================================================== */
 
-function getBottom(id){
+function getNodePoint(id, side){
 
     const el =
-    document.getElementById(id);
+    document
+    .getElementById(id)
+    ?.querySelector(".node");
 
     if(!el) return null;
 
     const r =
     el.getBoundingClientRect();
 
-    return {
-
-        x:
-        r.left +
-        r.width/2 +
-        window.scrollX,
-
-        y:
-        r.top +
-        r.height +
-        window.scrollY
-
-    };
-
-}
-
-function getTop(id){
-
-    const el =
-    document.getElementById(id);
-
-    if(!el) return null;
-
-    const r =
-    el.getBoundingClientRect();
+    const svgRect =
+    svg.getBoundingClientRect();
 
     return {
 
         x:
         r.left +
         r.width/2 +
-        window.scrollX,
+        - svgRect.left,
 
         y:
-        r.top +
-        window.scrollY
+        (side === "bottom" ? r.bottom : r.top) -
+        svgRect.top
 
     };
 
 }
-
-
 
 /* =====================================================
    CURVES
@@ -496,10 +475,10 @@ function drawLine(
     type="direct"
 ){
 const a =
-getBottom(from);
+getNodePoint(from, "bottom");
 
 const b =
-getTop(to);
+getNodePoint(to, "top");
 
     if(
         !a ||
@@ -546,63 +525,9 @@ getTop(to);
     );
 
     path.setAttribute(
-        "opacity",
-        ".6"
+        "class",
+        `connection-line connection-${type}`
     );
-
-    switch(type){
-
-      case "direct":
-
-    path.setAttribute(
-        "stroke",
-        "rgba(0,0,0,.32)"
-    );
-
-    path.setAttribute(
-        "stroke-width",
-        "2"
-    );
-
-    break;
-
-      case "hypothesis":
-
-    path.setAttribute(
-        "stroke",
-        "rgba(0,0,0,.22)"
-    );
-
-    path.setAttribute(
-        "stroke-width",
-        "1.7"
-    );
-
-    path.setAttribute(
-        "stroke-dasharray",
-        "8 8"
-    );
-
-    break;
-      case "genetic":
-
-    path.setAttribute(
-        "stroke",
-        "#4c76ba"
-    );
-
-    path.setAttribute(
-        "stroke-width",
-        "1.7"
-    );
-
-    path.setAttribute(
-        "stroke-dasharray",
-        "2 8"
-    );
-
-    break;
-    }
 
     svg.appendChild(path);
 
@@ -616,15 +541,15 @@ function drawTree(){
 
     svg.innerHTML = "";
 
-   svg.setAttribute(
-    "width",
-    tree.scrollWidth
-);
+    svg.setAttribute(
+        "width",
+        tree.clientWidth
+    );
 
-svg.setAttribute(
-    "height",
-    tree.scrollHeight
-);
+    svg.setAttribute(
+        "height",
+        tree.clientHeight
+    );
 
     evolutionData.species.forEach(
 
