@@ -470,3 +470,40 @@ body:not(.tree-focus) #info-panel{
     body.tree-focus{ padding-bottom:52vh; }
 
 }
+
+#info-content ul{
+
+    padding-left:20px;
+
+    margin-top:10px;
+
+    line-height:1.8;
+}
+
+#info-content li{
+
+    margin-bottom:8px;
+}
+
+#info-content hr{
+
+    border:none;
+
+    border-top:
+    1px solid rgba(0,0,0,.08);
+
+    margin:20px 0;
+}
+
+#info-content h3{
+
+    margin-top:24px;
+
+    margin-bottom:10px;
+
+    font-size:12px;
+
+    letter-spacing:3px;
+
+    color:#666;
+}
