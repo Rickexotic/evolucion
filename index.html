@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
 <title>Evolución Humana</title>
 
@@ -13,238 +14,261 @@
 
 <body>
 
-<div class="hero">
+<div id="canvas">
 
-    <h1>EVOLUCIÓN HUMANA</h1>
-    <p>
-        Desde Australopithecus hasta Sumeria
-    </p>
+    <svg id="connections"></svg>
+
+    <section class="hero">
+
+        <h1>Evolución Humana</h1>
+
+        <p>
+            3 millones de años de evolución
+            hasta la civilización sumeria
+        </p>
+
+    </section>
+
+    <div id="timeline">
+
+        <!-- AUSTRALOPITHECUS -->
+
+        <div class="species left" id="afarensis">
+
+            <div class="aura"></div>
+
+            <div class="node">
+
+                <img src="assets/afarensis.jpg">
+
+            </div>
+
+            <div class="label">
+
+                <h2>Australopithecus afarensis</h2>
+
+                <span>3.9 - 2.9 millones de años</span>
+
+            </div>
+
+            <div class="satellite top">
+                Bipedismo
+            </div>
+
+            <div class="satellite right">
+                Sabana Africana
+            </div>
+
+        </div>
+
+        <!-- HABILIS -->
+
+        <div class="species right" id="habilis">
+
+            <div class="aura"></div>
+
+            <div class="node">
+
+                <img src="assets/habilis.jpg">
+
+            </div>
+
+            <div class="label">
+
+                <h2>Homo habilis</h2>
+
+                <span>2.6 millones de años</span>
+
+            </div>
+
+            <div class="satellite left">
+                Herramientas
+            </div>
+
+            <div class="satellite top">
+                Oldowan
+            </div>
+
+        </div>
+
+        <!-- ERGASTER -->
+
+        <div class="species left" id="ergaster">
+
+            <div class="aura"></div>
+
+            <div class="node">
+
+                <img src="assets/ergaster.jpg">
+
+            </div>
+
+            <div class="label">
+
+                <h2>Homo ergaster</h2>
+
+                <span>1.9 millones</span>
+
+            </div>
+
+            <div class="satellite right">
+                Cooperación
+            </div>
+
+        </div>
+
+        <!-- ERECTUS -->
+
+        <div class="species right" id="erectus">
+
+            <div class="aura"></div>
+
+            <div class="node">
+
+                <img src="assets/erectus.jpg">
+
+            </div>
+
+            <div class="label">
+
+                <h2>Homo erectus</h2>
+
+                <span>1.9M - 200k</span>
+
+            </div>
+
+            <div class="satellite top">
+                Fuego
+            </div>
+
+            <div class="satellite left">
+                Migraciones
+            </div>
+
+            <div class="satellite right">
+                Bifaces
+            </div>
+
+        </div>
+
+        <!-- HEIDELBERGENSIS -->
+
+        <div class="species left" id="heidelbergensis">
+
+            <div class="aura"></div>
+
+            <div class="node">
+
+                <img src="assets/heidelbergensis.jpg">
+
+            </div>
+
+            <div class="label">
+
+                <h2>Homo heidelbergensis</h2>
+
+                <span>700k - 200k</span>
+
+            </div>
+
+            <div class="satellite right">
+                Caza organizada
+            </div>
+
+        </div>
+
+        <!-- NEANDERTAL -->
+
+        <div class="species right" id="neanderthal">
+
+            <div class="aura"></div>
+
+            <div class="node">
+
+                <img src="assets/neanderthal.jpg">
+
+            </div>
+
+            <div class="label">
+
+                <h2>Neanderthalensis</h2>
+
+                <span>400k - 40k</span>
+
+            </div>
+
+            <div class="satellite top">
+                Enterramientos
+            </div>
+
+        </div>
+
+        <!-- SAPIENS -->
+
+        <div class="species left" id="sapiens">
+
+            <div class="aura"></div>
+
+            <div class="node">
+
+                <img src="assets/sapiens.jpg">
+
+            </div>
+
+            <div class="label">
+
+                <h2>Homo sapiens</h2>
+
+                <span>300k - presente</span>
+
+            </div>
+
+            <div class="satellite right">
+                Arte
+            </div>
+
+            <div class="satellite top">
+                Lenguaje
+            </div>
+
+            <div class="satellite left">
+                Simbolismo
+            </div>
+
+        </div>
+
+        <!-- HITOS -->
+
+        <div class="milestone">
+            Revolución Cognitiva · 70.000 años
+        </div>
+
+        <div class="milestone">
+            Agricultura · 10.000 BC
+        </div>
+
+        <div class="milestone">
+            Aldeas Permanentes · 8.000 BC
+        </div>
+
+        <div class="milestone">
+            Metalurgia · 6.000 BC
+        </div>
+
+        <div class="milestone">
+            Ciudades · 4.000 BC
+        </div>
+
+        <div class="milestone final">
+            SUMERIA · 3.000 BC
+        </div>
+
+    </div>
 
 </div>
-
-<div class="timeline-line"></div>
-
-<div class="bg-orbit orbit-1"></div>
-<div class="bg-orbit orbit-2"></div>
-<div class="bg-orbit orbit-3"></div>
-<div class="bg-orbit orbit-4"></div>
-
-<!-- AUSTRALOPITHECUS -->
-
-<section class="node left reveal">
-
-    <div class="circle-image">
-        <img src="assets/afarensis.jpg">
-    </div>
-
-    <div class="card">
-        <span class="date">3.9 - 2.9 millones de años</span>
-        <h2>Australopithecus afarensis</h2>
-
-        <ul>
-            <li>Bipedismo consolidado</li>
-            <li>Sabana africana</li>
-            <li>Cerebro 400-500 cc</li>
-        </ul>
-    </div>
-
-</section>
-
-<!-- HABILIS -->
-
-<section class="node right reveal">
-
-    <div class="circle-image">
-        <img src="assets/habilis.jpg">
-    </div>
-
-    <div class="card">
-        <span class="date">2.6 - 1.5 millones de años</span>
-        <h2>Homo habilis</h2>
-
-        <ul>
-            <li>Oldowan</li>
-            <li>Primeras herramientas</li>
-            <li>Mayor consumo de carne</li>
-        </ul>
-
-    </div>
-
-</section>
-
-<!-- ERGASTER -->
-
-<section class="node left reveal">
-
-    <div class="circle-image">
-        <img src="assets/ergaster.jpg">
-    </div>
-
-    <div class="card">
-
-        <span class="date">1.9 - 1.4 millones de años</span>
-
-        <h2>Homo ergaster</h2>
-
-        <ul>
-            <li>Cuerpo moderno</li>
-            <li>Cooperación avanzada</li>
-            <li>Cazador-recolector</li>
-        </ul>
-
-    </div>
-
-</section>
-
-<!-- ERECTUS -->
-
-<section class="node right reveal">
-
-    <div class="circle-image">
-        <img src="assets/erectus.jpg">
-    </div>
-
-    <div class="card">
-
-        <span class="date">1.9 millones - 200.000 años</span>
-
-        <h2>Homo erectus</h2>
-
-        <ul>
-            <li>Dominio del fuego</li>
-            <li>Migraciones fuera de África</li>
-            <li>Bifaces achelenses</li>
-        </ul>
-
-    </div>
-
-</section>
-
-<!-- HEIDELBERGENSIS -->
-
-<section class="node left reveal">
-
-    <div class="circle-image">
-        <img src="assets/heidelbergensis.jpg">
-    </div>
-
-    <div class="card">
-
-        <span class="date">700.000 - 200.000 años</span>
-
-        <h2>Homo heidelbergensis</h2>
-
-        <ul>
-            <li>Caza organizada</li>
-            <li>Refugios simples</li>
-            <li>Mayor complejidad social</li>
-        </ul>
-
-    </div>
-
-</section>
-
-<!-- NEANDERTAL -->
-
-<section class="node right reveal">
-
-    <div class="circle-image">
-        <img src="assets/neanderthal.jpg">
-    </div>
-
-    <div class="card">
-
-        <span class="date">400.000 - 40.000 años</span>
-
-        <h2>Homo neanderthalensis</h2>
-
-        <ul>
-            <li>Enterramientos</li>
-            <li>Cuidado de enfermos</li>
-            <li>Herramientas complejas</li>
-        </ul>
-
-    </div>
-
-</section>
-
-<!-- SAPIENS -->
-
-<section class="node left reveal">
-
-    <div class="circle-image">
-        <img src="assets/sapiens.jpg">
-    </div>
-
-    <div class="card">
-
-        <span class="date">300.000 años</span>
-
-        <h2>Homo sapiens</h2>
-
-        <ul>
-            <li>Lenguaje complejo</li>
-            <li>Arte</li>
-            <li>Pensamiento simbólico</li>
-        </ul>
-
-    </div>
-
-</section>
-
-<!-- REV COGNITIVA -->
-
-<section class="milestone reveal">
-
-    <h2>70.000 años</h2>
-
-    <p>
-        Revolución cognitiva
-        · Mitos
-        · Narrativas
-        · Cooperación masiva
-    </p>
-
-</section>
-
-<section class="milestone reveal">
-
-    <h2>10.000 BC</h2>
-
-    <p>
-        Agricultura
-        · Sedentarismo
-        · Domesticación
-    </p>
-
-</section>
-
-<section class="milestone reveal">
-
-    <h2>6.000 BC</h2>
-
-    <p>
-        Cobre
-        · Comercio
-        · Especialización
-    </p>
-
-</section>
-
-<section class="milestone reveal">
-
-    <h2>3.000 BC</h2>
-
-    <p>
-        SUMERIA
-        · Escritura
-        · Estados
-        · Burocracia
-    </p>
-
-</section>
 
 <script src="app.js"></script>
 
 </body>
+
 </html>
