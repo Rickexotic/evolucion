@@ -3,15 +3,9 @@
 :root{
 
     --paper:#ffffff;
-
     --text:#1b1b1b;
-
-    --muted:#7a7a7a;
-
-    --line:rgba(0,0,0,.18);
-
-    --orbit:rgba(0,0,0,.035);
-
+    --muted:#777;
+    --orbit:rgba(0,0,0,.025);
     --border:rgba(0,0,0,.08);
 
 }
@@ -30,15 +24,13 @@ body{
 
     font-family:'Cormorant Garamond', serif;
 
-    background:var(--paper);
+    background:#fff;
 
     color:var(--text);
 
     overflow-x:hidden;
 
     position:relative;
-
-    min-height:12000px;
 }
 
 img{
@@ -46,9 +38,9 @@ img{
     max-width:100%;
 }
 
-/* ==========================
+/* =====================================================
    SVG
-========================== */
+===================================================== */
 
 #evolution-svg{
 
@@ -65,50 +57,50 @@ img{
     z-index:0;
 }
 
-/* ==========================
+/* =====================================================
    HERO
-========================== */
+===================================================== */
 
 .hero{
 
-    height:100vh;
+    height:60vh;
 
     display:flex;
 
-    justify-content:center;
-
     align-items:center;
+
+    justify-content:center;
 
     padding:40px;
 
     position:relative;
 
-    z-index:5;
+    z-index:20;
 }
 
 .hero-inner{
 
-    text-align:center;
-
     max-width:900px;
+
+    text-align:center;
 }
 
 .hero-period{
+
+    font-size:14px;
 
     letter-spacing:8px;
 
     text-transform:uppercase;
 
-    font-size:13px;
-
     color:var(--muted);
 
-    margin-bottom:24px;
+    margin-bottom:20px;
 }
 
 .hero h1{
 
-    font-size:clamp(72px,10vw,140px);
+    font-size:clamp(72px,9vw,150px);
 
     font-weight:300;
 
@@ -119,28 +111,28 @@ img{
 
 .hero p{
 
-    font-size:24px;
+    font-size:26px;
 
     line-height:1.5;
 
     color:#555;
 }
 
-/* ==========================
+/* =====================================================
    TIMELINE
-========================== */
+===================================================== */
 
 #timeline{
 
     width:100%;
 
-    max-width:1700px;
+    max-width:1800px;
 
     margin:0 auto;
 
     position:relative;
 
-    z-index:3;
+    z-index:5;
 }
 
 #timeline::before{
@@ -159,75 +151,102 @@ img{
 
     height:100%;
 
-    background:
-    linear-gradient(
-        transparent,
-        rgba(0,0,0,.10),
-        rgba(0,0,0,.10),
-        transparent
-    );
+    background:rgba(0,0,0,.08);
+
+    z-index:0;
 }
 
-/* ==========================
-   ERAS
-========================== */
+/* =====================================================
+   ERA
+===================================================== */
 
 .era{
 
-    height:250px;
+    height:180px;
 
     display:flex;
 
     justify-content:center;
 
     align-items:center;
-
-    position:relative;
 }
 
 .era-label{
 
-    letter-spacing:12px;
+    letter-spacing:10px;
 
     text-transform:uppercase;
 
     font-size:13px;
 
-    color:#888;
+    color:#999;
 }
 
-/* ==========================
+/* =====================================================
    SPECIES
-========================== */
+===================================================== */
 
 .species{
 
-    height:900px;
+    height:520px;
 
     position:relative;
 
     display:flex;
 
     align-items:center;
+
+    opacity:1;
 }
 
 .species.left{
 
     justify-content:flex-start;
 
-    padding-left:8%;
+    padding-left:10%;
 }
 
 .species.right{
 
     justify-content:flex-end;
 
-    padding-right:8%;
+    padding-right:10%;
 }
 
-/* ==========================
-   MAIN NODE
-========================== */
+/* =====================================================
+   HALO
+===================================================== */
+
+.species::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:450px;
+
+    height:450px;
+
+    border-radius:50%;
+
+    background:var(--orbit);
+
+    z-index:0;
+}
+
+.species.left::before{
+
+    left:60px;
+}
+
+.species.right::before{
+
+    right:60px;
+}
+
+/* =====================================================
+   NODE
+===================================================== */
 
 .node{
 
@@ -237,32 +256,38 @@ img{
 
     align-items:center;
 
-    gap:50px;
+    gap:70px;
 
     z-index:20;
 }
 
-.node.large .photo{
-
-    width:260px;
-    height:260px;
-}
+/* =====================================================
+   PHOTO
+===================================================== */
 
 .photo{
 
-    width:220px;
-    height:220px;
+    width:320px;
 
-    position:relative;
+    height:320px;
 
     border-radius:50%;
 
     overflow:hidden;
 
-    box-shadow:
-    0 20px 60px rgba(0,0,0,.18);
+    flex-shrink:0;
 
-    z-index:10;
+    box-shadow:
+    0 25px 60px rgba(0,0,0,.18);
+
+    position:relative;
+}
+
+.node.large .photo{
+
+    width:380px;
+
+    height:380px;
 }
 
 .photo::before{
@@ -271,11 +296,11 @@ img{
 
     position:absolute;
 
-    inset:-50px;
+    inset:-30px;
 
     border-radius:50%;
 
-    background:rgba(0,0,0,.04);
+    border:1px solid rgba(0,0,0,.05);
 
     z-index:-1;
 }
@@ -283,225 +308,228 @@ img{
 .photo img{
 
     width:100%;
+
     height:100%;
 
     object-fit:cover;
 }
 
+/* =====================================================
+   INFO
+===================================================== */
+
 .info{
 
-    max-width:450px;
+    max-width:550px;
 }
 
 .date{
 
-    letter-spacing:4px;
-
     text-transform:uppercase;
 
-    font-size:11px;
+    font-size:13px;
+
+    letter-spacing:5px;
 
     color:var(--muted);
 }
 
 .info h2{
 
-    margin-top:15px;
+    margin-top:16px;
 
-    font-size:52px;
+    font-size:72px;
+
+    line-height:.95;
 
     font-weight:400;
-
-    line-height:1;
 }
 
 .info p{
 
-    margin-top:22px;
+    margin-top:20px;
 
-    font-size:22px;
+    font-size:28px;
 
     line-height:1.5;
 
     color:#555;
 }
 
-/* ==========================
+/* =====================================================
    SATELLITES
-========================== */
+===================================================== */
 
 .satellites{
 
     position:absolute;
 
     inset:0;
+
+    z-index:15;
 }
 
 .satellite{
 
     position:absolute;
 
-    padding:10px 18px;
+    padding:12px 22px;
 
     border-radius:999px;
 
-    background:white;
+    background:#fff;
 
-    border:1px solid var(--border);
+    border:1px solid rgba(0,0,0,.08);
 
     box-shadow:
-    0 3px 14px rgba(0,0,0,.05);
+    0 6px 20px rgba(0,0,0,.08);
 
-    font-size:16px;
+    font-size:15px;
 
-    letter-spacing:1px;
-
-    z-index:10;
+    white-space:nowrap;
 }
 
-/* AFAR */
+/* AUSTRALOPITHECUS */
 
 #afarensis .satellite:nth-child(1){
 
-    left:58%;
-    top:28%;
+    left:48%;
+    top:25%;
 }
 
 #afarensis .satellite:nth-child(2){
 
-    left:64%;
-    top:44%;
+    left:52%;
+    top:52%;
 }
 
 /* HABILIS */
 
 #habilis .satellite:nth-child(1){
 
-    left:24%;
-    top:22%;
+    left:38%;
+    top:30%;
 }
 
 #habilis .satellite:nth-child(2){
 
-    left:18%;
-    top:40%;
+    left:32%;
+    top:48%;
 }
 
 #habilis .satellite:nth-child(3){
 
-    left:28%;
-    top:56%;
+    left:42%;
+    top:68%;
 }
 
 /* ERGASTER */
 
 #ergaster .satellite:nth-child(1){
 
-    left:60%;
-    top:32%;
+    left:52%;
+    top:35%;
 }
 
 #ergaster .satellite:nth-child(2){
 
-    left:68%;
-    top:48%;
+    left:58%;
+    top:60%;
 }
 
 /* ERECTUS */
 
 #erectus .satellite:nth-child(1){
 
-    left:25%;
-    top:20%;
+    left:36%;
+    top:18%;
 }
 
 #erectus .satellite:nth-child(2){
 
-    left:14%;
-    top:38%;
+    left:30%;
+    top:42%;
 }
 
 #erectus .satellite:nth-child(3){
 
-    left:20%;
-    top:58%;
+    left:34%;
+    top:65%;
 }
 
 #erectus .satellite:nth-child(4){
 
-    left:32%;
-    top:72%;
+    left:46%;
+    top:80%;
 }
 
 /* HEIDELBERGENSIS */
 
 #heidelbergensis .satellite:nth-child(1){
 
-    left:60%;
+    left:54%;
     top:35%;
 }
 
 #heidelbergensis .satellite:nth-child(2){
 
-    left:68%;
-    top:50%;
+    left:60%;
+    top:62%;
 }
 
-/* NEANDERTAL */
+/* NEANDERTHAL */
 
 #neanderthal .satellite:nth-child(1){
 
-    left:18%;
+    left:32%;
     top:30%;
 }
 
 #neanderthal .satellite:nth-child(2){
 
-    left:28%;
-    top:50%;
+    left:42%;
+    top:58%;
 }
 
 /* SAPIENS */
 
 #sapiens .satellite:nth-child(1){
 
-    left:60%;
-    top:20%;
+    left:55%;
+    top:18%;
 }
 
 #sapiens .satellite:nth-child(2){
 
-    left:67%;
-    top:38%;
+    left:64%;
+    top:34%;
 }
 
 #sapiens .satellite:nth-child(3){
 
-    left:73%;
-    top:58%;
+    left:67%;
+    top:56%;
 }
 
 #sapiens .satellite:nth-child(4){
 
-    left:58%;
-    top:72%;
+    left:56%;
+    top:78%;
 }
 
-/* ==========================
+/* =====================================================
    BRANCH
-========================== */
+===================================================== */
 
 .branch{
 
-    height:250px;
+    height:180px;
 
     display:flex;
 
     justify-content:center;
 
     align-items:center;
-
-    position:relative;
 }
 
 .branch-label{
@@ -515,13 +543,13 @@ img{
     color:#999;
 }
 
-/* ==========================
+/* =====================================================
    MILESTONES
-========================== */
+===================================================== */
 
 .milestone{
 
-    height:700px;
+    height:450px;
 
     display:flex;
 
@@ -529,14 +557,12 @@ img{
 
     align-items:center;
 
-    position:relative;
-
     text-align:center;
 }
 
 .milestone-content{
 
-    max-width:800px;
+    max-width:900px;
 }
 
 .milestone-date{
@@ -549,23 +575,23 @@ img{
 
     color:#888;
 
-    margin-bottom:20px;
+    margin-bottom:25px;
 }
 
 .milestone h3{
 
-    font-size:72px;
+    font-size:58px;
 
     font-weight:300;
 }
 
-/* ==========================
+/* =====================================================
    SUMERIA
-========================== */
+===================================================== */
 
 .civilization{
 
-    min-height:1200px;
+    min-height:900px;
 
     display:flex;
 
@@ -573,7 +599,7 @@ img{
 
     align-items:center;
 
-    padding:100px;
+    padding:100px 40px;
 }
 
 .civilization-inner{
@@ -582,135 +608,59 @@ img{
 
     align-items:center;
 
-    gap:80px;
+    gap:90px;
 
     max-width:1400px;
 }
 
 .civilization-inner img{
 
-    width:450px;
+    width:420px;
 
-    height:450px;
+    height:420px;
 
     border-radius:50%;
 
     object-fit:cover;
 
     box-shadow:
-    0 20px 60px rgba(0,0,0,.15);
+    0 25px 60px rgba(0,0,0,.16);
 }
 
 .civilization-info span{
 
-    text-transform:uppercase;
-
     letter-spacing:5px;
 
-    color:#888;
+    text-transform:uppercase;
+
+    color:#777;
 }
 
 .civilization-info h2{
 
-    margin-top:15px;
+    margin-top:16px;
 
-    font-size:120px;
+    font-size:90px;
 
     font-weight:300;
 }
 
 .civilization-info p{
 
-    margin-top:25px;
+    margin-top:20px;
 
-    max-width:600px;
+    font-size:26px;
 
-    font-size:24px;
-
-    line-height:1.7;
+    line-height:1.6;
 
     color:#555;
+
+    max-width:650px;
 }
 
-/* ==========================
-   ORBITS
-========================== */
-
-body::before{
-
-    content:"";
-
-    position:absolute;
-
-    width:1200px;
-    height:1200px;
-
-    border-radius:50%;
-
-    background:var(--orbit);
-
-    top:1400px;
-    left:-350px;
-}
-
-body::after{
-
-    content:"";
-
-    position:absolute;
-
-    width:1500px;
-    height:1500px;
-
-    border-radius:50%;
-
-    background:var(--orbit);
-
-    top:5000px;
-    right:-500px;
-}
-
-.species::before{
-
-    content:"";
-
-    position:absolute;
-
-    width:700px;
-    height:700px;
-
-    border-radius:50%;
-
-    background:rgba(0,0,0,.025);
-
-    z-index:0;
-}
-
-.species.left::before{
-
-    left:40px;
-}
-
-.species.right::before{
-
-    right:40px;
-}
-
-/* ==========================
-   REVEAL
-========================== */
-
-.species,
-.milestone,
-.civilization{
-
-    opacity:1;
-
-    transform:none;
-}
-/* ==========================
-   MOBILE
-========================== */
+/* =====================================================
+   RESPONSIVE
+===================================================== */
 
 @media(max-width:1100px){
 
@@ -723,9 +673,9 @@ body::after{
 
         height:auto;
 
-        min-height:900px;
+        min-height:700px;
 
-        padding:120px 40px !important;
+        padding:80px 30px !important;
     }
 
     .node{
@@ -733,21 +683,30 @@ body::after{
         flex-direction:column;
 
         align-items:flex-start;
+
+        gap:30px;
+    }
+
+    .photo{
+
+        width:240px;
+        height:240px;
+    }
+
+    .node.large .photo{
+
+        width:280px;
+        height:280px;
     }
 
     .info h2{
 
-        font-size:38px;
+        font-size:44px;
     }
 
     .info p{
 
-        font-size:18px;
-    }
-
-    .satellite{
-
-        transform:scale(.9);
+        font-size:20px;
     }
 
     .civilization-inner{
@@ -757,12 +716,16 @@ body::after{
 
     .civilization-info h2{
 
-        font-size:72px;
+        font-size:60px;
     }
 
     .milestone h3{
 
-        font-size:48px;
+        font-size:42px;
     }
 
+    .satellite{
+
+        transform:scale(.9);
+    }
 }
