@@ -32,6 +32,8 @@ const CARD_WIDTH = 300;
 const MOBILE_ROW_HEIGHT = 215;
 const TOP_PADDING = 50;
 const SWAP_MS = 180;
+const STAGE_ZOOM = 1.3;
+const STAGE_MS = 900;
 
 /* =====================================================
    IMAGES
@@ -306,9 +308,10 @@ function buildPanel(species){
                     discovery.discoverers.join(", ")
                 )]
             ])),
-            section("Distribución", text(
-                species.regions && species.regions.join(", ")
-            )),
+            section("Distribución", `
+                ${text(species.regions && species.regions.join(", "))}
+                <div class="globe-slot"></div>
+            `),
             section("Evolución", rows([
                 ["Antecesor", show(evolution.ancestor ?? "Desconocido")],
                 ["Descendientes", descendants]
@@ -320,6 +323,8 @@ function buildPanel(species){
     panelContent.innerHTML = columns
         .map(col=>`<div class="panel-col">${col.join("")}</div>`)
         .join("");
+
+    showGlobe(species);
 
 }
 
@@ -372,7 +377,253 @@ function openSpecies(id){
 
     document.body.classList.add("panel-open");
 
+    flyToStage(id);
+
     closeBtn.focus({ preventScroll: true });
+
+}
+
+/* =====================================================
+   STAGE: desplazamiento suave desde la tarjeta + zoom 30 %
+===================================================== */
+
+function flyToStage(id){
+
+    if(reduceMotion.matches) return;
+
+    const source = document.querySelector(`#${id} .node`);
+    const dest = stage.querySelector(".stage-image");
+
+    if(!source || !dest) return;
+
+    const from = source.getBoundingClientRect();
+
+    // Medido en reposo, sin transformaciones ni transiciones
+    stageFigure.getAnimations().forEach(x=>x.cancel());
+    stageFigure.style.transition = "none";
+    stageFigure.style.transform = "none";
+
+    const to = dest.getBoundingClientRect();
+    const fig = stageFigure.getBoundingClientRect();
+
+    stageFigure.style.transform = "";
+    void stageFigure.offsetWidth;
+    stageFigure.style.transition = "";
+
+    if(!to.width) return;
+
+    const s = from.width / to.width;
+    const rx = (to.left + to.width / 2) - (fig.left + fig.width / 2);
+    const ry = (to.top + to.height / 2) - (fig.top + fig.height / 2);
+    const dx = (from.left + from.width / 2) - (fig.left + fig.width / 2) - s * rx;
+    const dy = (from.top + from.height / 2) - (fig.top + fig.height / 2) - s * ry;
+
+    stageFigure.animate([
+        {
+            transform:`translate(${dx}px, ${dy}px) scale(${s})`,
+            opacity:0
+        },
+        {
+            opacity:1,
+            offset:.25
+        },
+        {
+            transform:`scale(${STAGE_ZOOM})`,
+            opacity:1
+        }
+    ], {
+        duration:STAGE_MS,
+        easing:"cubic-bezier(.22,.8,.24,1)",
+        delay:60,
+        fill:"backwards"
+    });
+
+}
+
+/* =====================================================
+   GLOBE (esquema gris con la zona del hábitat resaltada)
+===================================================== */
+
+const COUNTRIES_URL =
+"https://cdn.jsdelivr.net/gh/vasturiano/globe.gl@master/example/datasets/ne_110m_admin_0_countries.geojson";
+
+const COUNTRY_ALIASES = {
+    "Kenia":"Kenya", "Etiopía":"Ethiopia", "Sudáfrica":"South Africa",
+    "Tanzania":"Tanzania", "Chad":"Chad", "Indonesia":"Indonesia",
+    "Alemania":"Germany", "Rusia":"Russia", "Suecia":"Sweden"
+};
+
+const EAST_AFRICA = [
+    "Kenya","Ethiopia","Tanzania","Uganda","Somalia","Eritrea",
+    "Djibouti","Rwanda","Burundi","S. Sudan","Sudan"
+];
+
+const SOUTH_AFRICA = [
+    "South Africa","Namibia","Botswana","Zimbabwe","Zambia","Mozambique",
+    "Malawi","Lesotho","eSwatini","Angola"
+];
+
+const WEST_ASIA = [
+    "Turkey","Syria","Iraq","Iran","Israel","Lebanon","Jordan","Saudi Arabia",
+    "Yemen","Oman","United Arab Emirates","Kuwait","Qatar","Georgia",
+    "Armenia","Azerbaijan","Palestine"
+];
+
+const CONTINENTS = { "África":"Africa", "Europa":"Europe", "Asia":"Asia" };
+
+let globe = null;
+let globeHost = null;
+let countries = [];
+let activeIds = new Set();
+
+function regionMatcher(species){
+
+    const names = new Set();
+    const continents = new Set();
+    let all = false;
+
+    (species.regions || []).forEach(region=>{
+
+        if(region === "Global") all = true;
+        else if(CONTINENTS[region]) continents.add(CONTINENTS[region]);
+        else if(region === "África Oriental") EAST_AFRICA.forEach(n=>names.add(n));
+        else if(region === "África Austral") SOUTH_AFRICA.forEach(n=>names.add(n));
+        else if(region === "Asia Occidental") WEST_ASIA.forEach(n=>names.add(n));
+        else names.add(COUNTRY_ALIASES[region] || region);
+
+    });
+
+    return f=>{
+
+        const p = f.properties;
+
+        return all ||
+            continents.has(p.CONTINENT) ||
+            names.has(p.NAME) ||
+            names.has(p.ADMIN);
+
+    };
+
+}
+
+function featureCenter(f){
+
+    let minLat = 90, maxLat = -90, minLng = 180, maxLng = -180;
+
+    const polys = f.geometry.type === "Polygon"
+        ? [f.geometry.coordinates]
+        : f.geometry.coordinates;
+
+    // Solo el polígono más grande, para evitar territorios remotos
+    let best = polys[0];
+    let bestSize = -1;
+
+    polys.forEach(poly=>{
+
+        if(poly[0].length > bestSize){ best = poly; bestSize = poly[0].length; }
+
+    });
+
+    best[0].forEach(([lng, lat])=>{
+
+        minLat = Math.min(minLat, lat); maxLat = Math.max(maxLat, lat);
+        minLng = Math.min(minLng, lng); maxLng = Math.max(maxLng, lng);
+
+    });
+
+    return { lat:(minLat + maxLat) / 2, lng:(minLng + maxLng) / 2 };
+
+}
+
+function ensureGlobe(){
+
+    if(globe || typeof Globe === "undefined") return;
+
+    globeHost = document.createElement("div");
+    globeHost.className = "globe-host";
+
+    globe = Globe()(globeHost)
+        .backgroundColor("rgba(0,0,0,0)")
+        .showGlobe(true)
+        .showAtmosphere(true)
+        .atmosphereColor("#9a9a9a")
+        .atmosphereAltitude(.12)
+        .showGraticules(true)
+        .polygonAltitude(f=>activeIds.has(f) ? .035 : .004)
+        .polygonCapColor(f=>activeIds.has(f) ? "rgba(214,90,40,.92)" : "rgba(205,205,205,.9)")
+        .polygonSideColor(()=>"rgba(120,120,120,.35)")
+        .polygonStrokeColor(()=>"#8a8a8a")
+        .polygonLabel(f=>f.properties.NAME)
+        .polygonsTransitionDuration(300);
+
+    const material = globe.globeMaterial();
+
+    material.color.set("#efefef");
+    material.emissive.set("#e4e4e4");
+    material.emissiveIntensity = .5;
+
+    const controls = globe.controls();
+
+    controls.autoRotate = !reduceMotion.matches;
+    controls.autoRotateSpeed = .6;
+    controls.enableZoom = false;
+
+    fetch(COUNTRIES_URL)
+    .then(r=>r.json())
+    .then(data=>{
+
+        countries = data.features;
+
+        globe.polygonsData(countries);
+
+        if(currentIndex !== -1) showGlobe(evolutionData.species[currentIndex]);
+
+    })
+    .catch(()=>{});
+
+}
+
+function showGlobe(species){
+
+    ensureGlobe();
+
+    if(!globe) return;
+
+    const slot = panelContent.querySelector(".globe-slot");
+
+    if(!slot) return;
+
+    slot.appendChild(globeHost);
+
+    const size = Math.min(slot.clientWidth || 260, 260);
+
+    globe.width(size).height(size);
+
+    const match = regionMatcher(species);
+
+    activeIds = new Set(countries.filter(match));
+
+    // Fuerza el recálculo de colores y altura
+    globe.polygonsData(countries.slice());
+
+    const targets = [...activeIds];
+
+    if(targets.length){
+
+        const centers = targets.map(featureCenter);
+        const lat = centers.reduce((n, c)=>n + c.lat, 0) / centers.length;
+        let lng = centers.reduce((n, c)=>n + c.lng, 0) / centers.length;
+
+        // Con regiones muy dispersas (Global) se mira al ecuador
+        const spread = Math.max(...centers.map(c=>c.lng)) - Math.min(...centers.map(c=>c.lng));
+
+        globe.pointOfView({
+            lat: spread > 180 ? 10 : lat,
+            lng: spread > 180 ? 20 : lng,
+            altitude: spread > 90 ? 2.6 : 2
+        }, reduceMotion.matches ? 0 : 900);
+
+    }
 
 }
 

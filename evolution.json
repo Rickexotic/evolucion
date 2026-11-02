@@ -229,21 +229,6 @@
         "Etiopía"
       ],
 
-      "distribution": {
-  "locations": [
-    {
-      "name": "Etiopía",
-      "lat": 11.145,
-      "lng": 40.489
-    },
-    {
-      "name": "Tanzania",
-      "lat": -3.386,
-      "lng": 35.363
-    }
-  ]
-}
-
       "innovations": [
         "Bipedismo consolidado"
       ],
@@ -633,30 +618,6 @@
     "Europa",
     "Asia"
   ],
-
-  "distribution": {
-  "locations": [
-
-    {
-      "name":"África Oriental",
-      "lat":0.5,
-      "lng":37.5
-    },
-
-    {
-      "name":"Georgia",
-      "lat":41.7,
-      "lng":44.8
-    },
-
-    {
-      "name":"Java",
-      "lat":-7.5,
-      "lng":110.0
-    }
-
-  ]
-}
 
   "innovations": [
     "Control del fuego",
