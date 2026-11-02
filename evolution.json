@@ -8,15 +8,56 @@
       "type": "ancestor",
       "level": 1,
       "column": 0,
+
       "start": -7000000,
       "end": -6000000,
+
       "parent": null,
       "connections": [],
-      "evidence": "uncertain",
-      "brain_cc": null,
+
+      "importance": "Posible miembro más antiguo conocido del linaje humano.",
+
+      "time_band": "Mioceno tardío",
+
+      "description": "Uno de los candidatos más antiguos para el linaje humano.",
+
+      "morphology": {
+        "brain_cc": 360,
+        "height_m": 1.2,
+        "weight_kg": 35,
+        "locomotion": "Posible bipedismo"
+      },
+
+      "discovery": {
+        "year": 2001,
+        "site": "Toros-Menalla",
+        "country": "Chad",
+        "discoverers": ["Michel Brunet"]
+      },
+
+      "environment": {
+        "habitat": "Bosques abiertos y sabanas",
+        "climate": "Tropical estacional"
+      },
+
       "regions": ["África"],
-      "innovations": ["Bipedismo temprano"],
-      "description": "Uno de los candidatos más antiguos para el linaje humano."
+
+      "innovations": [
+        "Bipedismo temprano"
+      ],
+
+      "facts": [
+        "Vivía cerca de antiguos lagos",
+        "Presenta foramen magnum adelantado",
+        "Podría estar cerca del origen del género Homo"
+      ],
+
+      "evolution": {
+        "ancestor": null,
+        "descendants": [
+          "Orrorin tugenensis"
+        ]
+      }
     },
 
     {
@@ -26,15 +67,59 @@
       "type": "ancestor",
       "level": 2,
       "column": 0,
+
       "start": -6100000,
       "end": -5700000,
+
       "parent": "sahelanthropus",
       "connections": [],
-      "evidence": "uncertain",
-      "brain_cc": null,
+
+      "importance": "Primer candidato claro al bipedismo habitual.",
+
+      "time_band": "Mioceno tardío",
+
+      "description": "Presenta rasgos compatibles con el bipedismo.",
+
+      "morphology": {
+        "brain_cc": 380,
+        "height_m": 1.3,
+        "weight_kg": 40,
+        "locomotion": "Bípedo parcial"
+      },
+
+      "discovery": {
+        "year": 2000,
+        "site": "Tugen Hills",
+        "country": "Kenia",
+        "discoverers": [
+          "Brigitte Senut",
+          "Martin Pickford"
+        ]
+      },
+
+      "environment": {
+        "habitat": "Bosques secos",
+        "climate": "Subtropical"
+      },
+
       "regions": ["África"],
-      "innovations": ["Locomoción bípeda"],
-      "description": "Presenta rasgos compatibles con el bipedismo."
+
+      "innovations": [
+        "Locomoción bípeda"
+      ],
+
+      "facts": [
+        "Conservaba capacidad trepadora",
+        "Conocido por restos fragmentarios",
+        "El fémur indica caminata habitual"
+      ],
+
+      "evolution": {
+        "ancestor": "Sahelanthropus tchadensis",
+        "descendants": [
+          "Ardipithecus ramidus"
+        ]
+      }
     },
 
     {
@@ -44,14 +129,58 @@
       "type": "ancestor",
       "level": 3,
       "column": 0,
+
       "start": -4400000,
       "end": -4400000,
+
       "parent": "orrorin",
       "connections": [],
-      "brain_cc": 350,
+
+      "importance": "Transición entre formas arborícolas y bípedas.",
+
+      "time_band": "Plioceno temprano",
+
+      "description": "Combina rasgos arbóreos y bípedos.",
+
+      "morphology": {
+        "brain_cc": 350,
+        "height_m": 1.2,
+        "weight_kg": 35,
+        "locomotion": "Bipedismo parcial"
+      },
+
+      "discovery": {
+        "year": 1994,
+        "site": "Aramis",
+        "country": "Etiopía",
+        "discoverers": [
+          "Tim White"
+        ]
+      },
+
+      "environment": {
+        "habitat": "Bosques abiertos",
+        "climate": "Tropical"
+      },
+
       "regions": ["Etiopía"],
-      "innovations": ["Bipedismo parcial"],
-      "description": "Combina rasgos arbóreos y bípedos."
+
+      "innovations": [
+        "Bipedismo parcial"
+      ],
+
+      "facts": [
+        "Pie parcialmente prensil",
+        "Conservaba adaptación arborícola",
+        "Vivía en ambientes boscosos"
+      ],
+
+      "evolution": {
+        "ancestor": "Orrorin tugenensis",
+        "descendants": [
+          "Australopithecus anamensis"
+        ]
+      }
     },
 
     {
@@ -61,14 +190,61 @@
       "type": "ancestor",
       "level": 4,
       "column": 0,
+
       "start": -4200000,
       "end": -3900000,
+
       "parent": "ardipithecus",
       "connections": [],
-      "brain_cc": 370,
-      "regions": ["África Oriental"],
-      "innovations": ["Bipedismo consolidado"],
-      "description": "Probable ancestro de A. afarensis."
+
+      "importance": "Primer australopiteco ampliamente reconocido.",
+
+      "time_band": "Plioceno",
+
+      "description": "Probable ancestro de Australopithecus afarensis.",
+
+      "morphology": {
+        "brain_cc": 370,
+        "height_m": 1.35,
+        "weight_kg": 42,
+        "locomotion": "Bípedo"
+      },
+
+      "discovery": {
+        "year": 1995,
+        "site": "Kanapoi",
+        "country": "Kenia",
+        "discoverers": [
+          "Meave Leakey"
+        ]
+      },
+
+      "environment": {
+        "habitat": "Sabana arbolada",
+        "climate": "Cálido estacional"
+      },
+
+      "regions": [
+        "Kenia",
+        "Etiopía"
+      ],
+
+      "innovations": [
+        "Bipedismo consolidado"
+      ],
+
+      "facts": [
+        "Mandíbula robusta",
+        "Piernas adaptadas para caminar",
+        "Puente entre Ardipithecus y afarensis"
+      ],
+
+      "evolution": {
+        "ancestor": "Ardipithecus ramidus",
+        "descendants": [
+          "Australopithecus afarensis"
+        ]
+      }
     },
 
     {
@@ -78,9 +254,12 @@
       "type": "ancestor",
       "level": 5,
       "column": 0,
+
       "start": -3900000,
       "end": -2900000,
+
       "parent": "anamensis",
+
       "connections": [
         {
           "target": "africanus",
@@ -91,14 +270,57 @@
           "type": "hypothesis"
         }
       ],
-      "brain_cc": 450,
-      "regions": ["Etiopía", "Tanzania"],
+
+      "importance": "Uno de los ancestros más importantes del género Homo.",
+
+      "time_band": "Plioceno",
+
+      "description": "La especie de Lucy.",
+
+      "morphology": {
+        "brain_cc": 450,
+        "height_m": 1.45,
+        "weight_kg": 45,
+        "locomotion": "Bipedismo completo"
+      },
+
+      "discovery": {
+        "year": 1974,
+        "site": "Hadar",
+        "country": "Etiopía",
+        "discoverers": [
+          "Donald Johanson"
+        ]
+      },
+
+      "environment": {
+        "habitat": "Sabana arbolada",
+        "climate": "Semiárido"
+      },
+
+      "regions": [
+        "Etiopía",
+        "Tanzania"
+      ],
+
       "innovations": [
-        "Lucy",
         "Bipedismo",
         "Marcha eficiente"
       ],
-      "description": "Especie de Lucy."
+
+      "facts": [
+        "Lucy pertenece a esta especie",
+        "Las huellas de Laetoli muestran locomoción moderna",
+        "Persistió más de un millón de años"
+      ],
+
+      "evolution": {
+        "ancestor": "Australopithecus anamensis",
+        "descendants": [
+          "Australopithecus africanus",
+          "Australopithecus sediba"
+        ]
+      }
     },
 
     {
@@ -108,14 +330,60 @@
       "type": "branch",
       "level": 6,
       "column": -1,
+
       "start": -3300000,
       "end": -2100000,
+
       "parent": "afarensis",
       "connections": [],
-      "brain_cc": 500,
-      "regions": ["Sudáfrica"],
-      "innovations": ["Mayor encefalización"],
-      "description": "Posible ancestro del género Homo."
+
+      "importance": "Posible ancestro directo del género Homo.",
+
+      "time_band": "Plioceno tardío",
+
+      "description": "Posible ancestro del género Homo.",
+
+      "morphology": {
+        "brain_cc": 500,
+        "height_m": 1.4,
+        "weight_kg": 45,
+        "locomotion": "Bípedo"
+      },
+
+      "discovery": {
+        "year": 1924,
+        "site": "Taung",
+        "country": "Sudáfrica",
+        "discoverers": [
+          "Raymond Dart"
+        ]
+      },
+
+      "environment": {
+        "habitat": "Sabana arbolada",
+        "climate": "Templado"
+      },
+
+      "regions": [
+        "Sudáfrica"
+      ],
+
+      "innovations": [
+        "Mayor encefalización"
+      ],
+
+      "facts": [
+        "Incluye el Niño de Taung",
+        "Cara más moderna que afarensis",
+        "Mayor volumen cerebral"
+      ],
+
+      "evolution": {
+        "ancestor": "Australopithecus afarensis",
+        "descendants": [
+          "Homo habilis"
+        ]
+      }
     },
 
     {
@@ -125,175 +393,531 @@
       "type": "branch",
       "level": 6,
       "column": 1,
+
       "start": -1980000,
       "end": -1980000,
+
       "parent": "afarensis",
       "connections": [],
-      "brain_cc": 420,
-      "regions": ["Sudáfrica"],
-      "innovations": ["Rasgos Homo tempranos"],
-      "description": "Posible transición hacia Homo."
-    },
 
-    {
-      "id": "habilis",
-      "name": "Homo habilis",
-      "clade": "homo",
-      "type": "ancestor",
-      "level": 7,
-      "column": 0,
-      "start": -2400000,
-      "end": -1400000,
-      "parent": "africanus",
-      "connections": [],
-      "brain_cc": 650,
-      "regions": ["África"],
+      "importance": "Posible especie de transición hacia Homo.",
+
+      "time_band": "Pleistoceno temprano",
+
+      "description": "Mezcla rasgos australopitecinos y humanos.",
+
+      "morphology": {
+        "brain_cc": 420,
+        "height_m": 1.3,
+        "weight_kg": 35,
+        "locomotion": "Bípedo"
+      },
+
+      "discovery": {
+        "year": 2008,
+        "site": "Malapa",
+        "country": "Sudáfrica",
+        "discoverers": [
+          "Lee Berger"
+        ]
+      },
+
+      "environment": {
+        "habitat": "Bosques y praderas",
+        "climate": "Templado"
+      },
+
+      "regions": [
+        "Sudáfrica"
+      ],
+
       "innovations": [
-        "Industria Oldowan",
-        "Herramientas"
+        "Rasgos Homo tempranos"
       ],
-      "description": "Primer Homo ampliamente aceptado."
-    },
 
-    {
-      "id": "rudolfensis",
-      "name": "Homo rudolfensis",
-      "clade": "homo",
-      "type": "ancestor",
-      "level": 8,
-      "column": 0,
-      "start": -2400000,
-      "end": -1800000,
-      "parent": "habilis",
-      "connections": [],
-      "brain_cc": 750,
-      "regions": ["África"],
-      "innovations": [],
-      "description": "Posiblemente contemporáneo de Habilis."
-    },
+      "facts": [
+        "Descubierta recientemente",
+        "Manos relativamente modernas",
+        "Posible parentesco con Homo"
+      ],
 
-    {
-      "id": "erectus",
-      "name": "Homo erectus",
-      "clade": "homo",
-      "type": "ancestor",
-      "level": 9,
-      "column": 0,
-      "start": -1900000,
-      "end": -200000,
-      "parent": "rudolfensis",
-      "connections": [],
-      "brain_cc": 1000,
-      "regions": ["África","Europa","Asia"],
-      "innovations": [
-        "Fuego",
-        "Bifaces",
-        "Migraciones"
-      ],
-      "description": "Una de las especies humanas más exitosas."
-    },
-
-    {
-      "id": "heidelbergensis",
-      "name": "Homo heidelbergensis",
-      "clade": "homo",
-      "type": "ancestor",
-      "level": 10,
-      "column": 0,
-      "start": -700000,
-      "end": -200000,
-      "parent": "erectus",
-      "connections": [
-        {
-          "target": "neanderthal",
-          "type": "direct"
-        },
-        {
-          "target": "denisova",
-          "type": "direct"
-        },
-        {
-          "target": "sapiens",
-          "type": "direct"
-        }
-      ],
-      "brain_cc": 1250,
-      "regions": ["África","Europa"],
-      "innovations": [
-        "Caza organizada",
-        "Refugios"
-      ],
-      "description": "Último ancestro común probable."
-    },
-
-    {
-      "id": "neanderthal",
-      "name": "Homo neanderthalensis",
-      "clade": "homo",
-      "type": "extinct",
-      "level": 11,
-      "column": -2,
-      "start": -400000,
-      "end": -40000,
-      "parent": "heidelbergensis",
-      "connections": [
-        {
-          "target": "sapiens",
-          "type": "genetic"
-        }
-      ],
-      "brain_cc": 1500,
-      "regions": ["Europa","Asia Occidental"],
-      "innovations": [
-        "Enterramientos",
-        "Cuidado social"
-      ],
-      "description": "Humanos adaptados al clima frío."
-    },
-
-    {
-      "id": "denisova",
-      "name": "Denisovanos",
-      "clade": "homo",
-      "type": "extinct",
-      "level": 11,
-      "column": 0,
-      "start": -300000,
-      "end": -50000,
-      "parent": "heidelbergensis",
-      "connections": [
-        {
-          "target": "sapiens",
-          "type": "genetic"
-        }
-      ],
-      "brain_cc": null,
-      "regions": ["Asia"],
-      "innovations": [],
-      "description": "Conocidos principalmente por ADN."
-    },
-
-    {
-      "id": "sapiens",
-      "name": "Homo sapiens",
-      "clade": "homo",
-      "type": "modern",
-      "level": 11,
-      "column": 2,
-      "start": -300000,
-      "end": 0,
-      "parent": "heidelbergensis",
-      "connections": [],
-      "brain_cc": 1350,
-      "regions": ["Global"],
-      "innovations": [
-        "Arte",
-        "Lenguaje",
-        "Religión",
-        "Civilización"
-      ],
-      "description": "Única especie humana superviviente."
+      "evolution": {
+        "ancestor": "Australopithecus afarensis",
+        "descendants": []
+      }
     }
 
   ]
+},
+
+{
+  "id": "habilis",
+  "name": "Homo habilis",
+  "clade": "homo",
+  "type": "ancestor",
+  "level": 7,
+  "column": 0,
+
+  "start": -2400000,
+  "end": -1400000,
+
+  "parent": "africanus",
+  "connections": [],
+
+  "importance": "Primer representante ampliamente aceptado del género Homo.",
+
+  "time_band": "Pleistoceno temprano",
+
+  "description": "Primer Homo asociado sistemáticamente con la fabricación de herramientas de piedra.",
+
+  "morphology": {
+    "brain_cc": 650,
+    "height_m": 1.3,
+    "weight_kg": 37,
+    "locomotion": "Bipedismo completo"
+  },
+
+  "discovery": {
+    "year": 1960,
+    "site": "Olduvai",
+    "country": "Tanzania",
+    "discoverers": [
+      "Louis Leakey",
+      "Mary Leakey"
+    ]
+  },
+
+  "environment": {
+    "habitat": "Sabana africana",
+    "climate": "Semiárido"
+  },
+
+  "regions": [
+    "África Oriental",
+    "África Austral"
+  ],
+
+  "innovations": [
+    "Industria Oldowan",
+    "Herramientas de piedra"
+  ],
+
+  "facts": [
+    "Utilizó herramientas simples para procesar alimentos",
+    "Combinaba rasgos humanos y australopitecinos",
+    "Mostró un aumento importante del cerebro"
+  ],
+
+  "evolution": {
+    "ancestor": "Australopithecus africanus",
+    "descendants": [
+      "Homo rudolfensis"
+    ]
+  }
+},
+{
+  "id": "rudolfensis",
+  "name": "Homo rudolfensis",
+  "clade": "homo",
+  "type": "ancestor",
+  "level": 8,
+  "column": 0,
+
+  "start": -2400000,
+  "end": -1800000,
+
+  "parent": "habilis",
+  "connections": [],
+
+  "importance": "Representa una posible rama temprana del género Homo.",
+
+  "time_band": "Pleistoceno temprano",
+
+  "description": "Especie debatida que coexistió con Homo habilis.",
+
+  "morphology": {
+    "brain_cc": 750,
+    "height_m": 1.5,
+    "weight_kg": 50,
+    "locomotion": "Bipedismo completo"
+  },
+
+  "discovery": {
+    "year": 1972,
+    "site": "Koobi Fora",
+    "country": "Kenia",
+    "discoverers": [
+      "Richard Leakey"
+    ]
+  },
+
+  "environment": {
+    "habitat": "Sabana abierta",
+    "climate": "Cálido y seco"
+  },
+
+  "regions": [
+    "Kenia"
+  ],
+
+  "innovations": [],
+
+  "facts": [
+    "Poseía un rostro más ancho que habilis",
+    "Su clasificación sigue siendo discutida",
+    "Pudo coexistir con varias especies Homo"
+  ],
+
+  "evolution": {
+    "ancestor": "Homo habilis",
+    "descendants": [
+      "Homo erectus"
+    ]
+  }
+},
+{
+  "id": "erectus",
+  "name": "Homo erectus",
+  "clade": "homo",
+  "type": "ancestor",
+  "level": 9,
+  "column": 0,
+
+  "start": -1900000,
+  "end": -200000,
+
+  "parent": "rudolfensis",
+  "connections": [],
+
+  "importance": "La expansión humana más exitosa antes de Homo sapiens.",
+
+  "time_band": "Pleistoceno",
+
+  "description": "Primera especie humana que colonizó gran parte de Eurasia.",
+
+  "morphology": {
+    "brain_cc": 1000,
+    "height_m": 1.75,
+    "weight_kg": 65,
+    "locomotion": "Bipedismo moderno"
+  },
+
+  "discovery": {
+    "year": 1891,
+    "site": "Java",
+    "country": "Indonesia",
+    "discoverers": [
+      "Eugène Dubois"
+    ]
+  },
+
+  "environment": {
+    "habitat": "Praderas, sabanas y bosques abiertos",
+    "climate": "Muy diverso"
+  },
+
+  "regions": [
+    "África",
+    "Europa",
+    "Asia"
+  ],
+
+  "innovations": [
+    "Control del fuego",
+    "Industria achelense",
+    "Migraciones intercontinentales"
+  ],
+
+  "facts": [
+    "Vivió durante más de un millón de años",
+    "Migró fuera de África",
+    "Mostró proporciones corporales modernas"
+  ],
+
+  "evolution": {
+    "ancestor": "Homo rudolfensis",
+    "descendants": [
+      "Homo heidelbergensis"
+    ]
+  }
+},
+{
+  "id": "heidelbergensis",
+  "name": "Homo heidelbergensis",
+  "clade": "homo",
+  "type": "ancestor",
+  "level": 10,
+  "column": 0,
+
+  "start": -700000,
+  "end": -200000,
+
+  "parent": "erectus",
+
+  "connections": [
+    {
+      "target": "neanderthal",
+      "type": "direct"
+    },
+    {
+      "target": "denisova",
+      "type": "direct"
+    },
+    {
+      "target": "sapiens",
+      "type": "direct"
+    }
+  ],
+
+  "importance": "Probable ancestro común de sapiens, neandertales y denisovanos.",
+
+  "time_band": "Pleistoceno medio",
+
+  "description": "Punto de bifurcación más importante del árbol humano reciente.",
+
+  "morphology": {
+    "brain_cc": 1250,
+    "height_m": 1.75,
+    "weight_kg": 70,
+    "locomotion": "Bipedismo moderno"
+  },
+
+  "discovery": {
+    "year": 1907,
+    "site": "Mauer",
+    "country": "Alemania",
+    "discoverers": [
+      "Otto Schoetensack"
+    ]
+  },
+
+  "environment": {
+    "habitat": "Bosques y praderas",
+    "climate": "Templado"
+  },
+
+  "regions": [
+    "África",
+    "Europa"
+  ],
+
+  "innovations": [
+    "Lanzas de madera",
+    "Caza cooperativa",
+    "Refugios simples"
+  ],
+
+  "facts": [
+    "Mayor cerebro que erectus",
+    "Cazador especializado",
+    "Posible precursor de tres linajes humanos"
+  ],
+
+  "evolution": {
+    "ancestor": "Homo erectus",
+    "descendants": [
+      "Homo neanderthalensis",
+      "Denisovanos",
+      "Homo sapiens"
+    ]
+  }
+},
+{
+  "id": "neanderthal",
+  "name": "Homo neanderthalensis",
+  "clade": "homo",
+  "type": "extinct",
+  "level": 11,
+  "column": -2,
+
+  "start": -400000,
+  "end": -40000,
+
+  "parent": "heidelbergensis",
+
+  "connections": [
+    {
+      "target": "sapiens",
+      "type": "genetic"
+    }
+  ],
+
+  "importance": "Pariente evolutivo más cercano de Homo sapiens.",
+
+  "time_band": "Pleistoceno superior",
+
+  "description": "Humanos adaptados al frío europeo.",
+
+  "morphology": {
+    "brain_cc": 1500,
+    "height_m": 1.65,
+    "weight_kg": 80,
+    "locomotion": "Bipedismo moderno"
+  },
+
+  "discovery": {
+    "year": 1856,
+    "site": "Valle de Neander",
+    "country": "Alemania",
+    "discoverers": [
+      "Johann Fuhlrott"
+    ]
+  },
+
+  "environment": {
+    "habitat": "Bosques y estepas frías",
+    "climate": "Glacial"
+  },
+
+  "regions": [
+    "Europa",
+    "Asia Occidental"
+  ],
+
+  "innovations": [
+    "Enterramientos",
+    "Cuidado social",
+    "Tecnología musteriense"
+  ],
+
+  "facts": [
+    "Compartieron genes con sapiens",
+    "Adaptados al frío extremo",
+    "Poseían cerebro ligeramente mayor que el nuestro"
+  ],
+
+  "evolution": {
+    "ancestor": "Homo heidelbergensis",
+    "descendants": []
+  }
+},
+{
+  "id": "denisova",
+  "name": "Denisovanos",
+  "clade": "homo",
+  "type": "extinct",
+  "level": 11,
+  "column": 0,
+
+  "start": -300000,
+  "end": -50000,
+
+  "parent": "heidelbergensis",
+
+  "connections": [
+    {
+      "target": "sapiens",
+      "type": "genetic"
+    }
+  ],
+
+  "importance": "Grupo humano conocido principalmente gracias a la genética.",
+
+  "time_band": "Pleistoceno superior",
+
+  "description": "Linaje descubierto mediante ADN fósil.",
+
+  "morphology": {
+    "brain_cc": null,
+    "height_m": null,
+    "weight_kg": null,
+    "locomotion": "Bipedismo moderno"
+  },
+
+  "discovery": {
+    "year": 2010,
+    "site": "Cueva Denisova",
+    "country": "Rusia",
+    "discoverers": [
+      "Svante Pääbo y equipo"
+    ]
+  },
+
+  "environment": {
+    "habitat": "Bosques y montañas",
+    "climate": "Frío templado"
+  },
+
+  "regions": [
+    "Asia"
+  ],
+
+  "innovations": [],
+
+  "facts": [
+    "Conocidos principalmente por ADN",
+    "Aportaron genes a poblaciones modernas de Oceanía",
+    "Coexistieron con neandertales"
+  ],
+
+  "evolution": {
+    "ancestor": "Homo heidelbergensis",
+    "descendants": []
+  }
+},
+{
+  "id": "sapiens",
+  "name": "Homo sapiens",
+  "clade": "homo",
+  "type": "modern",
+  "level": 11,
+  "column": 2,
+
+  "start": -300000,
+  "end": 0,
+
+  "parent": "heidelbergensis",
+  "connections": [],
+
+  "importance": "Única especie humana superviviente.",
+
+  "time_band": "Pleistoceno superior / Holoceno",
+
+  "description": "Responsable del desarrollo de la cultura simbólica compleja y las civilizaciones.",
+
+  "morphology": {
+    "brain_cc": 1350,
+    "height_m": 1.70,
+    "weight_kg": 70,
+    "locomotion": "Bipedismo moderno"
+  },
+
+  "discovery": {
+    "year": 1758,
+    "site": "Clasificación biológica",
+    "country": "Suecia",
+    "discoverers": [
+      "Carl Linnaeus"
+    ]
+  },
+
+  "environment": {
+    "habitat": "Global",
+    "climate": "Todos"
+  },
+
+  "regions": [
+    "Global"
+  ],
+
+  "innovations": [
+    "Lenguaje complejo",
+    "Arte simbólico",
+    "Religión",
+    "Agricultura",
+    "Civilización"
+  ],
+
+  "facts": [
+    "Colonizó todos los continentes",
+    "Intercambió genes con neandertales y denisovanos",
+    "Desarrolló cooperación a gran escala"
+  ],
+
+  "evolution": {
+    "ancestor": "Homo heidelbergensis",
+    "descendants": [
+      "Civilización"
+    ]
+  }
 }
