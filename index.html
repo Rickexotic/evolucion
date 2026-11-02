@@ -1,13 +1,96 @@
-<main id="tree"></main>
+<!DOCTYPE html>
+<html lang="es">
 
-<aside id="info-panel">
+<head>
 
-    <div id="info-content">
+    <meta charset="UTF-8">
 
-        Selecciona una especie
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
-    </div>
+    <title>
+        Evolución Humana
+    </title>
 
-</aside>
+    <link
+        rel="stylesheet"
+        href="styles.css">
 
-<svg id="tree-svg"></svg>
+</head>
+
+<body>
+
+    <!-- ========================== -->
+    <!-- HERO -->
+    <!-- ========================== -->
+
+    <header class="hero">
+
+        <div class="hero-inner">
+
+            <div class="hero-period">
+
+                7 MILLONES DE AÑOS
+
+            </div>
+
+            <h1>
+
+                Evolución Humana
+
+            </h1>
+
+            <p>
+
+                Desde los primeros homininos
+                hasta Homo sapiens y el surgimiento
+                de la civilización.
+
+            </p>
+
+        </div>
+
+    </header>
+
+    <!-- ========================== -->
+    <!-- LIENZO SVG -->
+    <!-- ========================== -->
+
+    <svg id="tree-svg"></svg>
+
+    <!-- ========================== -->
+    <!-- ÁRBOL GENERADO POR JS -->
+    <!-- ========================== -->
+
+    <main id="tree"></main>
+
+    <!-- ========================== -->
+    <!-- PANEL LATERAL -->
+    <!-- ========================== -->
+
+    <aside id="info-panel">
+
+        <div class="panel-header">
+
+            Ficha Especie
+
+        </div>
+
+        <div id="info-content">
+
+            <div class="placeholder">
+
+                Selecciona una especie
+
+            </div>
+
+        </div>
+
+    </aside>
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>
