@@ -145,7 +145,7 @@ img{
 
 #tree{
 
-    max-width:1900px;
+    width:2400px;
 
     margin:auto;
 
@@ -218,10 +218,10 @@ img{
 
 .species{
 
-    position:relative;
+    position:absolute;
 
     min-height:500px;
-
+    transform: translateX(-50%);
     display:flex;
 
     flex-direction:column;
@@ -229,7 +229,7 @@ img{
     justify-content:center;
 
     align-items:center;
-
+    
     text-align:center;
 
     transition:
