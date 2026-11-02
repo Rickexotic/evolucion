@@ -1,61 +1,40 @@
-/* ==========================================
-   CONFIG
-========================================== */
-
 const SVG_NS = "http://www.w3.org/2000/svg";
 
-const SPECIES_FLOW = [
-    "afarensis",
-    "habilis",
-    "ergaster",
-    "erectus",
-    "heidelbergensis"
-];
+function center(el){
 
-const POST_SAPIENS_FLOW = [
-    "sapiens",
-    "cognitive",
-    "agriculture",
-    "villages",
-    "metallurgy",
-    "cities",
-    "sumeria"
-];
-
-/* ==========================================
-   HELPERS
-========================================== */
-
-function getCenter(element){
-
-    const rect =
-    element.getBoundingClientRect();
+    const r = el.getBoundingClientRect();
 
     return {
 
         x:
-        rect.left +
-        rect.width / 2 +
-        window.scrollX,
+        r.left + r.width / 2 + window.scrollX,
 
         y:
-        rect.top +
-        rect.height / 2 +
-        window.scrollY
+        r.top + r.height / 2 + window.scrollY
     };
-
 }
 
 function clearSVG(){
 
-    const svg =
-    document.getElementById("evolution-svg");
-
-    svg.innerHTML = "";
-
+    document.getElementById(
+        "evolution-svg"
+    ).innerHTML = "";
 }
 
-function createPath(d, color = "#1b1b1b", width = 2, opacity = 0.15){
+function curve(
+    x1,
+    y1,
+    x2,
+    y2,
+    stroke="#111",
+    width=3,
+    opacity=.18
+){
+
+    const svg =
+    document.getElementById(
+        "evolution-svg"
+    );
 
     const path =
     document.createElementNS(
@@ -63,168 +42,202 @@ function createPath(d, color = "#1b1b1b", width = 2, opacity = 0.15){
         "path"
     );
 
-    path.setAttribute("d", d);
+    const cp =
+    Math.abs(y2-y1) * .4;
 
-    path.setAttribute("fill", "none");
-
-    path.setAttribute("stroke", color);
-
-    path.setAttribute("stroke-width", width);
-
-    path.setAttribute("stroke-linecap", "round");
-
-    path.setAttribute("opacity", opacity);
-
-    return path;
-
-}
-
-/* ==========================================
-   CONNECTION
-========================================== */
-
-function connect(fromId, toId){
-
-    const svg =
-    document.getElementById("evolution-svg");
-
-    const from =
-    document.getElementById(fromId);
-
-    const to =
-    document.getElementById(toId);
-
-    if(!from || !to)
-        return;
-
-    const a =
-    getCenter(from);
-
-    const b =
-    getCenter(to);
-
-    const distance =
-    Math.abs(
-        b.y - a.y
+    path.setAttribute(
+        "d",
+        `
+        M ${x1} ${y1}
+        C ${x1} ${y1+cp}
+        ${x2} ${y2-cp}
+        ${x2} ${y2}
+        `
     );
 
-    const control =
-    distance * 0.35;
+    path.setAttribute("fill","none");
+    path.setAttribute("stroke",stroke);
+    path.setAttribute("stroke-width",width);
+    path.setAttribute("stroke-linecap","round");
+    path.setAttribute("opacity",opacity);
 
-    const d = `
-        M ${a.x} ${a.y}
-        C ${a.x} ${a.y + control}
-          ${b.x} ${b.y - control}
-          ${b.x} ${b.y}
-    `;
-
-    svg.appendChild(
-        createPath(d)
-    );
-
+    svg.appendChild(path);
 }
 
-/* ==========================================
-   BRANCH CONNECTION
-========================================== */
+/* ==========================
+   CONEXIÓN ESPECIES
+========================== */
 
-function branchConnect(
+function connectSpecies(
     sourceId,
-    targetId,
-    direction
+    targetId
 ){
 
-    const svg =
-    document.getElementById("evolution-svg");
-
-    const source =
+    const a =
     document.getElementById(sourceId);
 
-    const target =
+    const b =
     document.getElementById(targetId);
 
-    const a =
-    getCenter(source);
+    if(!a || !b){
+        return;
+    }
 
-    const b =
-    getCenter(target);
+    const p1 =
+    center(a);
 
-    const offset =
-    direction === "left"
-        ? -300
-        : 300;
+    const p2 =
+    center(b);
 
-    const d = `
-       M ${a.x} ${a.y}
+    curve(
+        p1.x,
+        p1.y,
+        p2.x,
+        p2.y
+    );
+}
 
-       C ${a.x + offset}
-         ${a.y + 120}
+/* ==========================
+   BIFURCACIÓN
+========================== */
 
-         ${b.x - offset}
-         ${b.y - 120}
+function drawBranch(){
 
-         ${b.x}
-         ${b.y}
-    `;
+    const svg =
+    document.getElementById(
+        "evolution-svg"
+    );
 
-    svg.appendChild(
-        createPath(
-            d,
-            "#1b1b1b",
-            2.2,
-            0.20
-        )
+    const origin =
+    document.getElementById(
+        "heidelbergensis"
+    );
+
+    const neo =
+    document.getElementById(
+        "neanderthal"
+    );
+
+    const sap =
+    document.getElementById(
+        "sapiens"
+    );
+
+    if(
+        !origin ||
+        !neo ||
+        !sap
+    ){
+        return;
+    }
+
+    const o =
+    center(origin);
+
+    const n =
+    center(neo);
+
+    const s =
+    center(sap);
+
+    curve(
+        o.x,
+        o.y,
+        n.x,
+        n.y,
+        "#111",
+        3,
+        .25
+    );
+
+    curve(
+        o.x,
+        o.y,
+        s.x,
+        s.y,
+        "#111",
+        3,
+        .25
     );
 
 }
 
-/* ==========================================
-   SATELLITE LINES
-========================================== */
+/* ==========================
+   SATÉLITES
+========================== */
 
-function drawSatelliteLinks(){
+function connectSatellites(){
 
     const svg =
-    document.getElementById("evolution-svg");
+    document.getElementById(
+        "evolution-svg"
+    );
 
     document
-    .querySelectorAll(".species")
+    .querySelectorAll(
+        ".species"
+    )
     .forEach(species=>{
 
-        const node =
-        species.querySelector(".photo");
+        const photo =
+        species.querySelector(
+            ".photo"
+        );
 
-        if(!node)
+        if(!photo){
             return;
+        }
 
-        const center =
-        getCenter(node);
+        const p =
+        center(photo);
 
         species
-        .querySelectorAll(".satellite")
-        .forEach(satellite=>{
+        .querySelectorAll(
+            ".satellite"
+        )
+        .forEach(item=>{
 
-            const p =
-            getCenter(satellite);
+            const s =
+            center(item);
 
-            const d = `
-                M ${center.x}
-                ${center.y}
+            const line =
+            document.createElementNS(
+                SVG_NS,
+                "path"
+            );
 
-                Q ${(center.x+p.x)/2}
-                ${(center.y+p.y)/2}
+            line.setAttribute(
+                "d",
+                `
+                M ${p.x} ${p.y}
+                Q ${(p.x+s.x)/2}
+                  ${(p.y+s.y)/2}
+                  ${s.x} ${s.y}
+                `
+            );
 
-                ${p.x}
-                ${p.y}
-            `;
+            line.setAttribute(
+                "fill",
+                "none"
+            );
+
+            line.setAttribute(
+                "stroke",
+                "#999"
+            );
+
+            line.setAttribute(
+                "stroke-width",
+                "1"
+            );
+
+            line.setAttribute(
+                "opacity",
+                ".3"
+            );
 
             svg.appendChild(
-                createPath(
-                    d,
-                    "#444",
-                    1,
-                    0.10
-                )
+                line
             );
 
         });
@@ -233,125 +246,87 @@ function drawSatelliteLinks(){
 
 }
 
-/* ==========================================
-   TIMELINE ORBITS
-========================================== */
+/* ==========================
+   HITOS HUMANIDAD
+========================== */
 
-function createOrbit(
-    x,
-    y,
-    radius,
-    opacity
-){
+function connectMilestones(){
+
+    const chain = [
+
+        "sapiens",
+
+        "cognitive",
+
+        "agriculture",
+
+        "villages",
+
+        "metallurgy",
+
+        "cities",
+
+        "sumeria"
+    ];
+
+    for(
+        let i=0;
+        i<chain.length-1;
+        i++
+    ){
+
+        connectSpecies(
+            chain[i],
+            chain[i+1]
+        );
+
+    }
+
+}
+
+/* ==========================
+   MAIN TRUNK
+========================== */
+
+function connectMainEvolution(){
+
+    const chain = [
+
+        "afarensis",
+        "habilis",
+        "ergaster",
+        "erectus",
+        "heidelbergensis"
+
+    ];
+
+    for(
+        let i=0;
+        i<chain.length-1;
+        i++
+    ){
+
+        connectSpecies(
+            chain[i],
+            chain[i+1]
+        );
+
+    }
+
+}
+
+/* ==========================
+   RENDER
+========================== */
+
+function drawTree(){
 
     const svg =
     document.getElementById(
         "evolution-svg"
     );
-
-    const circle =
-    document.createElementNS(
-        SVG_NS,
-        "circle"
-    );
-
-    circle.setAttribute(
-        "cx",
-        x
-    );
-
-    circle.setAttribute(
-        "cy",
-        y
-    );
-
-    circle.setAttribute(
-        "r",
-        radius
-    );
-
-    circle.setAttribute(
-        "fill",
-        "none"
-    );
-
-    circle.setAttribute(
-        "stroke",
-        "#111"
-    );
-
-    circle.setAttribute(
-        "stroke-width",
-        "1"
-    );
-
-    circle.setAttribute(
-        "opacity",
-        opacity
-    );
-
-    svg.appendChild(circle);
-
-}
-
-/* ==========================================
-   DECORATIVE BACKGROUND
-========================================== */
-
-function buildOrbits(){
-
-    const height =
-    document.body.scrollHeight;
-
-    createOrbit(
-        250,
-        1800,
-        400,
-        0.04
-    );
-
-    createOrbit(
-        window.innerWidth - 200,
-        3400,
-        600,
-        0.03
-    );
-
-    createOrbit(
-        220,
-        6200,
-        500,
-        0.03
-    );
-
-    createOrbit(
-        window.innerWidth - 250,
-        9300,
-        700,
-        0.03
-    );
-
-    createOrbit(
-        window.innerWidth/2,
-        height-800,
-        550,
-        0.025
-    );
-
-}
-
-/* ==========================================
-   DRAW
-========================================== */
-
-function drawEvolutionTree(){
 
     clearSVG();
-
-    const svg =
-    document.getElementById(
-        "evolution-svg"
-    );
 
     svg.setAttribute(
         "width",
@@ -363,111 +338,38 @@ function drawEvolutionTree(){
         document.body.scrollHeight
     );
 
-    for(
-        let i=0;
-        i<SPECIES_FLOW.length-1;
-        i++
-    ){
+    connectMainEvolution();
 
-        connect(
-            SPECIES_FLOW[i],
-            SPECIES_FLOW[i+1]
-        );
+    drawBranch();
 
-    }
+    connectMilestones();
 
-    branchConnect(
-        "heidelbergensis",
-        "neanderthal",
-        "left"
-    );
-
-    branchConnect(
-        "heidelbergensis",
-        "sapiens",
-        "right"
-    );
-
-    for(
-        let i=0;
-        i<POST_SAPIENS_FLOW.length-1;
-        i++
-    ){
-
-        connect(
-            POST_SAPIENS_FLOW[i],
-            POST_SAPIENS_FLOW[i+1]
-        );
-
-    }
-
-    drawSatelliteLinks();
-
-    buildOrbits();
-
+    connectSatellites();
 }
 
-/* ==========================================
-   REVEAL ANIMATION
-========================================== */
-
-function activateReveal(){
-
-    const observer =
-    new IntersectionObserver(
-
-        entries=>{
-
-            entries.forEach(entry=>{
-
-                if(
-                    entry.isIntersecting
-                ){
-
-                    entry.target
-                    .classList
-                    .add("visible");
-
-                }
-
-            });
-
-        },
-
-        {
-            threshold:0.15
-        }
-
-    );
-
-    document
-    .querySelectorAll(
-        ".species, .milestone, .civilization"
-    )
-    .forEach(el=>{
-
-        observer.observe(el);
-
-    });
-
-}
-
-/* ==========================================
-   INIT
-========================================== */
+/* ==========================
+   LOAD
+========================== */
 
 window.addEventListener(
     "load",
-    ()=>{
-
-        drawEvolutionTree();
-
-        activateReveal();
-
-    }
+    drawTree
 );
 
 window.addEventListener(
     "resize",
-    drawEvolutionTree
+    drawTree
+);
+
+window.addEventListener(
+    "scroll",
+    ()=>{
+
+        if(window.scrollY % 100 === 0){
+
+            drawTree();
+
+        }
+
+    }
 );
