@@ -2,34 +2,18 @@
 
 :root{
 
-    --paper:#fafafa;
-
-    --text:#1f1f1f;
-
-    --muted:#8c8c8c;
-
-    --line:#222;
+    --paper:#f6f6f4;
+    --text:#202020;
+    --muted:#9a9a9a;
 
     --shadow:
         0 20px 60px rgba(0,0,0,.12);
 
-    --blue:
-        rgba(94,138,202,.12);
-
-    --green:
-        rgba(125,156,87,.12);
-
-    --purple:
-        rgba(125,89,164,.12);
-
-    --gray:
-        rgba(150,150,150,.10);
-
 }
 
-/* =====================================================
+/* ======================================
    RESET
-===================================================== */
+====================================== */
 
 *{
     margin:0;
@@ -38,7 +22,6 @@
 }
 
 html{
-
     scroll-behavior:smooth;
 }
 
@@ -52,7 +35,8 @@ body{
 
     color:var(--text);
 
-    overflow-x:hidden;
+    overflow-x:auto;
+    overflow-y:auto;
 }
 
 img{
@@ -62,32 +46,13 @@ img{
     width:100%;
 }
 
-/* =====================================================
-   SVG
-===================================================== */
-
-#tree-svg{
-
-    position:absolute;
-
-    inset:0;
-
-    width:100%;
-
-    height:100%;
-
-    pointer-events:none;
-
-    z-index:0;
-}
-
-/* =====================================================
+/* ======================================
    HERO
-===================================================== */
+====================================== */
 
 .hero{
 
-    min-height:75vh;
+    min-height:50vh;
 
     display:flex;
 
@@ -107,21 +72,21 @@ img{
 
 .hero-period{
 
-    font-size:13px;
+    text-transform:uppercase;
 
     letter-spacing:12px;
 
-    text-transform:uppercase;
-
     color:var(--muted);
 
-    margin-bottom:24px;
+    font-size:12px;
+
+    margin-bottom:20px;
 }
 
 .hero h1{
 
     font-size:
-        clamp(90px,10vw,180px);
+        clamp(70px,9vw,160px);
 
     font-weight:300;
 
@@ -132,127 +97,83 @@ img{
 
 .hero p{
 
-    font-size:28px;
+    font-size:24px;
 
-    line-height:1.6;
-
-    color:#555;
+    color:#666;
 }
 
-/* =====================================================
+/* ======================================
    TREE
-===================================================== */
+====================================== */
 
 #tree{
 
+    position:relative;
+
     width:2400px;
+
+    min-height:6500px;
 
     margin:auto;
 
-    position:relative;
-
-    z-index:2;
+    z-index:20;
 }
 
-/* =====================================================
-   CLADES
-===================================================== */
+/* ======================================
+   SVG
+====================================== */
 
-.clade{
+#tree-svg{
 
-    position:relative;
+    position:absolute;
 
-    margin:120px auto;
+    top:0;
+    left:0;
 
-    padding:140px 40px;
-
-    border-radius:150px;
-
-    overflow:visible;
-}
-
-.clade.hominins{
-
-    background:var(--gray);
-}
-
-.clade.australopithecus{
-
-    background:var(--blue);
-}
-
-.clade.paranthropus{
-
-    background:var(--purple);
-}
-
-.clade.homo{
-
-    background:var(--green);
-}
-
-.clade-title{
-
-    position:sticky;
-
-    top:20px;
-
-    text-align:center;
-
-    font-size:68px;
-
-    font-weight:700;
-
-    color:rgba(0,0,0,.25);
-
-    margin-bottom:100px;
-
-    z-index:10;
+    width:100%;
+    height:100%;
 
     pointer-events:none;
+
+    z-index:1;
 }
 
-/* =====================================================
+/* ======================================
    SPECIES
-===================================================== */
+====================================== */
 
 .species{
 
     position:absolute;
 
-    min-height:500px;
-    transform: translateX(-50%);
+    transform:translateX(-50%);
+
     display:flex;
 
     flex-direction:column;
 
-    justify-content:center;
-
     align-items:center;
-    
+
     text-align:center;
 
     transition:
-        transform .45s ease,
-        filter .45s ease,
-        opacity .45s ease;
+        transform .4s ease,
+        opacity .4s ease,
+        filter .4s ease;
 
     cursor:pointer;
+
+    z-index:20;
 }
 
-.major{
-
-    min-height:620px;
-}
-
-/* =====================================================
-   NODES
-===================================================== */
+/* ======================================
+   NODE
+====================================== */
 
 .node{
 
-    width:240px;
-    height:240px;
+    width:210px;
+    height:210px;
 
     border-radius:50%;
 
@@ -264,13 +185,7 @@ img{
 
     position:relative;
 
-    z-index:5;
-}
-
-.major .node{
-
-    width:320px;
-    height:320px;
+    z-index:40;
 }
 
 .node img{
@@ -281,197 +196,45 @@ img{
     object-fit:cover;
 }
 
-/* =====================================================
-   TITLES
-===================================================== */
+/* ======================================
+   TEXT
+====================================== */
 
 .species-name{
 
-    margin-top:24px;
+    margin-top:18px;
 
-    font-size:54px;
+    font-size:42px;
 
     line-height:1;
 
     font-weight:400;
+
+    max-width:700px;
 }
 
 .species-period{
 
     margin-top:10px;
 
-    font-size:12px;
+    font-size:11px;
 
     letter-spacing:6px;
 
-    color:var(--muted);
-
     text-transform:uppercase;
-}
-
-/* =====================================================
-   SATELLITES
-===================================================== */
-
-.satellites{
-
-    display:flex;
-
-    flex-wrap:wrap;
-
-    gap:10px;
-
-    justify-content:center;
-
-    margin-top:26px;
-
-    max-width:700px;
-}
-
-.satellites span{
-
-    padding:10px 18px;
-
-    border-radius:999px;
-
-    background:white;
-
-    border:1px solid rgba(0,0,0,.08);
-
-    box-shadow:
-
-        0 3px 10px rgba(0,0,0,.04);
-
-    font-size:13px;
-
-    letter-spacing:.5px;
-}
-
-/* =====================================================
-   BRANCH
-===================================================== */
-
-.branch-zone{
-
-    margin:80px auto 180px;
-}
-
-.branch-label{
-
-    text-align:center;
-
-    margin-bottom:80px;
-
-    letter-spacing:8px;
-
-    font-size:12px;
-
-    color:#888;
-
-    text-transform:uppercase;
-}
-
-.branch-row{
-
-    display:grid;
-
-    grid-template-columns:
-        1fr 1fr 1fr;
-
-    gap:80px;
-
-    align-items:start;
-}
-
-/* =====================================================
-   EVENTS
-===================================================== */
-
-.event{
-
-    min-height:180px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:center;
-
-    align-items:center;
-
-    text-align:center;
-}
-
-.event-date{
-
-    font-size:12px;
-
-    letter-spacing:6px;
 
     color:var(--muted);
-
-    text-transform:uppercase;
-
-    margin-bottom:12px;
 }
 
-.event-title{
-
-    font-size:56px;
-
-    font-weight:300;
-}
-
-/* =====================================================
-   SUMERIA
-===================================================== */
-
-#sumeria{
-
-    min-height:900px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:center;
-
-    align-items:center;
-
-    text-align:center;
-}
-
-.civilization{
-
-    width:420px;
-    height:420px;
-}
-
-#sumeria .species-name{
-
-    font-size:100px;
-}
-
-.civilization-text{
-
-    margin-top:30px;
-
-    max-width:1000px;
-
-    font-size:24px;
-
-    line-height:1.6;
-
-    color:#555;
-}
-
-/* =====================================================
-   ZOOM
-===================================================== */
+/* ======================================
+   SELECTED
+====================================== */
 
 .species.selected{
 
-    transform:scale(1.8);
+    transform:
+        translateX(-50%)
+        scale(1.35);
 
     z-index:999;
 }
@@ -489,84 +252,166 @@ img{
     filter:blur(2px);
 }
 
-/* =====================================================
-   DETAIL PANEL
-===================================================== */
+/* ======================================
+   DETAILS
+====================================== */
 
 .details{
 
     max-height:0;
 
-    opacity:0;
-
     overflow:hidden;
 
-    transition:
-        .5s ease;
+    opacity:0;
 
-    font-size:14px;
+    transition:.4s;
 
-    line-height:1.7;
+    max-width:520px;
+
+    font-size:16px;
+
+    line-height:1.6;
 
     margin-top:0;
-
-    max-width:420px;
 }
 
 .species.selected .details{
 
     opacity:1;
 
-    max-height:600px;
+    max-height:500px;
 
-    margin-top:22px;
+    margin-top:20px;
 }
 
-/* =====================================================
+/* ======================================
+   PANEL
+====================================== */
+
+#info-panel{
+
+    position:fixed;
+
+    top:0;
+    right:0;
+
+    width:400px;
+
+    height:100vh;
+
+    background:white;
+
+    border-left:
+        1px solid rgba(0,0,0,.08);
+
+    overflow-y:auto;
+
+    z-index:10000;
+
+    box-shadow:
+        -15px 0 40px rgba(0,0,0,.08);
+}
+
+.panel-header{
+
+    padding:24px;
+
+    border-bottom:
+        1px solid rgba(0,0,0,.08);
+
+    text-transform:uppercase;
+
+    letter-spacing:4px;
+
+    font-size:12px;
+
+    color:#777;
+}
+
+#info-content{
+
+    padding:30px;
+}
+
+#info-content h2{
+
+    font-size:42px;
+
+    line-height:1.1;
+
+    margin-bottom:20px;
+}
+
+#info-content h3{
+
+    margin-top:26px;
+
+    margin-bottom:8px;
+
+    font-size:13px;
+
+    text-transform:uppercase;
+
+    letter-spacing:2px;
+
+    color:#666;
+}
+
+#info-content p{
+
+    font-size:15px;
+
+    line-height:1.7;
+}
+
+.placeholder{
+
+    color:#999;
+}
+
+/* ======================================
+   TIME AXIS
+====================================== */
+
+.time-axis{
+
+    position:fixed;
+
+    left:25px;
+
+    top:150px;
+
+    z-index:200;
+}
+
+/* ======================================
    RESPONSIVE
-===================================================== */
+====================================== */
 
-@media(max-width:1200px){
+@media(max-width:1600px){
 
-    .hero h1{
+    #info-panel{
 
-        font-size:90px;
-    }
-
-    .clade-title{
-
-        font-size:42px;
-    }
-
-    .branch-row{
-
-        grid-template-columns:1fr;
+        width:320px;
     }
 
     .species-name{
 
-        font-size:38px;
+        font-size:34px;
     }
 
-    .event-title{
+}
 
-        font-size:38px;
+@media(max-width:1200px){
+
+    #info-panel{
+
+        display:none;
     }
 
-    .node{
+    .species-name{
 
-        width:200px;
-        height:200px;
+        font-size:30px;
     }
 
-    .major .node{
-
-        width:250px;
-        height:250px;
-    }
-
-    #sumeria .species-name{
-
-        font-size:60px;
-    }
 }
