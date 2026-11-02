@@ -1,308 +1,288 @@
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Evolución Humana</title>
-
-<link rel="stylesheet" href="styles.css">
-
-</head>
-
-<body>
-
-<svg id="tree-svg"></svg>
-
-<header class="hero">
-
-    <div class="hero-inner">
-
-        <div class="hero-period">
-            3.000.000 AÑOS
-        </div>
-
-        <h1>
-            Evolución Humana
-        </h1>
-
-        <p>
-            Desde los primeros Australopitecos
-            hasta las primeras ciudades de Sumeria
-        </p>
-
-    </div>
-
-</header>
-
 <main id="tree">
 
-    <!-- ================================================= -->
-    <!-- AUSTRALOPITHECUS -->
-    <!-- ================================================= -->
+    <!-- ====================================== -->
+    <!-- PRIMEROS HOMININOS -->
+    <!-- ====================================== -->
 
-    <section class="species" id="afarensis">
+    <section class="clade hominins">
 
-        <div class="node">
-
-            <img
-                src="assets/afarensis.jpg"
-                alt="Australopithecus afarensis">
-
+        <div class="clade-title">
+            Primeros Homininos
         </div>
 
-        <div class="species-name">
+        <section class="species" id="sahelanthropus">
 
-            Australopithecus afarensis
+            <div class="node">
+                <img src="assets/sahelanthropus.jpg">
+            </div>
 
+            <div class="species-name">
+                Sahelanthropus tchadensis
+            </div>
+
+            <div class="species-period">
+                7 - 6 millones de años
+            </div>
+
+        </section>
+
+        <section class="species" id="orrorin">
+
+            <div class="node">
+                <img src="assets/orrorin.jpg">
+            </div>
+
+            <div class="species-name">
+                Orrorin tugenensis
+            </div>
+
+            <div class="species-period">
+                6.1 - 5.7 millones
+            </div>
+
+        </section>
+
+        <section class="species" id="ardipithecus">
+
+            <div class="node">
+                <img src="assets/ardipithecus.jpg">
+            </div>
+
+            <div class="species-name">
+                Ardipithecus ramidus
+            </div>
+
+            <div class="species-period">
+                4.4 millones
+            </div>
+
+        </section>
+
+    </section>
+
+    <!-- ====================================== -->
+    <!-- AUSTRALOPITECINOS -->
+    <!-- ====================================== -->
+
+    <section class="clade australopithecus">
+
+        <div class="clade-title">
+            Australopitecinos
         </div>
 
-        <div class="species-period">
+        <section class="species" id="anamensis">
 
-            3.9 - 2.9 millones de años
+            <div class="node">
+                <img src="assets/anamensis.jpg">
+            </div>
 
-        </div>
+            <div class="species-name">
+                Australopithecus anamensis
+            </div>
 
-        <div class="satellites">
+        </section>
 
-            <span>Bipedismo</span>
-            <span>Sabana africana</span>
+        <section class="species major" id="afarensis">
+
+            <div class="node">
+                <img src="assets/afarensis.jpg">
+            </div>
+
+            <div class="species-name">
+                Australopithecus afarensis
+            </div>
+
+            <div class="satellites">
+
+                <span>Bipedismo</span>
+                <span>Lucy</span>
+
+            </div>
+
+        </section>
+
+        <div class="branch-row">
+
+            <section class="species branch-node" id="africanus">
+
+                <div class="node">
+                    <img src="assets/africanus.jpg">
+                </div>
+
+                <div class="species-name">
+                    Au. africanus
+                </div>
+
+            </section>
+
+            <section class="species branch-node" id="sediba">
+
+                <div class="node">
+                    <img src="assets/sediba.jpg">
+                </div>
+
+                <div class="species-name">
+                    Au. sediba
+                </div>
+
+            </section>
 
         </div>
 
     </section>
 
-    <!-- ================================================= -->
-    <!-- HABILIS -->
-    <!-- ================================================= -->
+    <!-- ====================================== -->
+    <!-- PARANTHROPUS -->
+    <!-- ====================================== -->
 
-    <section class="species" id="habilis">
+    <section class="clade paranthropus">
 
-        <div class="node">
-
-            <img
-                src="assets/habilis.jpg"
-                alt="Homo habilis">
-
-        </div>
-
-        <div class="species-name">
-
-            Homo habilis
-
-        </div>
-
-        <div class="species-period">
-
-            2.6 - 1.5 millones de años
-
-        </div>
-
-        <div class="satellites">
-
-            <span>Oldowan</span>
-            <span>Herramientas</span>
-            <span>Carne</span>
-
-        </div>
-
-    </section>
-
-    <!-- ================================================= -->
-    <!-- ERGASTER -->
-    <!-- ================================================= -->
-
-    <section class="species" id="ergaster">
-
-        <div class="node">
-
-            <img
-                src="assets/ergaster.jpg"
-                alt="Homo ergaster">
-
-        </div>
-
-        <div class="species-name">
-
-            Homo ergaster
-
-        </div>
-
-        <div class="species-period">
-
-            1.9 - 1.4 millones
-
-        </div>
-
-        <div class="satellites">
-
-            <span>Cooperación</span>
-            <span>Caza</span>
-
-        </div>
-
-    </section>
-
-    <!-- ================================================= -->
-    <!-- ERECTUS -->
-    <!-- ================================================= -->
-
-    <section class="species major" id="erectus">
-
-        <div class="node">
-
-            <img
-                src="assets/erectus.jpg"
-                alt="Homo erectus">
-
-        </div>
-
-        <div class="species-name">
-
-            Homo erectus
-
-        </div>
-
-        <div class="species-period">
-
-            1.9 millones - 200 mil años
-
-        </div>
-
-        <div class="satellites">
-
-            <span>Fuego</span>
-            <span>Migraciones</span>
-            <span>Bifaces</span>
-            <span>Campamentos</span>
-
-        </div>
-
-    </section>
-
-    <!-- ================================================= -->
-    <!-- HEIDELBERGENSIS -->
-    <!-- ================================================= -->
-
-    <section class="species" id="heidelbergensis">
-
-        <div class="node">
-
-            <img
-                src="assets/heidelbergensis.jpg"
-                alt="Homo heidelbergensis">
-
-        </div>
-
-        <div class="species-name">
-
-            Homo heidelbergensis
-
-        </div>
-
-        <div class="species-period">
-
-            700.000 - 200.000 años
-
-        </div>
-
-        <div class="satellites">
-
-            <span>Caza organizada</span>
-            <span>Refugios</span>
-
-        </div>
-
-    </section>
-
-    <!-- ================================================= -->
-    <!-- BIFURCACIÓN -->
-    <!-- ================================================= -->
-
-    <section class="branch-zone">
-
-        <div class="branch-label">
-
-            Divergencia Evolutiva
-
+        <div class="clade-title">
+            Paranthropus
         </div>
 
         <div class="branch-row">
 
-            <!-- ====================== -->
-            <!-- NEANDERTAL -->
-            <!-- ====================== -->
-
-            <section
-                class="species branch-node"
-                id="neanderthal">
+            <section class="species" id="aethiopicus">
 
                 <div class="node">
-
-                    <img
-                        src="assets/neanderthal.jpg"
-                        alt="Neanderthal">
-
+                    <img src="assets/aethiopicus.jpg">
                 </div>
 
                 <div class="species-name">
-
-                    Homo neanderthalensis
-
-                </div>
-
-                <div class="species-period">
-
-                    400.000 - 40.000 años
-
-                </div>
-
-                <div class="satellites">
-
-                    <span>Enterramientos</span>
-                    <span>Cuidado social</span>
-
+                    P. aethiopicus
                 </div>
 
             </section>
 
-            <!-- ====================== -->
-            <!-- SAPIENS -->
-            <!-- ====================== -->
-
-            <section
-                class="species branch-node sapiens"
-                id="sapiens">
+            <section class="species" id="boisei">
 
                 <div class="node">
-
-                    <img
-                        src="assets/sapiens.jpg"
-                        alt="Homo sapiens">
-
+                    <img src="assets/boisei.jpg">
                 </div>
 
                 <div class="species-name">
+                    P. boisei
+                </div>
 
+            </section>
+
+            <section class="species" id="robustus">
+
+                <div class="node">
+                    <img src="assets/robustus.jpg">
+                </div>
+
+                <div class="species-name">
+                    P. robustus
+                </div>
+
+            </section>
+
+        </div>
+
+    </section>
+
+    <!-- ====================================== -->
+    <!-- HOMO -->
+    <!-- ====================================== -->
+
+    <section class="clade homo">
+
+        <div class="clade-title">
+            Género Homo
+        </div>
+
+        <section class="species" id="habilis">
+
+            <div class="node">
+                <img src="assets/habilis.jpg">
+            </div>
+
+            <div class="species-name">
+                Homo habilis
+            </div>
+
+        </section>
+
+        <section class="species" id="rudolfensis">
+
+            <div class="node">
+                <img src="assets/rudolfensis.jpg">
+            </div>
+
+            <div class="species-name">
+                Homo rudolfensis
+            </div>
+
+        </section>
+
+        <section class="species major" id="erectus">
+
+            <div class="node">
+                <img src="assets/erectus.jpg">
+            </div>
+
+            <div class="species-name">
+                Homo erectus
+            </div>
+
+            <div class="satellites">
+
+                <span>Fuego</span>
+                <span>Migraciones</span>
+                <span>Bifaces</span>
+
+            </div>
+
+        </section>
+
+        <section class="species" id="heidelbergensis">
+
+            <div class="node">
+                <img src="assets/heidelbergensis.jpg">
+            </div>
+
+            <div class="species-name">
+                Homo heidelbergensis
+            </div>
+
+        </section>
+
+        <div class="branch-row">
+
+            <section class="species" id="neanderthal">
+
+                <div class="node">
+                    <img src="assets/neanderthal.jpg">
+                </div>
+
+                <div class="species-name">
+                    Neanderthal
+                </div>
+
+            </section>
+
+            <section class="species" id="denisova">
+
+                <div class="node">
+                    <img src="assets/denisova.jpg">
+                </div>
+
+                <div class="species-name">
+                    Denisovanos
+                </div>
+
+            </section>
+
+            <section class="species major" id="sapiens">
+
+                <div class="node">
+                    <img src="assets/sapiens.jpg">
+                </div>
+
+                <div class="species-name">
                     Homo sapiens
-
-                </div>
-
-                <div class="species-period">
-
-                    300.000 años - presente
-
-                </div>
-
-                <div class="satellites">
-
-                    <span>Arte</span>
-                    <span>Lenguaje</span>
-                    <span>Mitos</span>
-                    <span>Religión</span>
-
                 </div>
 
             </section>
@@ -310,112 +290,3 @@
         </div>
 
     </section>
-
-    <!-- ================================================= -->
-    <!-- HITOS HUMANIDAD -->
-    <!-- ================================================= -->
-
-    <section class="event" id="cognitive">
-
-        <div class="event-date">
-            70.000 años
-        </div>
-
-        <div class="event-title">
-            Revolución Cognitiva
-        </div>
-
-    </section>
-
-    <section class="event" id="agriculture">
-
-        <div class="event-date">
-            10.000 BC
-        </div>
-
-        <div class="event-title">
-            Agricultura
-        </div>
-
-    </section>
-
-    <section class="event" id="villages">
-
-        <div class="event-date">
-            8.000 BC
-        </div>
-
-        <div class="event-title">
-            Aldeas Permanentes
-        </div>
-
-    </section>
-
-    <section class="event" id="metallurgy">
-
-        <div class="event-date">
-            6.000 BC
-        </div>
-
-        <div class="event-title">
-            Metalurgia del Cobre
-        </div>
-
-    </section>
-
-    <section class="event" id="cities">
-
-        <div class="event-date">
-            4.000 BC
-        </div>
-
-        <div class="event-title">
-            Ciudades e Irrigación
-        </div>
-
-    </section>
-
-    <!-- ================================================= -->
-    <!-- SUMERIA -->
-    <!-- ================================================= -->
-
-    <section id="sumeria">
-
-        <div class="node civilization">
-
-            <img
-                src="assets/sumeria.jpg"
-                alt="Sumeria">
-
-        </div>
-
-        <div class="species-name">
-
-            Sumeria
-
-        </div>
-
-        <div class="species-period">
-
-            3000 BC
-
-        </div>
-
-        <div class="civilization-text">
-
-            Escritura cuneiforme ·
-            Ciudades Estado ·
-            Burocracia ·
-            Comercio ·
-            Irrigación
-
-        </div>
-
-    </section>
-
-</main>
-
-<script src="app.js"></script>
-
-</body>
-</html>
