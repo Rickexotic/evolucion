@@ -11,17 +11,17 @@ document.getElementById("info-content");
 
 let evolutionData = null;
 
-/* ======================================================
+/* =====================================================
    CONFIG
-====================================================== */
+===================================================== */
 
 const LEVEL_HEIGHT = 450;
 const COLUMN_WIDTH = 420;
 const TREE_CENTER = 1200;
 
-/* ======================================================
-   WIKIPEDIA
-====================================================== */
+/* =====================================================
+   IMAGES
+===================================================== */
 
 const FALLBACK_IMAGE =
 "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Question_Mark.svg/512px-Question_Mark.svg.png";
@@ -53,18 +53,22 @@ async function fetchWikipediaImage(name){
     catch{
 
         return FALLBACK_IMAGE;
+
     }
 
 }
 
-/* ======================================================
-   PERIOD
-====================================================== */
+/* =====================================================
+   PERIOD FORMAT
+===================================================== */
 
 function formatMillions(value){
 
-    if(value === 0)
+    if(value === 0){
+
         return "Presente";
+
+    }
 
     const abs =
     Math.abs(value);
@@ -87,15 +91,15 @@ function formatPeriod(species){
 
     return `
     ${formatMillions(species.start)}
-    – 
+    —
     ${formatMillions(species.end)}
     `;
 
 }
 
-/* ======================================================
+/* =====================================================
    POSITION
-====================================================== */
+===================================================== */
 
 function getX(species){
 
@@ -116,39 +120,33 @@ function getY(species){
 
 }
 
-/* ======================================================
-   NODE
-====================================================== */
+/* =====================================================
+   SPECIES NODE
+===================================================== */
 
 async function createSpecies(species){
 
-    const node =
+    const card =
     document.createElement("section");
 
-    node.className =
+    card.className =
     `species ${species.type || ""}`;
 
-    node.id =
+    card.id =
     species.id;
 
-    const x =
-    getX(species);
+    card.style.left =
+    `${getX(species)}px`;
 
-    const y =
-    getY(species);
-
-    node.style.left =
-    `${x}px`;
-
-    node.style.top =
-    `${y}px`;
+    card.style.top =
+    `${getY(species)}px`;
 
     const image =
     await fetchWikipediaImage(
         species.name
     );
 
-    node.innerHTML = `
+    card.innerHTML = `
 
         <div class="node">
 
@@ -178,23 +176,26 @@ async function createSpecies(species){
 
     `;
 
-    node.addEventListener(
-
+    card.addEventListener(
         "click",
+        e=>{
 
-        ()=>showSpecies(
-            species.id
-        )
+            e.stopPropagation();
 
+            selectSpecies(
+                species.id
+            );
+
+        }
     );
 
-    return node;
+    return card;
 
 }
 
-/* ======================================================
-   HTML
-====================================================== */
+/* =====================================================
+   RENDER NODES
+===================================================== */
 
 async function renderSpecies(){
 
@@ -208,13 +209,11 @@ async function renderSpecies(){
         evolutionData.species
     ){
 
-        if(
-            species.level >
-            maxLevel
-        ){
-            maxLevel =
-            species.level;
-        }
+        maxLevel =
+        Math.max(
+            maxLevel,
+            species.level
+        );
 
         const node =
         await createSpecies(
@@ -232,127 +231,218 @@ async function renderSpecies(){
 
 }
 
-/* ======================================================
-   INFO
-====================================================== */
+/* =====================================================
+   PANEL
+===================================================== */
 
-function showSpecies(id){
-
-    const species =
-    evolutionData.species.find(
-        x => x.id === id
-    );
-
-    if(!species)
-        return;
-
-    document
-    .querySelectorAll(".species")
-    .forEach(el=>{
-
-        el.classList.remove(
-            "selected"
-        );
-
-    });
-
-    document.body
-    .classList
-    .add("tree-focus");
-
-    document
-    .getElementById(id)
-    .classList
-    .add("selected");
+function updatePanel(species){
 
     const descendants =
-    evolutionData.species
-    .filter(
-        x =>
-        x.parent === species.id
-    );
+
+        evolutionData.species
+        .filter(
+
+            x =>
+            x.parent === species.id
+
+        )
+
+        .map(
+            x => x.name
+        );
 
     panel.innerHTML = `
 
-        <h2>${species.name}</h2>
+        <h2>
+
+            ${species.name}
+
+        </h2>
 
         <p>
+
             ${formatPeriod(species)}
+
         </p>
 
         <hr>
 
-        <h3>Capacidad Craneal</h3>
+        <h3>
+            Capacidad Craneal
+        </h3>
 
         <p>
-            ${
-            species.brain_cc ||
-            "Sin dato"
-            } cc
-        </p>
 
-        <h3>Regiones</h3>
-
-        <p>
             ${
-            species.regions
-            ?
-            species.regions.join("<br>")
-            :
-            "-"
+                species.brain_cc
+                ?
+                species.brain_cc + " cc"
+                :
+                "Sin dato"
             }
+
         </p>
 
-        <h3>Innovaciones</h3>
+        <h3>
+            Regiones
+        </h3>
 
         <p>
+
             ${
-            species.innovations
-            ?
-            species.innovations.join("<br>")
-            :
-            "-"
+                species.regions
+                ?
+                species.regions.join("<br>")
+                :
+                "-"
             }
+
         </p>
 
-        <h3>Descendientes</h3>
+        <h3>
+            Innovaciones
+        </h3>
 
         <p>
+
             ${
-            descendants.length
-            ?
-            descendants
-            .map(x=>x.name)
-            .join("<br>")
-            :
-            "-"
+                species.innovations
+                ?
+                species.innovations.join("<br>")
+                :
+                "-"
             }
+
         </p>
 
-        <h3>Descripción</h3>
+        <h3>
+            Descendientes
+        </h3>
 
         <p>
+
+            ${
+                descendants.length
+                ?
+                descendants.join("<br>")
+                :
+                "-"
+            }
+
+        </p>
+
+        <h3>
+            Descripción
+        </h3>
+
+        <p>
+
             ${species.description}
+
         </p>
 
     `;
 
 }
 
-/* ======================================================
-   SVG POSITIONS
-====================================================== */
+/* =====================================================
+   SELECT
+===================================================== */
+
+function clearSelection(){
+
+    document.body
+    .classList
+    .remove("tree-focus");
+
+    document
+    .querySelectorAll(".species")
+    .forEach(node=>{
+
+        node.classList.remove(
+            "selected"
+        );
+
+    });
+
+}
+
+function selectSpecies(id){
+
+    clearSelection();
+
+    document.body
+    .classList
+    .add("tree-focus");
+
+    const node =
+    document.getElementById(id);
+
+    node.classList.add(
+        "selected"
+    );
+
+    node.scrollIntoView({
+
+        behavior:"smooth",
+
+        block:"center"
+
+    });
+
+    const species =
+
+        evolutionData.species.find(
+
+            x =>
+            x.id === id
+
+        );
+
+    updatePanel(species);
+
+}
+
+/* =====================================================
+   CLICK OUTSIDE
+===================================================== */
+
+document.addEventListener(
+
+    "click",
+
+    ()=>{
+
+        clearSelection();
+
+        panel.innerHTML = `
+
+            <div class="placeholder">
+
+                Selecciona una especie
+
+            </div>
+
+        `;
+
+    }
+
+);
+
+/* =====================================================
+   SVG HELPERS
+===================================================== */
 
 function center(id){
 
-    const el =
+    const node =
     document.getElementById(id);
 
-    if(!el)
+    if(!node)
         return null;
 
     const r =
-    el.getBoundingClientRect();
+    node.getBoundingClientRect();
 
     return {
 
@@ -370,9 +460,9 @@ function center(id){
 
 }
 
-/* ======================================================
-   DRAW LINE
-====================================================== */
+/* =====================================================
+   CURVES
+===================================================== */
 
 function drawLine(
     from,
@@ -386,8 +476,12 @@ function drawLine(
     const b =
     center(to);
 
-    if(!a || !b)
+    if(
+        !a ||
+        !b
+    ){
         return;
+    }
 
     const path =
     document.createElementNS(
@@ -395,10 +489,10 @@ function drawLine(
         "path"
     );
 
-    const c =
+    const curve =
     Math.abs(
         b.y-a.y
-    )*.45;
+    ) * .45;
 
     path.setAttribute(
 
@@ -410,19 +504,25 @@ function drawLine(
         C
 
         ${a.x}
-        ${a.y+c}
+        ${a.y+curve}
 
         ${b.x}
-        ${b.y-c}
+        ${b.y-curve}
 
         ${b.x}
         ${b.y}
         `
+
     );
 
     path.setAttribute(
         "fill",
         "none"
+    );
+
+    path.setAttribute(
+        "opacity",
+        ".6"
     );
 
     switch(type){
@@ -431,12 +531,12 @@ function drawLine(
 
             path.setAttribute(
                 "stroke",
-                "#111"
+                "rgba(0,0,0,.18)"
             );
 
             path.setAttribute(
                 "stroke-width",
-                "3"
+                "1.6"
             );
 
             break;
@@ -445,17 +545,17 @@ function drawLine(
 
             path.setAttribute(
                 "stroke",
-                "#666"
+                "rgba(0,0,0,.14)"
             );
 
             path.setAttribute(
                 "stroke-width",
-                "2"
+                "1.4"
             );
 
             path.setAttribute(
                 "stroke-dasharray",
-                "14 10"
+                "10 10"
             );
 
             break;
@@ -464,12 +564,12 @@ function drawLine(
 
             path.setAttribute(
                 "stroke",
-                "#2563eb"
+                "#5f8ac8"
             );
 
             path.setAttribute(
                 "stroke-width",
-                "2"
+                "1.4"
             );
 
             path.setAttribute(
@@ -485,76 +585,85 @@ function drawLine(
 
 }
 
-/* ======================================================
-   TREE
-====================================================== */
+/* =====================================================
+   DRAW TREE
+===================================================== */
 
 function drawTree(){
 
     svg.innerHTML = "";
 
-    svg.style.height =
-    tree.scrollHeight + "px";
+    svg.setAttribute(
+        "height",
+        tree.scrollHeight
+    );
 
     evolutionData.species.forEach(
-        species => {
 
-        if(species.parent){
+        species=>{
 
-            drawLine(
-
-                species.parent,
-
-                species.id,
-
-                "direct"
-
-            );
-
-        }
-
-        if(species.connections){
-
-            species.connections.forEach(
-                connection => {
+            if(species.parent){
 
                 drawLine(
 
+                    species.parent,
+
                     species.id,
 
-                    connection.target,
-
-                    connection.type
+                    "direct"
 
                 );
 
-            });
+            }
+
+            if(species.connections){
+
+                species.connections.forEach(
+
+                    c=>{
+
+                        drawLine(
+
+                            species.id,
+
+                            c.target,
+
+                            c.type
+
+                        );
+
+                    }
+
+                );
+
+            }
 
         }
 
-    });
+    );
 
 }
 
-/* ======================================================
-   JSON
-====================================================== */
+/* =====================================================
+   LOAD JSON
+===================================================== */
 
 async function loadJson(){
 
     const response =
-    await fetch(
-        "evolution.json"
-    );
+
+        await fetch(
+            "evolution.json"
+        );
 
     evolutionData =
-    await response.json();
+        await response.json();
 
 }
 
-/* ======================================================
+/* =====================================================
    INIT
-====================================================== */
+===================================================== */
 
 async function init(){
 
