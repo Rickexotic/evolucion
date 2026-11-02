@@ -192,29 +192,219 @@ function list(items){
 
 function updatePanel(species){
 
-    const descendants =
-        evolutionData.species
-        .filter(x => x.parent === species.id)
-        .map(x => x.name);
+    const morphology =
+    species.morphology || {};
+
+    const discovery =
+    species.discovery || {};
+
+    const environment =
+    species.environment || {};
+
+    const evolution =
+    species.evolution || {};
+
+    const facts =
+    species.facts || [];
 
     panel.innerHTML = `
-        <h2>${species.name}</h2>
-        <p>${formatPeriod(species)}</p>
+
+        <h2>
+            ${species.name}
+        </h2>
+
+        <p>
+            ${formatPeriod(species)}
+        </p>
+
         <hr>
-        <h3>Capacidad Craneal</h3>
-        <p>${species.brain_cc ? species.brain_cc + " cc" : "Sin dato"}</p>
-        <h3>Regiones</h3>
-        <p>${list(species.regions)}</p>
-        <h3>Innovaciones</h3>
-        <p>${list(species.innovations)}</p>
-        <h3>Descendientes</h3>
-        <p>${list(descendants)}</p>
-        <h3>Descripción</h3>
-        <p>${species.description}</p>
+
+        <h3>
+            IMPORTANCIA EVOLUTIVA
+        </h3>
+
+        <p>
+            ${species.importance || "-"}
+        </p>
+
+        <h3>
+            ERA
+        </h3>
+
+        <p>
+            ${species.time_band || "-"}
+        </p>
+
+        <h3>
+            MORFOLOGÍA
+        </h3>
+
+        <p>
+
+            🧠 Cerebro:
+            ${morphology.brain_cc ?? "Sin dato"} cc
+
+            <br><br>
+
+            📏 Altura:
+            ${morphology.height_m ?? "-"} m
+
+            <br><br>
+
+            ⚖️ Peso:
+            ${morphology.weight_kg ?? "-"} kg
+
+            <br><br>
+
+            🚶 Locomoción:
+            ${morphology.locomotion ?? "-"}
+        </p>
+
+        <h3>
+            DESCUBRIMIENTO
+        </h3>
+
+        <p>
+
+            📅 Año:
+            ${discovery.year ?? "-"}
+
+            <br><br>
+
+            📍 Sitio:
+            ${discovery.site ?? "-"}
+
+            <br><br>
+
+            🌍 País:
+            ${discovery.country ?? "-"}
+
+            <br><br>
+
+            👨‍🔬 Descubridores:
+            ${
+              discovery.discoverers
+              ?
+              discovery.discoverers.join(", ")
+              :
+              "-"
+            }
+
+        </p>
+
+        <h3>
+            AMBIENTE
+        </h3>
+
+        <p>
+
+            🌿 Hábitat:
+            ${environment.habitat ?? "-"}
+
+            <br><br>
+
+            ☀️ Clima:
+            ${environment.climate ?? "-"}
+
+        </p>
+
+        <h3>
+            DISTRIBUCIÓN
+        </h3>
+
+        <p>
+
+            ${
+              species.regions
+              ?
+              species.regions.join("<br>")
+              :
+              "-"
+            }
+
+        </p>
+
+        <h3>
+            INNOVACIONES
+        </h3>
+
+        <p>
+
+            ${
+              species.innovations
+              ?
+              species.innovations.join("<br>")
+              :
+              "-"
+            }
+
+        </p>
+
+        <h3>
+            DATOS CLAVE
+        </h3>
+
+        <ul>
+
+            ${
+              facts
+                .map(
+                  fact =>
+                  `<li>${fact}</li>`
+                )
+                .join("")
+            }
+
+        </ul>
+
+        <h3>
+            EVOLUCIÓN
+        </h3>
+
+        <p>
+
+            Antecesor:
+
+            <br>
+
+            ${
+              evolution.ancestor ??
+              "Desconocido"
+            }
+
+            <br><br>
+
+            Descendientes:
+
+            <br>
+
+            ${
+              evolution.descendants &&
+              evolution.descendants.length
+
+              ?
+
+              evolution.descendants.join("<br>")
+
+              :
+
+              "Ninguno"
+            }
+
+        </p>
+
+        <h3>
+            DESCRIPCIÓN
+        </h3>
+
+        <p>
+
+            ${species.description}
+
+        </p>
+
     `;
-
 }
-
 /* =====================================================
    SELECT
 ===================================================== */
