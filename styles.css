@@ -1,11 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap');
 
 :root{
+
     --paper:#ffffff;
-    --text:#1a1a1a;
-    --muted:#777;
-    --line:rgba(0,0,0,.12);
+    --text:#1e1e1e;
+    --muted:#8b8b8b;
     --border:rgba(0,0,0,.08);
+
 }
 
 *{
@@ -19,211 +20,222 @@ html{
 }
 
 body{
-    font-family:'Cormorant Garamond', serif;
+
+    font-family:'Cormorant Garamond',serif;
+
     background:#fff;
+
     color:var(--text);
+
     overflow-x:hidden;
 }
 
 img{
     display:block;
-    max-width:100%;
+    width:100%;
 }
 
-/* =====================================================
-   SVG CONEXIONES
-===================================================== */
+/* =======================================================
+   SVG
+======================================================= */
 
-#evolution-svg{
+#tree-svg{
+
     position:absolute;
-    inset:0;
+
+    top:0;
+    left:0;
+
     width:100%;
     height:100%;
+
     pointer-events:none;
-    z-index:1;
+
+    z-index:0;
 }
 
-/* =====================================================
+/* =======================================================
    HERO
-===================================================== */
+======================================================= */
 
 .hero{
-    min-height:60vh;
+
+    min-height:70vh;
+
     display:flex;
+
     justify-content:center;
+
     align-items:center;
+
     text-align:center;
-    padding:60px 30px;
+
+    padding:60px 40px;
 }
 
 .hero-inner{
+
     max-width:1000px;
 }
 
 .hero-period{
-    font-size:14px;
-    letter-spacing:8px;
+
+    font-size:13px;
+
+    letter-spacing:10px;
+
     text-transform:uppercase;
+
     color:var(--muted);
+
     margin-bottom:20px;
 }
 
 .hero h1{
-    font-size:clamp(72px,9vw,140px);
+
+    font-size:clamp(80px,10vw,160px);
+
     line-height:.9;
+
     font-weight:300;
+
     margin-bottom:25px;
 }
 
 .hero p{
-    font-size:24px;
-    color:#666;
+
+    font-size:26px;
+
     line-height:1.5;
-}
 
-/* =====================================================
-   TIMELINE
-===================================================== */
-
-#timeline{
-    max-width:1800px;
-    margin:0 auto;
-    position:relative;
-}
-
-#timeline::before{
-    content:"";
-    position:absolute;
-    left:50%;
-    top:0;
-    width:2px;
-    height:100%;
-    background:var(--line);
-    transform:translateX(-50%);
-    z-index:0;
-}
-
-/* =====================================================
-   ERA
-===================================================== */
-
-.era{
-    padding:100px 0 50px;
-    text-align:center;
-}
-
-.era-label{
-    font-size:13px;
-    letter-spacing:10px;
-    text-transform:uppercase;
-    color:#999;
-}
-
-/* =====================================================
-   SPECIES
-===================================================== */
-
-.species{
-    min-height:650px;
-    display:flex;
-    align-items:center;
-    position:relative;
-}
-
-.species.left{
-    justify-content:flex-start;
-    padding-left:8%;
-}
-
-.species.right{
-    justify-content:flex-end;
-    padding-right:8%;
-}
-
-/* =====================================================
-   NODO
-===================================================== */
-
-.node{
-    display:grid;
-    grid-template-columns:320px 1fr;
-    gap:60px;
-    align-items:center;
-    position:relative;
-    z-index:10;
-}
-
-.node.large{
-    grid-template-columns:380px 1fr;
-}
-
-/* =====================================================
-   FOTO
-===================================================== */
-
-.photo{
-    width:320px;
-    height:320px;
-    border-radius:50%;
-    overflow:hidden;
-    box-shadow:
-        0 25px 60px rgba(0,0,0,.16);
-    background:#fff;
-}
-
-.node.large .photo{
-    width:380px;
-    height:380px;
-}
-
-.photo img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
-
-/* =====================================================
-   INFO
-===================================================== */
-
-.info{
-    max-width:650px;
-    position:relative;
-    z-index:20;
-}
-
-.date{
-    font-size:13px;
-    text-transform:uppercase;
-    letter-spacing:5px;
-    color:var(--muted);
-}
-
-.info h2{
-    margin-top:12px;
-    font-size:72px;
-    line-height:.95;
-    font-weight:400;
-}
-
-.info p{
-    margin-top:18px;
-    font-size:24px;
-    line-height:1.5;
     color:#555;
 }
 
-/* =====================================================
-   SATÉLITES
-===================================================== */
+/* =======================================================
+   TREE
+======================================================= */
 
-.satellites{
-    position:absolute;
-    inset:0;
-    pointer-events:none;
+#tree{
+
+    width:100%;
+
+    max-width:1800px;
+
+    margin:auto;
+
+    position:relative;
+
+    z-index:2;
 }
 
-.satellite{
+/* =======================================================
+   SPECIES
+======================================================= */
+
+.species{
+
+    position:relative;
+
+    min-height:600px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-align:center;
+}
+
+.species.major{
+
+    min-height:700px;
+}
+
+/* =======================================================
+   IMAGE NODES
+======================================================= */
+
+.node{
+
+    width:260px;
+    height:260px;
+
+    border-radius:50%;
+
+    overflow:hidden;
+
+    position:relative;
+
+    z-index:10;
+
+    background:white;
+
+    box-shadow:
+    0 25px 60px rgba(0,0,0,.15);
+}
+
+.major .node{
+
+    width:320px;
+    height:320px;
+}
+
+.node img{
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+}
+
+/* =======================================================
+   NOMBRE
+======================================================= */
+
+.species-name{
+
+    margin-top:30px;
+
+    font-size:68px;
+
+    font-weight:400;
+
+    line-height:1;
+}
+
+.species-period{
+
+    margin-top:12px;
+
+    letter-spacing:5px;
+
+    text-transform:uppercase;
+
+    font-size:12px;
+
+    color:var(--muted);
+}
+
+/* =======================================================
+   SATELITES
+======================================================= */
+
+.satellites{
+
+    position:relative;
+
+    width:600px;
+
+    height:180px;
+
+    margin-top:30px;
+}
+
+.satellites span{
+
     position:absolute;
 
     padding:10px 18px;
@@ -235,300 +247,321 @@ img{
     border:1px solid rgba(0,0,0,.08);
 
     box-shadow:
-        0 4px 14px rgba(0,0,0,.06);
+    0 4px 14px rgba(0,0,0,.06);
 
     font-size:14px;
-
-    white-space:nowrap;
-
-    z-index:15;
 }
 
+/* ===================================== */
 /* AFAR */
+/* ===================================== */
 
-#afarensis .satellite:nth-child(1){
-    left:48%;
-    top:38%;
+#afarensis .satellites span:nth-child(1){
+
+    left:120px;
+    top:20px;
 }
 
-#afarensis .satellite:nth-child(2){
-    left:50%;
-    top:52%;
+#afarensis .satellites span:nth-child(2){
+
+    right:120px;
+    top:20px;
 }
 
+/* ===================================== */
 /* HABILIS */
+/* ===================================== */
 
-#habilis .satellite:nth-child(1){
-    left:34%;
-    top:34%;
+#habilis .satellites span:nth-child(1){
+
+    left:70px;
+    top:20px;
 }
 
-#habilis .satellite:nth-child(2){
-    left:30%;
-    top:50%;
+#habilis .satellites span:nth-child(2){
+
+    left:260px;
+    top:10px;
 }
 
-#habilis .satellite:nth-child(3){
-    left:35%;
-    top:64%;
+#habilis .satellites span:nth-child(3){
+
+    right:80px;
+    top:20px;
 }
 
+/* ===================================== */
 /* ERGASTER */
+/* ===================================== */
 
-#ergaster .satellite:nth-child(1){
-    left:50%;
-    top:36%;
+#ergaster .satellites span:nth-child(1){
+
+    left:130px;
+    top:20px;
 }
 
-#ergaster .satellite:nth-child(2){
-    left:54%;
-    top:58%;
+#ergaster .satellites span:nth-child(2){
+
+    right:130px;
+    top:20px;
 }
 
+/* ===================================== */
 /* ERECTUS */
+/* ===================================== */
 
-#erectus .satellite:nth-child(1){
-    left:30%;
-    top:28%;
+#erectus .satellites span:nth-child(1){
+
+    left:20px;
+    top:20px;
 }
 
-#erectus .satellite:nth-child(2){
-    left:26%;
-    top:44%;
+#erectus .satellites span:nth-child(2){
+
+    left:180px;
+    top:0;
 }
 
-#erectus .satellite:nth-child(3){
-    left:30%;
-    top:60%;
+#erectus .satellites span:nth-child(3){
+
+    right:180px;
+    top:0;
 }
 
-#erectus .satellite:nth-child(4){
-    left:40%;
-    top:76%;
+#erectus .satellites span:nth-child(4){
+
+    right:20px;
+    top:20px;
 }
 
+/* ===================================== */
 /* HEIDELBERGENSIS */
+/* ===================================== */
 
-#heidelbergensis .satellite:nth-child(1){
-    left:50%;
-    top:35%;
+#heidelbergensis .satellites span:nth-child(1){
+
+    left:120px;
+    top:20px;
 }
 
-#heidelbergensis .satellite:nth-child(2){
-    left:56%;
-    top:56%;
+#heidelbergensis .satellites span:nth-child(2){
+
+    right:120px;
+    top:20px;
 }
 
-/* NEANDERTHAL */
+/* ===================================== */
+/* BRANCH AREA */
+/* ===================================== */
 
-#neanderthal .satellite:nth-child(1){
-    left:34%;
-    top:38%;
-}
+.branch-zone{
 
-#neanderthal .satellite:nth-child(2){
-    left:40%;
-    top:58%;
-}
+    position:relative;
 
-/* SAPIENS */
-
-#sapiens .satellite:nth-child(1){
-    left:52%;
-    top:24%;
-}
-
-#sapiens .satellite:nth-child(2){
-    left:62%;
-    top:36%;
-}
-
-#sapiens .satellite:nth-child(3){
-    left:64%;
-    top:54%;
-}
-
-#sapiens .satellite:nth-child(4){
-    left:54%;
-    top:72%;
-}
-
-/* =====================================================
-   BRANCH
-===================================================== */
-
-.branch{
-    height:180px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    padding:120px 0 160px;
 }
 
 .branch-label{
-    font-size:18px;
-    letter-spacing:5px;
+
+    text-align:center;
+
+    letter-spacing:8px;
+
+    font-size:13px;
+
     text-transform:uppercase;
+
     color:#999;
+
+    margin-bottom:100px;
 }
 
-/* =====================================================
-   HITOS
-===================================================== */
+.branch-row{
 
-.milestone{
-    min-height:300px;
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:120px;
+
+    align-items:start;
+
+    max-width:1600px;
+
+    margin:auto;
+}
+
+/* ===================================== */
+/* NEANDERTAL */
+/* ===================================== */
+
+#neanderthal .satellites span:nth-child(1){
+
+    left:120px;
+    top:20px;
+}
+
+#neanderthal .satellites span:nth-child(2){
+
+    right:120px;
+    top:20px;
+}
+
+/* ===================================== */
+/* SAPIENS */
+/* ===================================== */
+
+#sapiens .satellites span:nth-child(1){
+
+    left:0;
+    top:25px;
+}
+
+#sapiens .satellites span:nth-child(2){
+
+    left:180px;
+    top:0;
+}
+
+#sapiens .satellites span:nth-child(3){
+
+    right:180px;
+    top:0;
+}
+
+#sapiens .satellites span:nth-child(4){
+
+    right:0;
+    top:25px;
+}
+
+/* =======================================================
+   EVENTS
+======================================================= */
+
+.event{
+
+    min-height:220px;
 
     display:flex;
+
+    flex-direction:column;
 
     justify-content:center;
 
     align-items:center;
 
     text-align:center;
-
-    padding:40px;
 }
 
-.milestone-date{
-    font-size:13px;
-
-    text-transform:uppercase;
+.event-date{
 
     letter-spacing:6px;
 
     color:#888;
 
-    margin-bottom:18px;
-}
-
-.milestone h3{
-    font-size:58px;
-    font-weight:300;
-}
-
-/* =====================================================
-   SUMERIA
-===================================================== */
-
-.civilization{
-
-    min-height:700px;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    padding:80px 40px;
-}
-
-.civilization-inner{
-
-    display:flex;
-
-    gap:80px;
-
-    align-items:center;
-
-    max-width:1400px;
-}
-
-.civilization-inner img{
-
-    width:420px;
-
-    height:420px;
-
-    border-radius:50%;
-
-    object-fit:cover;
-
-    box-shadow:
-        0 25px 60px rgba(0,0,0,.18);
-}
-
-.civilization-info span{
+    font-size:13px;
 
     text-transform:uppercase;
 
-    letter-spacing:5px;
-
-    color:#777;
+    margin-bottom:18px;
 }
 
-.civilization-info h2{
+.event-title{
 
-    margin-top:15px;
-
-    font-size:90px;
+    font-size:58px;
 
     font-weight:300;
 }
 
-.civilization-info p{
+/* =======================================================
+   SUMERIA
+======================================================= */
 
-    margin-top:20px;
+#sumeria{
+
+    min-height:900px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-align:center;
+
+    padding-bottom:150px;
+}
+
+.civilization{
+
+    width:420px;
+    height:420px;
+}
+
+#sumeria .species-name{
+
+    font-size:110px;
+}
+
+.civilization-text{
+
+    margin-top:30px;
+
+    max-width:900px;
 
     font-size:24px;
 
     line-height:1.6;
 
     color:#555;
-
-    max-width:700px;
 }
 
-/* =====================================================
+/* =======================================================
    RESPONSIVE
-===================================================== */
+======================================================= */
 
-@media(max-width:1100px){
+@media(max-width:1200px){
 
-    #timeline::before{
-        left:40px;
-    }
+    .species-name{
 
-    .species{
-        min-height:auto;
-        padding:80px 30px !important;
-    }
-
-    .node,
-    .node.large{
-        display:flex;
-        flex-direction:column;
-        align-items:flex-start;
-        gap:30px;
-    }
-
-    .photo{
-        width:240px;
-        height:240px;
-    }
-
-    .node.large .photo{
-        width:280px;
-        height:280px;
-    }
-
-    .info h2{
-        font-size:46px;
-    }
-
-    .info p{
-        font-size:20px;
-    }
-
-    .civilization-inner{
-        flex-direction:column;
-    }
-
-    .civilization-info h2{
-        font-size:64px;
-    }
-
-    .milestone h3{
         font-size:42px;
     }
+
+    .event-title{
+
+        font-size:40px;
+    }
+
+    .branch-row{
+
+        grid-template-columns:1fr;
+
+        gap:100px;
+    }
+
+    .node{
+
+        width:220px;
+        height:220px;
+    }
+
+    .major .node{
+
+        width:260px;
+        height:260px;
+    }
+
+    .satellites{
+
+        width:90%;
+    }
+
+    #sumeria .species-name{
+
+        font-size:70px;
+    }
+
 }
