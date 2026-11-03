@@ -1303,18 +1303,25 @@ getMilestones();
 
     }).join("");
 
-    const periods = PERIODS.map(p=>{
+ const periods = PERIODS.map(p=>{
 
-        const top = yOf(p.start);
+    const top = yOf(p.start);
 
-        return `<div class="tl-period" style="top:${top}px;height:${yOf(p.end) - top}px"><span>${p.name}</span></div>`;
+    return `
+        <div
+            class="tl-period"
+            style="
+                top:${top}px;
+                height:${yOf(p.end) - top}px
+            ">
 
-    }).join("");
+            <span>${p.name}</span>
 
-  const bars = "";
+        </div>
+    `;
 
-    }).join("");
-
+}).join("");
+   
    const MIN_MILESTONE_GAP = 78;
 
 let lastY = -9999;
@@ -1375,7 +1382,7 @@ const marks =
 
     `).join("");
 
-    treeLayer.innerHTML = bands + periods + bars + `<div class="tl-milestones">${marks}</div>`;
+    treeLayer.innerHTML = bands + periods + `<div class="tl-milestones">${marks}</div>`;
 
 }
 
