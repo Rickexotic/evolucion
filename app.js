@@ -172,19 +172,23 @@ function layout(){
 
             const offset = species.column * 22;
 
-            x = width / 2 + offset;
+            x = width / 2 + 14 + offset;
             y = TOP_PADDING + index * MOBILE_ROW_HEIGHT;
-            cardWidth = width - 32 - Math.abs(offset) * 2;
+            cardWidth = width - 90 - Math.abs(offset) * 2;
 
         }
         else{
 
+            const left = Math.min(190, width * .13);
+            const right = Math.min(200, width * .14);
+            const inner = width - left - right;
+
             const step = Math.min(
                 COLUMN_WIDTH,
-                (width - CARD_WIDTH) / 4
+                (inner - CARD_WIDTH) / 4
             );
 
-            x = width / 2 + species.column * step;
+            x = left + inner / 2 + species.column * step;
             y = TOP_PADDING + (species.level - 1) * LEVEL_HEIGHT;
             cardWidth = CARD_WIDTH;
 
@@ -422,10 +426,10 @@ const PERIODS = [
 ];
 
 const EPOCHS = [
-    { name:"Mioceno", start:-7200000, end:-5333000, color:"#ebe3cd" },
-    { name:"Plioceno", start:-5333000, end:-2580000, color:"#e1e8d2" },
-    { name:"Pleistoceno", start:-2580000, end:-11700, color:"#d9e5ea" },
-    { name:"Holoceno", start:-11700, end:0, color:"#f0dccf" }
+    { name:"Mioceno", start:-7200000, end:-5333000, color:"#e3dfd2" },
+    { name:"Plioceno", start:-5333000, end:-2580000, color:"#e9e6dc" },
+    { name:"Pleistoceno", start:-2580000, end:-11700, color:"#efede6" },
+    { name:"Holoceno", start:-11700, end:0, color:"#f5f4ef" }
 ];
 
 const MILESTONES = [
@@ -484,6 +488,14 @@ function buildTimeline(){
 
     dots.innerHTML = evolutionData.species.map((sp, i)=>{
 
+        const top = timeTop(sp.start);
+        const height = timeTop(sp.end) - top;
+        const shift = (i % 3 - 1) * 6;
+
+        return `<i class="tl-bar" data-i="${i}" style="left:calc(${speciesX(sp)}% + ${shift}px);top:${top}%;height:max(${height}%,5px)"></i>`;
+
+    }).join("") + evolutionData.species.map((sp, i)=>{
+
         const mid = (sp.start + sp.end) / 2;
 
         return `
@@ -514,17 +526,14 @@ function updateTimeline(species, index){
 
     const mid = (species.start + species.end) / 2;
     const x = speciesX(species);
-    const top = timeTop(species.start);
-    const bottom = timeTop(species.end);
-
     stageFigure.style.setProperty("--x", `${x}%`);
     stageFigure.style.setProperty("--y", `${timeTop(mid)}%`);
 
-    const range = document.getElementById("tl-range");
+    document.querySelectorAll(".tl-bar").forEach(bar=>{
 
-    range.style.left = `${x}%`;
-    range.style.top = `${top}%`;
-    range.style.height = `max(${bottom - top}%, 6px)`;
+        bar.classList.toggle("is-active", +bar.dataset.i === index);
+
+    });
 
     document.querySelectorAll(".tl-dot").forEach(dot=>{
 
@@ -537,15 +546,6 @@ function updateTimeline(species, index){
         const e = EPOCHS[+band.dataset.epoch];
 
         band.classList.toggle("is-active", mid > e.start && mid <= e.end + 1);
-
-    });
-
-    document.querySelectorAll(".tl-milestone").forEach(el=>{
-
-        el.classList.toggle(
-            "is-reached",
-            MILESTONES[+el.dataset.i].year <= species.end
-        );
 
     });
 
@@ -1094,10 +1094,107 @@ function drawTree(){
 
 }
 
+/* =====================================================
+   TIMELINE EN EL ÁRBOL (siempre visible)
+===================================================== */
+
+const treeLayer = document.createElement("div");
+
+treeLayer.id = "tl-tree";
+treeLayer.setAttribute("aria-hidden", "true");
+tree.prepend(treeLayer);
+
+// Interpola año -> y usando la posición de cada especie en el árbol
+function makeYMap(height){
+
+    const anchors = evolutionData.species
+        .map(sp=>{
+
+            const card = document.getElementById(sp.id);
+
+            return {
+                year:(sp.start + sp.end) / 2,
+                y:parseFloat(card.style.top) + card.querySelector(".node").offsetHeight / 2
+            };
+
+        });
+
+    const years = [-T0, ...anchors.map(a=>a.year), 0].sort((a, b)=>a - b);
+    const ys = [0, ...anchors.map(a=>a.y), height].sort((a, b)=>a - b);
+
+    return year=>{
+
+        if(year <= years[0]) return ys[0];
+
+        for(let i = 1; i < years.length; i++){
+
+            if(year <= years[i]){
+
+                const span = years[i] - years[i - 1] || 1;
+
+                return ys[i - 1] + (ys[i] - ys[i - 1]) * (year - years[i - 1]) / span;
+
+            }
+
+        }
+
+        return ys[ys.length - 1];
+
+    };
+
+}
+
+function drawTreeTimeline(){
+
+    const height = tree.clientHeight;
+    const yOf = makeYMap(height);
+
+    const bands = EPOCHS.map(e=>{
+
+        const top = yOf(e.start);
+
+        const h = yOf(e.end) - top;
+
+        return `
+            <div class="tl-band${h < 60 ? " is-thin" : ""}" style="top:${top}px;height:${h}px;--c:${e.color}">
+                <div class="tl-epoch"><strong>${e.name}</strong><span>${formatYears(e.start)} – ${formatYears(e.end)}</span></div>
+            </div>
+        `;
+
+    }).join("");
+
+    const periods = PERIODS.map(p=>{
+
+        const top = yOf(p.start);
+
+        return `<div class="tl-period" style="top:${top}px;height:${yOf(p.end) - top}px"><span>${p.name}</span></div>`;
+
+    }).join("");
+
+    const bars = evolutionData.species.map((sp, i)=>{
+
+        const top = yOf(sp.start);
+        const h = Math.max(yOf(sp.end) - top, 4);
+
+        return `<i class="tl-bar" style="left:calc(var(--rail) + ${i * 3.5}px);top:${top}px;height:${h}px" title="${sp.name}"></i>`;
+
+    }).join("");
+
+    const marks = MILESTONES.map(m=>`
+        <div class="tl-milestone" style="top:${yOf(m.year)}px">
+            <i></i><span>${m.label}<small>${formatYears(m.year)}</small></span>
+        </div>
+    `).join("");
+
+    treeLayer.innerHTML = bands + periods + bars + `<div class="tl-milestones">${marks}</div>`;
+
+}
+
 function refresh(){
 
     layout();
     drawTree();
+    drawTreeTimeline();
 
 }
 
