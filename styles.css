@@ -243,7 +243,8 @@ button{
 
 .species-name{
 
-    margin-top:18px;
+    margin-top:20px;
+    font-size:28px;
 
     display:flex;
 
@@ -252,6 +253,7 @@ button{
     gap:2px;
 
     line-height:1.05;
+    text-align:center;
 
 }
 .species-name span{
@@ -1324,8 +1326,8 @@ body.panel-open #species-panel{
 
     height:38px;
 
-    background:
-        rgba(175,165,135,.65);
+     background:
+    rgba(171,159,126,.55);
 
 }
 .candle-body{
@@ -1336,10 +1338,7 @@ body.panel-open #species-panel{
 
     border-radius:2px;
 
-    background:
-
-        #c7bea6;
-
+    background:#c2b79c;
 }
 .species-content{
 
