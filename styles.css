@@ -238,7 +238,7 @@ button{
 .species-name,
 .species-period{
 
-    background:rgba(255,255,255,.92);
+    background:transparent;
 }
 
 .species-name{
@@ -325,12 +325,9 @@ body.panel-open #stage{
 
     background:var(--c);
 
-    opacity:.6;
-
-    transition:opacity .4s ease;
+    
 }
 
-.tl-band.is-active{ opacity:1; }
 
 .tl-band + .tl-band{
     border-top:1px dashed var(--dash);
@@ -443,12 +440,7 @@ body.panel-open #stage{
 
     padding-right:10px;
 
-    opacity:.4;
-
-    transition:opacity .3s ease;
 }
-
-.tl-milestone.is-reached{ opacity:1; }
 
 .tl-milestone i{
 
@@ -466,7 +458,7 @@ body.panel-open #stage{
     border:2px solid var(--text);
 }
 
-.tl-milestone.is-reached i{ background:var(--text); }
+.tl-milestone i{ background:var(--text); }
 
 .tl-milestone span{
 
@@ -499,17 +491,26 @@ body.panel-open #stage{
     right:var(--gr);
 }
 
-.tl-range{
+.tl-bar{
 
     position:absolute;
 
-    width:4px;
+    width:3px;
 
-    margin-left:calc(var(--img) * -.8 - 2px);
+    margin-left:-1.5px;
 
     border-radius:2px;
 
-    background:rgba(32,32,32,.55);
+    background:rgba(32,32,32,.16);
+
+    pointer-events:none;
+}
+
+.tl-bar.is-active{
+
+    width:4px;
+
+    background:rgba(32,32,32,.6);
 }
 
 .tl-dot{
@@ -1229,4 +1230,48 @@ body.panel-open #species-panel{
     margin-top:10px;
 
     font-size:16px;
+}
+
+/* ======================================
+   LÍNEA DE TIEMPO EN EL ÁRBOL
+====================================== */
+
+#tree{
+    --rail:min(132px,9vw);
+    overflow:hidden;
+}
+
+#tl-tree{
+
+    position:absolute;
+    inset:0;
+
+    z-index:0;
+
+    pointer-events:none;
+}
+
+#tl-tree .tl-epoch{ left:40px; }
+
+#tl-tree .tl-band + .tl-band{ border-top:1px dashed var(--dash); }
+
+#tl-tree .tl-milestones{ width:min(200px,14vw); }
+
+#tl-tree .tl-milestone span{ font-size:13px; }
+
+@media(max-width:1100px){
+
+    #tl-tree .tl-milestone small{ display:none; }
+
+}
+
+@media(max-width:760px){
+
+    #tl-tree .tl-milestones,
+    #tl-tree .tl-bar{ display:none; }
+
+    #tl-tree .tl-epoch{ left:38px; }
+    #tl-tree .tl-epoch strong{ font-size:15px; }
+    #tl-tree .tl-epoch span{ font-size:10px; }
+
 }
