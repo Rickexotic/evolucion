@@ -1149,14 +1149,14 @@ function drawTreeTimeline(){
     const height = tree.clientHeight;
     const yOf = makeYMap(height);
 
-    const bands = EPOCHS.map(e=>{
+    const bands = EPOCHS.map((e, i)=>{
 
         const top = yOf(e.start);
 
         const h = yOf(e.end) - top;
 
         return `
-            <div class="tl-band${h < 60 ? " is-thin" : ""}" style="top:${top}px;height:${h}px;--c:${e.color}">
+            <div class="tl-band${h < 60 ? " is-thin" : ""}" data-epoch="${i}" style="top:${top}px;height:${h}px;--c:${e.color}">
                 <div class="tl-epoch"><strong>${e.name}</strong><span>${formatYears(e.start)} – ${formatYears(e.end)}</span></div>
             </div>
         `;
