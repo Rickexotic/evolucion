@@ -1102,18 +1102,58 @@ panelBody.addEventListener("scroll", ()=>{
 // Offsets ignore CSS transforms, so lines stay stable while a card is scaled.
 function anchor(id, side){
 
-    const card = document.getElementById(id);
+    const card =
+    document.getElementById(id);
 
-    if(!card) return null;
+    if(!card)
+        return null;
 
-    const x = parseFloat(card.style.left);
-    const top = parseFloat(card.style.top);
+    const node =
+    card.querySelector(".node");
+
+    if(!node)
+        return null;
+
+    const nodeRect =
+    node.getBoundingClientRect();
+
+    const treeRect =
+    tree.getBoundingClientRect();
+
+    const x =
+        nodeRect.left
+        -
+        treeRect.left
+        +
+        nodeRect.width / 2;
 
     if(side === "top"){
 
-        return { x, y: top + card.querySelector(".node").offsetTop };
+        return {
+
+            x,
+
+            y:
+                nodeRect.top
+                -
+                treeRect.top
+
+        };
 
     }
+
+    return {
+
+        x,
+
+        y:
+            nodeRect.bottom
+            -
+            treeRect.top
+
+    };
+
+}
 
    const visual =
 
@@ -1282,12 +1322,7 @@ getMilestones();
 
     }).join("");
 
-    const bars = evolutionData.species.map((sp, i)=>{
-
-        const top = yOf(sp.start);
-        const h = Math.max(yOf(sp.end) - top, 4);
-
-        return `<i class="tl-bar" style="left:calc(var(--rail) + ${i * 3.5}px);top:${top}px;height:${h}px" title="${sp.name}"></i>`;
+  const bars = "";
 
     }).join("");
 
