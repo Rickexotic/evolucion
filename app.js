@@ -163,7 +163,7 @@ Math.max(
         )
     )
 
-    * 60
+    * 18
 
 );
    card.innerHTML = `
