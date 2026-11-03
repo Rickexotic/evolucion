@@ -27,6 +27,7 @@ let lastFocus = null;
 ===================================================== */
 
 const LEVEL_HEIGHT = 330;
+const TIMELINE_HEIGHT = 5200;
 const COLUMN_WIDTH = 340;
 const CARD_WIDTH = 300;
 const MOBILE_ROW_HEIGHT = 215;
@@ -146,20 +147,26 @@ parts.join(" ");
 
 const candleHeight =
 
-    Math.max(
+Math.max(
 
-        50,
+    30,
 
-        Math.min(
+    (
+        Math.abs(
 
-            170,
+            timeTop(species.end)
 
-            duration / 10000
+            -
+
+            timeTop(species.start)
 
         )
+    )
 
-    );
-card.innerHTML = `
+    * 60
+
+);
+   card.innerHTML = `
 
     <div class="species-visual">
 
@@ -253,7 +260,7 @@ function layout(){
     const width = tree.clientWidth;
     const mobile = mobileQuery.matches;
 
-    let bottom = 0;
+   let bottom = TIMELINE_HEIGHT;
 
     evolutionData.species.forEach((species, index)=>{
 
@@ -286,7 +293,26 @@ function layout(){
             );
 
             x = left + inner / 2 + species.column * step;
-            y = TOP_PADDING + (species.level - 1) * LEVEL_HEIGHT;
+           const centerYear =
+
+(
+    species.start +
+    species.end
+) / 2;
+
+y =
+
+TOP_PADDING +
+
+(
+    timeTop(centerYear)
+    / 100
+)
+
+*
+
+TIMELINE_HEIGHT;
+
             cardWidth = CARD_WIDTH;
 
         }
@@ -295,11 +321,12 @@ function layout(){
         card.style.top = `${y}px`;
         card.style.width = `${cardWidth}px`;
 
-        bottom = Math.max(bottom, y + card.offsetHeight);
+        
 
     });
 
-    tree.style.height = `${bottom + TOP_PADDING + 70}px`;
+    tree.style.height =
+`${TIMELINE_HEIGHT + 300}px`;
 
 }
 
@@ -510,6 +537,25 @@ const T0 = 7200000;
 
 // Escala de raíz cuadrada: da más espacio a los períodos recientes
 function timeTop(year){
+
+   function timelineYPixels(year, height){
+
+    return (
+        timeTop(year) / 100
+    ) * height;
+
+}
+function centerYear(species){
+
+    return (
+
+        species.start +
+
+        species.end
+
+    ) / 2;
+
+}
 
     const ago = Math.min(Math.max(-year, 0), T0);
 
