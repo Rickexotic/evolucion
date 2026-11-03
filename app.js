@@ -287,32 +287,66 @@ function layout(){
             const right = Math.min(200, width * .14);
             const inner = width - left - right;
 
-            const step = Math.min(
-                COLUMN_WIDTH,
-                (inner - CARD_WIDTH) / 4
-            );
+      const waterfallOffsets = [
+    -1,
+     0,
+     1,
+     0
+];
 
-            x = left + inner / 2 + species.column * step;
-           const centerYear =
+const waterfall =
 
-(
-    species.start +
-    species.end
-) / 2;
+    waterfallOffsets[
+        (species.level - 1)
+        %
+        waterfallOffsets.length
+    ];
+
+if(species.column === 0){
+
+    x =
+
+        left
+
+        +
+
+        inner / 2
+
+        +
+
+        waterfall * 120;
+
+}
+else{
+
+    x =
+
+        left
+
+        +
+
+        inner / 2
+
+        +
+
+        species.column * 300;
+
+}
 
 y =
 
-TOP_PADDING +
+    TOP_PADDING +
 
-(
-    timeTop(centerYear)
-    / 100
-)
+    (
+        timeTop(centerYear)
+        / 100
+    )
 
-*
+    *
 
-TIMELINE_HEIGHT;
+    TIMELINE_HEIGHT;
 
+cardWidth = CARD_WIDTH;
             cardWidth = CARD_WIDTH;
 
         }
