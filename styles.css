@@ -243,15 +243,21 @@ button{
 
 .species-name{
 
-    margin-top:10px;
+    margin-top:18px;
 
-    padding:2px 8px 0;
+    display:flex;
 
-    font-size:26px;
+    flex-direction:column;
+
+    gap:2px;
 
     line-height:1.05;
 
-    font-weight:500;
+}
+.species-name span{
+
+    display:block;
+
 }
 
 .species-period{
@@ -1273,5 +1279,74 @@ body.panel-open #species-panel{
     #tl-tree .tl-epoch{ left:38px; }
     #tl-tree .tl-epoch strong{ font-size:15px; }
     #tl-tree .tl-epoch span{ font-size:10px; }
+
+}
+
+.species-visual{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:26px;
+
+}
+.species-candle{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    width:42px;
+
+    flex-shrink:0;
+
+}
+.candle-top,
+.candle-bottom{
+
+    font-size:11px;
+
+    color:#191919;
+
+    letter-spacing:.5px;
+
+    white-space:nowrap;
+
+}
+.candle-line{
+
+    width:2px;
+
+    height:38px;
+
+    background:
+        rgba(175,165,135,.65);
+
+}
+.candle-body{
+
+    width:18px;
+
+    height:118px;
+
+    border-radius:2px;
+
+    background:
+
+        #c7bea6;
+
+}
+.species-content{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
 
 }
