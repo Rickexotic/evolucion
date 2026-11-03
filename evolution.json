@@ -1,4 +1,203 @@
 {
+  "milestones": [
+
+    {
+      "year": -7000000,
+      "label": "Primeros homininos"
+    },
+
+    {
+      "year": -6000000,
+      "label": "Bipedismo temprano"
+    },
+
+    {
+      "year": -4400000,
+      "label": "Transición entre árboles y suelo"
+    },
+
+    {
+      "year": -3900000,
+      "label": "Marcha bípeda eficiente"
+    },
+
+    {
+      "year": -2600000,
+      "label": "Primeras herramientas de piedra"
+    },
+
+    {
+      "year": -2200000,
+      "label": "Aumento significativo del cerebro"
+    },
+
+    {
+      "year": -1800000,
+      "label": "Salida inicial de África"
+    },
+
+    {
+      "year": -1500000,
+      "label": "Industria achelense"
+    },
+
+    {
+      "year": -1000000,
+      "label": "Control sistemático del fuego"
+    },
+
+    {
+      "year": -800000,
+      "label": "Asentamientos prolongados"
+    },
+
+    {
+      "year": -500000,
+      "label": "Tecnologías avanzadas de caza"
+    },
+
+    {
+      "year": -400000,
+      "label": "Lanzas y caza cooperativa"
+    },
+
+    {
+      "year": -300000,
+      "label": "Aparición de Homo sapiens"
+    },
+
+    {
+      "year": -200000,
+      "label": "Diversificación de poblaciones humanas"
+    },
+
+    {
+      "year": -150000,
+      "label": "Primeros enterramientos rituales"
+    },
+
+    {
+      "year": -120000,
+      "label": "Cuidado social de enfermos y ancianos"
+    },
+
+    {
+      "year": -100000,
+      "label": "Lenguaje simbólico complejo"
+    },
+
+    {
+      "year": -70000,
+      "label": "Arte y pensamiento abstracto"
+    },
+
+    {
+      "year": -45000,
+      "label": "Pintura rupestre"
+    },
+
+    {
+      "year": -40000,
+      "label": "Instrumentos musicales"
+    },
+
+    {
+      "year": -30000,
+      "label": "Expansión global de Homo sapiens"
+    },
+
+    {
+      "year": -17000,
+      "label": "Últimos mamuts en Eurasia"
+    },
+
+    {
+      "year": -12000,
+      "label": "Fin de la última glaciación"
+    },
+
+    {
+      "year": -10000,
+      "label": "Agricultura"
+    },
+
+    {
+      "year": -9500,
+      "label": "Primeros templos monumentales"
+    },
+
+    {
+      "year": -9000,
+      "label": "Domesticación de animales"
+    },
+
+    {
+      "year": -7000,
+      "label": "Primeras aldeas permanentes"
+    },
+
+    {
+      "year": -5500,
+      "label": "Primeras ciudades"
+    },
+
+    {
+      "year": -4000,
+      "label": "Metalurgia del cobre"
+    },
+
+    {
+      "year": -3200,
+      "label": "Invención de la escritura"
+    },
+
+    {
+      "year": -3000,
+      "label": "Primeros estados organizados"
+    },
+
+    {
+      "year": -2500,
+      "label": "Primeros sistemas legales"
+    },
+
+    {
+      "year": -2000,
+      "label": "Religiones organizadas complejas"
+    },
+
+    {
+      "year": -500,
+      "label": "Filosofía clásica y ciencia temprana"
+    },
+
+    {
+      "year": 1450,
+      "label": "Imprenta"
+    },
+
+    {
+      "year": 1760,
+      "label": "Revolución Industrial"
+    },
+
+    {
+      "year": 1903,
+      "label": "Primer vuelo controlado"
+    },
+
+    {
+      "year": 1969,
+      "label": "Llegada a la Luna"
+    },
+
+    {
+      "year": 1990,
+      "label": "Internet global"
+    }
+
+  ],
+
   "species": [
 
     {
