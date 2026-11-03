@@ -260,45 +260,112 @@ function bullets(items){
 
 }
 
+/* Gráficos comparativos: especie elegida vs Homo sapiens moderno */
+
+function personSvg(height, max, cls){
+
+    const h = Math.max(height / max * 100, 4);
+
+    return `
+        <svg class="cmp-person ${cls}" viewBox="0 0 40 100" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+            <g transform="translate(0 ${100 - h}) scale(${h / 100})">
+                <circle cx="20" cy="9" r="7.5"/>
+                <path d="M12 20h16l4 34h-5l-1 46h-6V62h-4v38h-6l-1-46h-5z"/>
+            </g>
+        </svg>
+    `;
+
+}
+
+function compareBlock(label, mine, ref, species, unitFmt, visual){
+
+    if(mine === null || mine === undefined){
+
+        return `
+            <div class="cmp-row">
+                <div class="cmp-label">${label}</div>
+                <div class="cmp-empty">${NO_DATA}</div>
+            </div>
+        `;
+
+    }
+
+    const max = Math.max(mine, ref);
+
+    return `
+        <div class="cmp-row">
+            <div class="cmp-label">${label}</div>
+            <div class="cmp-visual">
+                ${visual(mine, ref, max)}
+            </div>
+            <div class="cmp-values">
+                <span class="cmp-key cmp-mine">${unitFmt(mine)}</span>
+                <span class="cmp-key cmp-ref">${unitFmt(ref)}</span>
+            </div>
+        </div>
+    `;
+
+}
+
+function buildComparison(species){
+
+    const m = species.morphology || {};
+    const ref = (evolutionData.species.find(x=>x.id === "sapiens") || {}).morphology || {};
+    const short = species.name.split(" ").map((w, i)=>i ? w : w[0] + ".").join(" ");
+
+    const brain = (mine, other, max)=>{
+
+        // El volumen crece con el cubo del radio
+        const r = v=>Math.cbrt(v / max) * 100;
+
+        return `
+            <div class="cmp-brain">
+                <span class="cmp-circle cmp-mine" style="--d:${r(mine)}%"></span>
+                <span class="cmp-circle cmp-ref" style="--d:${r(other)}%"></span>
+            </div>
+        `;
+
+    };
+
+    const height = (mine, other, max)=>`
+        <div class="cmp-people">
+            ${personSvg(mine, max, "cmp-mine")}
+            ${personSvg(other, max, "cmp-ref")}
+        </div>
+    `;
+
+    const weight = (mine, other, max)=>`
+        <div class="cmp-bars">
+            <span class="cmp-bar cmp-mine" style="--w:${mine / max * 100}%"></span>
+            <span class="cmp-bar cmp-ref" style="--w:${other / max * 100}%"></span>
+        </div>
+    `;
+
+    return `
+        <div class="cmp-legend">
+            <span class="cmp-key cmp-mine">${short}</span>
+            <span class="cmp-key cmp-ref">H. sapiens moderno</span>
+        </div>
+        ${compareBlock("Cerebro", m.brain_cc, ref.brain_cc, species, v=>`${v} cc`, brain)}
+        ${compareBlock("Estatura", m.height_m, ref.height_m, species, v=>`${v} m`, height)}
+        ${compareBlock("Peso", m.weight_kg, ref.weight_kg, species, v=>`${v} kg`, weight)}
+        <p class="cmp-loco"><span class="muted">Locomoción:</span> ${m.locomotion || NO_DATA}</p>
+    `;
+
+}
+
 function buildPanel(species){
 
-    const morphology = species.morphology || {};
     const discovery = species.discovery || {};
     const environment = species.environment || {};
-    const evolution = species.evolution || {};
-
-    const descendants =
-        evolution.descendants && evolution.descendants.length
-        ? evolution.descendants.join(", ")
-        : "Ninguno";
 
     const columns = [
 
         [
-            section("Importancia evolutiva", text(species.importance)),
-            section("Era", text(species.time_band)),
-            section("Descripción", text(species.description))
-        ],
-
-        [
-            section("Morfología", rows([
-                ["Cerebro", show(morphology.brain_cc, "cc")],
-                ["Altura", show(morphology.height_m, "m")],
-                ["Peso", show(morphology.weight_kg, "kg")],
-                ["Locomoción", show(morphology.locomotion)]
-            ])),
-            section("Ambiente", rows([
-                ["Hábitat", show(environment.habitat)],
-                ["Clima", show(environment.climate)]
-            ]))
-        ],
-
-        [
-            section("Innovaciones", bullets(species.innovations)),
-            section("Datos clave", bullets(species.facts))
-        ],
-
-        [
+            section("Distribución", `
+                ${text(species.regions && species.regions.join(", "))}
+                <div class="globe-slot"></div>
+            `),
             section("Descubrimiento", rows([
                 ["Año", show(discovery.year)],
                 ["Sitio", show(discovery.site)],
@@ -307,15 +374,21 @@ function buildPanel(species){
                     discovery.discoverers &&
                     discovery.discoverers.join(", ")
                 )]
-            ])),
-            section("Distribución", `
-                ${text(species.regions && species.regions.join(", "))}
-                <div class="globe-slot"></div>
-            `),
-            section("Evolución", rows([
-                ["Antecesor", show(evolution.ancestor ?? "Desconocido")],
-                ["Descendientes", descendants]
             ]))
+        ],
+
+        [
+            section("Importancia evolutiva", text(species.importance)),
+            section("Descripción", text(species.description)),
+            section("Ambiente", rows([
+                ["Hábitat", show(environment.habitat)],
+                ["Clima", show(environment.climate)]
+            ])),
+            section("Datos clave", bullets(species.facts))
+        ],
+
+        [
+            section("Comparativo con Homo sapiens", buildComparison(species))
         ]
 
     ];
@@ -328,6 +401,156 @@ function buildPanel(species){
 
 }
 
+/* =====================================================
+   TIMELINE (fondo del escenario: eras, años e hitos)
+===================================================== */
+
+const T0 = 7200000;
+
+// Escala de raíz cuadrada: da más espacio a los períodos recientes
+function timeTop(year){
+
+    const ago = Math.min(Math.max(-year, 0), T0);
+
+    return (1 - Math.sqrt(ago / T0)) * 100;
+
+}
+
+const PERIODS = [
+    { name:"Neógeno", start:-7200000, end:-2580000 },
+    { name:"Cuaternario", start:-2580000, end:0 }
+];
+
+const EPOCHS = [
+    { name:"Mioceno", start:-7200000, end:-5333000, color:"#ebe3cd" },
+    { name:"Plioceno", start:-5333000, end:-2580000, color:"#e1e8d2" },
+    { name:"Pleistoceno", start:-2580000, end:-11700, color:"#d9e5ea" },
+    { name:"Holoceno", start:-11700, end:0, color:"#f0dccf" }
+];
+
+const MILESTONES = [
+    { year:-6000000, label:"Posible bipedismo" },
+    { year:-2600000, label:"Primeras herramientas de piedra" },
+    { year:-1800000, label:"Salida de África" },
+    { year:-1000000, label:"Control del fuego" },
+    { year:-400000, label:"Lanzas y caza cooperativa" },
+    { year:-100000, label:"Arte y lenguaje simbólico" },
+    { year:-10000, label:"Agricultura" }
+];
+
+const SIDE_PAD = 8;
+
+function formatYears(value){
+
+    if(value === 0) return "hoy";
+
+    const abs = Math.abs(value);
+
+    if(abs >= 1000000) return `${+(abs / 1000000).toFixed(2)} Ma`;
+    if(abs >= 1000) return `${+(abs / 1000).toFixed(1)} mil años`;
+
+    return `${abs} años`;
+
+}
+
+function buildTimeline(){
+
+    const bands = document.getElementById("tl-bands");
+    const milestones = document.getElementById("tl-milestones");
+    const dots = document.getElementById("tl-dots");
+
+    const block = (item, cls, attrs, inner, extra = "")=>{
+
+        const top = timeTop(item.start);
+        const height = timeTop(item.end) - top;
+
+        return `<div class="${cls}" ${attrs} style="top:${top}%;height:${height}%;${extra}">${inner}</div>`;
+
+    };
+
+    bands.innerHTML =
+        EPOCHS.map((e, i)=>block(
+            e, "tl-band", `data-epoch="${i}"`,
+            `<div class="tl-epoch"><strong>${e.name}</strong><span>${formatYears(e.start)} – ${formatYears(e.end)}</span></div>`,
+            `--c:${e.color}`
+        ).replace("tl-band\"", `tl-band${timeTop(e.end) - timeTop(e.start) < 8 ? " is-thin" : ""}"`)).join("") +
+        PERIODS.map(p=>block(p, "tl-period", "", `<span>${p.name}</span>`)).join("");
+
+    milestones.innerHTML = MILESTONES.map((m, i)=>`
+        <div class="tl-milestone" data-i="${i}" style="top:${timeTop(m.year)}%">
+            <i></i><span>${m.label}<small>${formatYears(m.year)}</small></span>
+        </div>
+    `).join("");
+
+    dots.innerHTML = evolutionData.species.map((sp, i)=>{
+
+        const mid = (sp.start + sp.end) / 2;
+
+        return `
+            <button class="tl-dot" type="button" data-i="${i}"
+                title="${sp.name}" aria-label="${sp.name}"
+                style="left:${speciesX(sp)}%;top:${timeTop(mid)}%"></button>
+        `;
+
+    }).join("");
+
+    dots.addEventListener("click", e=>{
+
+        const dot = e.target.closest(".tl-dot");
+
+        if(dot) goTo(+dot.dataset.i);
+
+    });
+
+}
+
+function speciesX(species){
+
+    return 50 + species.column * 15;
+
+}
+
+function updateTimeline(species, index){
+
+    const mid = (species.start + species.end) / 2;
+    const x = speciesX(species);
+    const top = timeTop(species.start);
+    const bottom = timeTop(species.end);
+
+    stageFigure.style.setProperty("--x", `${x}%`);
+    stageFigure.style.setProperty("--y", `${timeTop(mid)}%`);
+
+    const range = document.getElementById("tl-range");
+
+    range.style.left = `${x}%`;
+    range.style.top = `${top}%`;
+    range.style.height = `max(${bottom - top}%, 6px)`;
+
+    document.querySelectorAll(".tl-dot").forEach(dot=>{
+
+        dot.classList.toggle("is-active", +dot.dataset.i === index);
+
+    });
+
+    document.querySelectorAll(".tl-band").forEach(band=>{
+
+        const e = EPOCHS[+band.dataset.epoch];
+
+        band.classList.toggle("is-active", mid > e.start && mid <= e.end + 1);
+
+    });
+
+    document.querySelectorAll(".tl-milestone").forEach(el=>{
+
+        el.classList.toggle(
+            "is-reached",
+            MILESTONES[+el.dataset.i].year <= species.end
+        );
+
+    });
+
+}
+
 function fillPanel(index){
 
     const species = evolutionData.species[index];
@@ -337,6 +560,8 @@ function fillPanel(index){
     stageImg.alt = species.name;
     stageName.textContent = species.name;
     stagePeriod.textContent = formatPeriod(species);
+
+    updateTimeline(species, index);
 
     buildPanel(species);
 
@@ -697,7 +922,7 @@ nextBtn.addEventListener("click", ()=>goTo(currentIndex + 1));
 // Clic en el fondo del escenario (fuera de la imagen) cierra el panel
 stage.addEventListener("click", e=>{
 
-    if(!e.target.closest(".stage-figure")) closePanel();
+    if(!e.target.closest(".stage-figure, .tl-dot")) closePanel();
 
 });
 
@@ -887,6 +1112,8 @@ async function init(){
     evolutionData = await response.json();
 
     await renderSpecies();
+
+    buildTimeline();
 
     refresh();
 
