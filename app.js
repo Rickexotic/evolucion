@@ -46,15 +46,31 @@ async function fetchWikipediaImage(name){
 
     try{
 
-        const title = encodeURIComponent(name.replaceAll(" ","_"));
+        const wikiName =
 
-        const response = await fetch(
+            name === "Denisovanos"
+
+            ? "Denisovan"
+
+            : name;
+
+        const title =
+        encodeURIComponent(
+            wikiName.replaceAll(" ","_")
+        );
+
+        const response =
+        await fetch(
             `https://en.wikipedia.org/api/rest_v1/page/summary/${title}`
         );
 
-        const data = await response.json();
+        const data =
+        await response.json();
 
-        return data.thumbnail?.source || FALLBACK_IMAGE;
+        return (
+            data.thumbnail?.source ||
+            FALLBACK_IMAGE
+        );
 
     }
     catch{
@@ -64,7 +80,6 @@ async function fetchWikipediaImage(name){
     }
 
 }
-
 /* =====================================================
    PERIOD FORMAT
 ===================================================== */
@@ -558,7 +573,11 @@ function buildTimeline(){
         ).replace("tl-band\"", `tl-band${timeTop(e.end) - timeTop(e.start) < 8 ? " is-thin" : ""}"`)).join("") +
         PERIODS.map(p=>block(p, "tl-period", "", `<span>${p.name}</span>`)).join("");
 
-    milestones.innerHTML = MILESTONES.map((m, i)=>`
+  const milestoneList =
+evolutionData?.milestones || [];
+
+milestones.innerHTML =
+milestoneList.map((m,i)=>`
         <div class="tl-milestone" data-i="${i}" style="top:${timeTop(m.year)}%">
             <i></i><span>${m.label}<small>${formatYears(m.year)}</small></span>
         </div>
@@ -1096,9 +1115,21 @@ function anchor(id, side){
 
     }
 
-    const period = card.querySelector(".species-period");
+   const visual =
 
-    return { x, y: top + period.offsetTop + period.offsetHeight };
+card.querySelector(
+    ".species-visual"
+);
+
+return {
+
+    x,
+
+    y:
+    top +
+    visual.offsetHeight
+
+};
 
 }
 
