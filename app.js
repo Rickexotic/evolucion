@@ -583,25 +583,31 @@ milestoneList.map((m,i)=>`
         </div>
     `).join("");
 
-    dots.innerHTML = evolutionData.species.map((sp, i)=>{
+  dots.innerHTML =
+evolutionData.species.map((sp, i)=>{
 
-        const top = timeTop(sp.start);
-        const height = timeTop(sp.end) - top;
-        const shift = (i % 3 - 1) * 6;
+    const mid =
 
-        return `<i class="tl-bar" data-i="${i}" style="left:calc(${speciesX(sp)}% + ${shift}px);top:${top}%;height:max(${height}%,5px)"></i>`;
+        (
+            sp.start +
+            sp.end
+        ) / 2;
 
-    }).join("") + evolutionData.species.map((sp, i)=>{
+    return `
+        <button
+            class="tl-dot"
+            type="button"
+            data-i="${i}"
+            title="${sp.name}"
+            aria-label="${sp.name}"
+            style="
+                left:${speciesX(sp)}%;
+                top:${timeTop(mid)}%
+            ">
+        </button>
+    `;
 
-        const mid = (sp.start + sp.end) / 2;
-
-        return `
-            <button class="tl-dot" type="button" data-i="${i}"
-                title="${sp.name}" aria-label="${sp.name}"
-                style="left:${speciesX(sp)}%;top:${timeTop(mid)}%"></button>
-        `;
-
-    }).join("");
+}).join("");
 
     dots.addEventListener("click", e=>{
 
@@ -1155,23 +1161,6 @@ function anchor(id, side){
 
 }
 
-   const visual =
-
-card.querySelector(
-    ".species-visual"
-);
-
-return {
-
-    x,
-
-    y:
-    top +
-    visual.offsetHeight
-
-};
-
-}
 
 function drawLine(from, to, type){
 
