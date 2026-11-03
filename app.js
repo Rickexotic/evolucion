@@ -122,6 +122,28 @@ parts.shift();
 const speciesName =
 parts.join(" ");
 
+   const duration =
+
+    Math.abs(
+        species.start -
+        species.end
+    );
+
+const candleHeight =
+
+    Math.max(
+
+        50,
+
+        Math.min(
+
+            170,
+
+            duration / 10000
+
+        )
+
+    );
 card.innerHTML = `
 
     <div class="species-visual">
@@ -134,7 +156,13 @@ card.innerHTML = `
 
             <div class="candle-line"></div>
 
-            <div class="candle-body"></div>
+           <div
+    class="candle-body"
+    style="
+        height:${candleHeight}px
+    ">
+</div>
+
 
             <div class="candle-line"></div>
 
