@@ -442,48 +442,65 @@ function buildComparison(species){
 
 }
 
+const ICONS = {
+    globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>',
+    star:'<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.500l6.1-.9z"/>',
+    text:'<path d="M5 6h14M5 11h14M5 16h9"/>',
+    leaf:'<path d="M5 19c0-9 5-14 14-14 0 9-5 14-14 14zM5 19l7-7"/>',
+    pin:'<path d="M12 21s-6-5.600-6-11a6 6 0 0 1 12 0c0 5.400-6 11-6 11z"/><circle cx="12" cy="10" r="2"/>',
+    bone:'<path d="M7 17 17 7M5.500 15a2.500 2.500 0 1 0 3.500 3.500M15 5.500A2.500 2.500 0 1 1 18.500 9"/>',
+    list:'<path d="M9 7h10M9 12h10M9 17h10M5 7h.01M5 12h.01M5 17h.01"/>',
+    chart:'<path d="M5 19V9M12 19V5M19 19v-7"/>'
+};
+
+function card(cls, icon, title, body){
+
+    return `
+        <section class="info-card ${cls}">
+            <h3>
+                <svg class="info-icon" viewBox="0 0 24 24" aria-hidden="true">${ICONS[icon]}</svg>
+                ${title}
+            </h3>
+            ${body}
+        </section>
+    `;
+
+}
+
 function buildPanel(species){
 
     const discovery = species.discovery || {};
     const environment = species.environment || {};
+    const facts = (species.facts || []).slice(0, 4);
 
-    const columns = [
-
-        [
-            section("Distribución", `
-                ${text(species.regions && species.regions.join(", "))}
+    panelContent.innerHTML = `
+        <aside class="info-map">
+            ${card("c-map", "globe", "Distribución", `
+                <p class="info-region">${species.regions && species.regions.length ? species.regions.join(", ") : NO_DATA}</p>
                 <div class="globe-slot"></div>
-            `),
-            section("Descubrimiento", rows([
+            `)}
+        </aside>
+
+        <div class="info-grid">
+            ${card("c-imp", "star", "Importancia evolutiva", text(species.importance) + `
+                <h4>Descripción</h4>${text(species.description)}
+            `)}
+            ${card("c-env", "leaf", "Ambiente", rows([
+                ["Hábitat", show(environment.habitat)],
+                ["Clima", show(environment.climate)]
+            ]))}
+            ${card("c-cmp", "chart", "Comparativo con Homo sapiens", buildComparison(species))}
+            ${card("c-dis", "pin", "Descubrimiento", rows([
                 ["Año", show(discovery.year)],
                 ["Sitio", show(discovery.site)],
                 ["País", show(discovery.country)],
-                ["Descubridores", show(
-                    discovery.discoverers &&
-                    discovery.discoverers.join(", ")
-                )]
-            ]))
-        ],
-
-        [
-            section("Importancia evolutiva", text(species.importance)),
-            section("Descripción", text(species.description)),
-            section("Ambiente", rows([
-                ["Hábitat", show(environment.habitat)],
-                ["Clima", show(environment.climate)]
-            ])),
-            section("Datos clave", bullets(species.facts))
-        ],
-
-        [
-            section("Comparativo con Homo sapiens", buildComparison(species))
-        ]
-
-    ];
-
-    panelContent.innerHTML = columns
-        .map(col=>`<div class="panel-col">${col.join("")}</div>`)
-        .join("");
+                ["Por", show(discovery.discoverers && discovery.discoverers.join(", "))]
+            ]))}
+            ${card("c-fact", "list", "Datos clave", facts.length
+                ? `<ul>${facts.map(f=>`<li>${f}</li>`).join("")}</ul>`
+                : `<p>${NO_DATA}</p>`)}
+        </div>
+    `;
 
     showGlobe(species);
 
@@ -543,6 +560,32 @@ function formatYears(value){
 
 }
 
+// Oculta la etiqueta de los hitos que se solaparían; el punto y su título siguen visibles
+function declutterMilestones(container, minGap = 34){
+
+    if(!container) return;
+
+    const items = [...container.querySelectorAll(".tl-milestone")];
+
+    let last = -Infinity;
+
+    items.forEach(el=>{
+
+        el.classList.remove("is-collapsed");
+
+        const label = el.querySelector("span");
+
+        el.title = label ? label.textContent.replace(/\s+/g, " ").trim() : "";
+
+        const y = el.offsetTop;
+
+        if(y - last < minGap) el.classList.add("is-collapsed");
+        else last = y;
+
+    });
+
+}
+
 function buildTimeline(){
 
     const bands = document.getElementById("tl-bands");
@@ -575,6 +618,8 @@ milestoneList.map((m,i)=>`
             <i></i><span>${m.label}<small>${formatYears(m.year)}</small></span>
         </div>
     `).join("");
+
+    declutterMilestones(milestones);
 
   dots.innerHTML =
 evolutionData.species.map((sp, i)=>{
@@ -916,7 +961,7 @@ function showGlobe(species){
 
     slot.appendChild(globeHost);
 
-    const size = Math.min(slot.clientWidth || 260, 260);
+    const size = Math.max(Math.min(slot.clientWidth || 260, slot.clientHeight || 260), 120);
 
     globe.width(size).height(size);
 
@@ -1337,67 +1382,16 @@ getMilestones();
 
 }).join("");
    
-   const MIN_MILESTONE_GAP = 56;
-
-let lastY = -9999;
-
-const positionedMilestones =
-
-    milestones.map(m=>{
-
-        let y = yOf(m.year);
-
-        if(
-            y - lastY
-            <
-            MIN_MILESTONE_GAP
-        ){
-
-            y =
-            lastY +
-            MIN_MILESTONE_GAP;
-
-        }
-
-        lastY = y;
-
-        return {
-
-            ...m,
-
-            renderY:y
-
-        };
-
-    });
-
-const marks =
-
-    positionedMilestones.map(m=>`
-
-        <div
-            class="tl-milestone"
-            style="top:${m.renderY}px">
-
+    const marks = milestones.map(m=>`
+        <div class="tl-milestone" style="top:${yOf(m.year)}px">
             <i></i>
-
-            <span>
-
-                ${m.label}
-
-                <small>
-
-                    ${formatYears(m.year)}
-
-                </small>
-
-            </span>
-
+            <span>${m.label}<small>${formatYears(m.year)}</small></span>
         </div>
-
     `).join("");
 
     treeLayer.innerHTML = bands + periods + `<div class="tl-milestones">${marks}</div>`;
+
+    declutterMilestones(treeLayer.querySelector(".tl-milestones"), 30);
 
 }
 
@@ -1480,6 +1474,8 @@ window.addEventListener("resize", ()=>{
     resizeTimer = setTimeout(()=>{
 
         if(evolutionData && currentIndex === -1) refresh();
+
+        declutterMilestones(document.getElementById("tl-milestones"));
 
     }, 80);
 

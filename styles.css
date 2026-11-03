@@ -9,7 +9,7 @@
     --dash-soft:rgba(32,32,32,.22);
     --node-size:148px;
 
-    --panel-h:clamp(340px,52vh,480px);
+    --panel-h:clamp(400px,60vh,600px);
 
     --shadow:
         0 12px 32px rgba(47,45,38,.12);
@@ -1466,3 +1466,229 @@ body.panel-open #scale-hud{ opacity:0; }
     #scale-hud small{ display:none; }
 
 }
+
+/* ======================================
+   PANEL: INFOGRAFÍA SIN DESPLAZAMIENTO
+====================================== */
+
+.panel-body{
+    padding:16px clamp(16px,2.5vw,36px) 18px;
+    overflow-y:auto;
+}
+
+.panel-grid{
+
+    display:grid;
+    grid-template-columns:minmax(220px,30%) minmax(0,1fr);
+    gap:18px;
+
+    height:100%;
+    max-width:1500px;
+    margin:0 auto;
+}
+
+.info-map{ min-height:0; display:flex; }
+
+.info-map .info-card{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+}
+
+.info-map h3{ align-self:flex-start; }
+
+.info-region{ font-size:18px; margin-bottom:4px; }
+
+.info-map .globe-slot{
+    flex:1;
+    min-height:0;
+    width:100%;
+    margin:0;
+    align-items:center;
+}
+
+.info-grid{
+
+    min-height:0;
+
+    display:grid;
+    grid-template-columns:1.15fr 1fr 1.2fr;
+    grid-template-rows:minmax(0,1fr) minmax(0,1fr);
+    grid-template-areas:
+        "imp env cmp"
+        "dis fact cmp";
+    gap:12px;
+}
+
+.c-imp{ grid-area:imp; }
+.c-env{ grid-area:env; }
+.c-cmp{ grid-area:cmp; }
+.c-dis{ grid-area:dis; }
+.c-fact{ grid-area:fact; }
+
+.info-card{
+
+    --accent:var(--muted);
+
+    min-width:0;
+    min-height:0;
+    overflow:hidden;
+
+    padding:12px 16px 12px;
+
+    background:linear-gradient(180deg,#fff,#f7f6f2);
+
+    border:1px solid rgba(32,32,32,.08);
+    border-top:3px solid var(--accent);
+    border-radius:14px;
+
+    box-shadow:0 6px 18px rgba(47,45,38,.07);
+}
+
+.c-map{ --accent:#7d7d74; }
+.c-imp{ --accent:#c2562b; }
+.c-env{ --accent:#4f6f73; }
+.c-cmp{ --accent:#c2562b; }
+.c-dis{ --accent:#4f6f73; }
+.c-fact{ --accent:#7d7d74; }
+
+.info-card h3{
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    margin-bottom:6px;
+
+    font-size:11.5px;
+    font-weight:700;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+
+    color:#555;
+}
+
+.info-card h4{
+
+    margin:8px 0 2px;
+
+    font-size:11px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--muted);
+}
+
+.info-icon{
+
+    flex:none;
+    width:18px;
+    height:18px;
+
+    fill:none;
+    stroke:var(--accent);
+    stroke-width:1.6;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+
+    opacity:.8;
+}
+
+.info-card p,
+.info-card dd,
+.info-card li{
+
+    font-size:16px;
+    line-height:1.35;
+}
+
+.info-card dl > div{
+
+    display:grid;
+    grid-template-columns:62px 1fr;
+    gap:8px;
+
+    padding:3px 0;
+
+    border-bottom:1px solid rgba(0,0,0,.05);
+}
+
+.info-card dt{ font-size:14px; color:var(--muted); }
+
+.info-card ul{ padding-left:16px; }
+.info-card li{ margin-bottom:3px; }
+.info-card li::marker{ color:var(--accent); }
+
+/* Comparativo compacto */
+
+.c-cmp{ display:flex; flex-direction:column; }
+
+.c-cmp .cmp-legend{ margin-bottom:2px; font-size:13px; }
+
+.c-cmp .cmp-row{ flex:1; min-height:0; padding:4px 0; }
+
+.c-cmp .cmp-brain{ height:40px; }
+.c-cmp .cmp-people{ height:64px; }
+.c-cmp .cmp-person{ width:24px; }
+.c-cmp .cmp-bar{ height:9px; }
+.c-cmp .cmp-bars{ gap:3px; }
+.c-cmp .cmp-values{ font-size:13px; }
+.c-cmp .cmp-loco{ margin-top:4px; font-size:15px; }
+
+.globe-host{ width:100%; height:100%; }
+
+/* Hitos: sin solapes */
+
+.tl-milestone.is-collapsed span{ display:none; }
+
+.tl-milestone.is-collapsed i{
+
+    width:6px;
+    height:6px;
+
+    margin-left:-3px;
+
+    opacity:.55;
+}
+
+@media(max-width:1100px){
+
+    .panel-grid{
+        grid-template-columns:minmax(180px,28%) minmax(0,1fr);
+        row-gap:0;
+    }
+
+    .info-grid{
+        grid-template-columns:1fr 1fr;
+        grid-template-rows:none;
+        grid-template-areas:"imp env" "cmp cmp" "dis fact";
+    }
+
+    .panel-col{ display:contents; }
+}
+
+@media(max-width:760px){
+
+    .panel-grid{
+        grid-template-columns:minmax(0,1fr);
+        height:auto;
+    }
+
+    .info-map{ height:300px; }
+
+    .info-grid{
+        grid-template-columns:minmax(0,1fr);
+        grid-template-areas:"imp" "env" "cmp" "dis" "fact";
+    }
+
+    .info-card{ overflow:visible; }
+}
+
+.panel-grid{ max-width:none; }
+
+.c-cmp .cmp-row{ align-items:center; }
+.c-cmp .cmp-empty{ align-self:center; font-size:15px; }
+.c-cmp .cmp-row:has(.cmp-empty){ grid-template-areas:"label visual"; }
+
+.tl-milestone small{ white-space:nowrap; }
