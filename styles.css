@@ -1246,7 +1246,7 @@ body.panel-open #species-panel{
 
 #tree{
     --rail:min(132px,9vw);
-    overflow:hidden;
+    overflow:clip;
 }
 
 #tl-tree{
@@ -1284,24 +1284,149 @@ body.panel-open #species-panel{
 
 }
 
+/* Etiquetas de eras/períodos: se quedan pegadas a la pantalla mientras su banda es visible */
+#tl-tree .tl-epoch{
+
+    position:sticky;
+    top:14px;
+
+    margin-left:44px;
+
+    width:max-content;
+
+    padding:6px 12px;
+
+    border-radius:10px;
+
+    background:rgba(255,255,255,.72);
+
+    backdrop-filter:blur(4px);
+}
+
+#tl-tree .tl-band.is-thin .tl-epoch{ padding:4px 10px; }
+
+#tl-tree .tl-period{
+
+    display:block;
+}
+
+#tl-tree .tl-period span{
+
+    position:sticky;
+    top:42vh;
+
+    display:inline-block;
+
+    margin-left:11px;
+
+    padding:10px 0;
+}
+
+#tl-tree .tl-milestones{
+    background:rgba(255,255,255,.55);
+}
+
+#tl-tree .tl-milestone{
+    align-items:flex-start;
+}
+
+#tl-tree .tl-milestone small{
+
+    display:block;
+
+    margin:2px 0 0;
+}
+
+#scale-hud{
+
+    position:fixed;
+    top:12px;
+    right:16px;
+
+    z-index:40;
+
+    max-width:min(300px,60vw);
+
+    padding:10px 14px;
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,.88);
+
+    border:1px solid #e6e3db;
+
+    box-shadow:var(--shadow);
+
+    backdrop-filter:blur(6px);
+
+    line-height:1.2;
+
+    opacity:0;
+    transform:translateY(-8px);
+
+    pointer-events:none;
+
+    transition:opacity .25s var(--ease), transform .25s var(--ease);
+}
+
+#scale-hud.is-visible{
+
+    opacity:1;
+    transform:none;
+}
+
+body.panel-open #scale-hud{ opacity:0; }
+
+#scale-hud b{
+
+    margin-right:8px;
+
+    font-size:11px;
+
+    letter-spacing:.22em;
+
+    text-transform:uppercase;
+}
+
+#scale-hud span,
+#scale-hud em{ font-size:15px; }
+
+#scale-hud small{
+
+    display:block;
+
+    font-size:11px;
+
+    letter-spacing:.08em;
+
+    color:var(--muted);
+}
+
+/* Especie en cascada: la vela queda a la izquierda del nodo, sin ocupar su ancho */
 .species-visual{
 
+    position:relative;
+
     display:flex;
+    justify-content:center;
+}
 
+.species-content{
+
+    display:flex;
+    flex-direction:column;
     align-items:center;
-
-    gap:16px;
-
 }
 
 .species-candle{
 
+    position:absolute;
+    top:0;
+    right:calc(100% + 14px);
+
     display:flex;
-
     flex-direction:column;
-
-    justify-content:center;
-
+    align-items:center;
 }
 
 .candle-top,
@@ -1314,34 +1439,30 @@ body.panel-open #species-panel{
     letter-spacing:.5px;
 
     white-space:nowrap;
-
 }
+
 .candle-line{
 
     width:2px;
+    height:10px;
 
-    height:38px;
-
-     background:
-    rgba(171,159,126,.55);
-
+    background:rgba(171,159,126,.55);
 }
+
 .candle-body{
 
-    width:18px;
+    width:16px;
 
-    height:118px;
-
-    border-radius:2px;
+    border-radius:3px;
 
     background:#c2b79c;
 }
-.species-content{
 
-    display:flex;
+.species-name{ white-space:nowrap; }
 
-    flex-direction:column;
+@media(max-width:760px){
 
-    justify-content:center;
+    #scale-hud{ top:8px; right:8px; padding:7px 10px; }
+    #scale-hud small{ display:none; }
 
 }

@@ -26,12 +26,14 @@ let lastFocus = null;
    CONFIG
 ===================================================== */
 
-const LEVEL_HEIGHT = 330;
-const TIMELINE_HEIGHT = 5200;
-const COLUMN_WIDTH = 340;
-const CARD_WIDTH = 300;
-const MOBILE_ROW_HEIGHT = 215;
-const TOP_PADDING = 50;
+const CARD_WIDTH = 150;
+const MIN_ROW = 230;
+const ROW_GAP = 70;
+const TOP_PADDING = 60;
+const BOTTOM_PADDING = 90;
+const CANDLE_MIN = 10;
+const CANDLE_MAX = 120;
+const MAX_DURATION = 2000000;
 const SWAP_MS = 180;
 const STAGE_ZOOM = 1.3;
 const STAGE_MS = 900;
@@ -138,34 +140,8 @@ parts.shift();
 const speciesName =
 parts.join(" ");
 
-   const duration =
+    const candleHeight = candleBodyHeight(species);
 
-    Math.abs(
-        species.start -
-        species.end
-    );
-
-const candleHeight =
-
-Math.max(
-
-    30,
-
-    (
-        Math.abs(
-
-            timeTop(species.end)
-
-            -
-
-            timeTop(species.start)
-
-        )
-    )
-
-    * 18
-
-);
    card.innerHTML = `
 
     <div class="species-visual">
@@ -255,112 +231,62 @@ async function renderSpecies(){
    LAYOUT
 ===================================================== */
 
+function candleBodyHeight(species){
+
+    const duration = Math.abs(species.start - species.end);
+
+    return Math.round(
+        CANDLE_MIN +
+        (CANDLE_MAX - CANDLE_MIN) * Math.sqrt(duration / MAX_DURATION)
+    );
+
+}
+
+// Cascada: una fila propia por especie (orden cronológico), sin solapamientos
 function layout(){
 
     const width = tree.clientWidth;
     const mobile = mobileQuery.matches;
 
-   let bottom = TIMELINE_HEIGHT;
+    const columns = evolutionData.species.map(sp=>Math.abs(sp.column || 0));
+    const maxCol = Math.max(...columns, 1);
 
-    evolutionData.species.forEach((species, index)=>{
+    const left = mobile ? 0 : Math.min(190, width * .13);
+    const right = mobile ? 0 : Math.min(230, width * .16);
+    const inner = width - left - right;
+    const center = left + inner / 2;
+
+    const step = mobile
+        ? Math.min(34, (width - 220) / (2 * maxCol))
+        : Math.min(260, (inner - CARD_WIDTH) / (2 * maxCol));
+
+    const zigzag = [-.45, 0, .45, 0];
+    let ancestorIndex = 0;
+    let y = TOP_PADDING;
+
+    evolutionData.species.forEach(species=>{
 
         const card = document.getElementById(species.id);
 
         if(!card) return;
 
-        let x;
-        let y;
-        let cardWidth;
+        let x = center + (species.column || 0) * step;
 
-        if(mobile){
+        if(!species.column){
 
-            const offset = species.column * 22;
-
-            x = width / 2 + 14 + offset;
-            y = TOP_PADDING + index * MOBILE_ROW_HEIGHT;
-            cardWidth = width - 90 - Math.abs(offset) * 2;
-
-        }
-        else{
-
-            const left = Math.min(190, width * .13);
-            const right = Math.min(200, width * .14);
-            const inner = width - left - right;
-
-      const waterfallOffsets = [
-    -1,
-     0,
-     1,
-     0
-];
-
-const waterfall =
-
-    waterfallOffsets[
-        (species.level - 1)
-        %
-        waterfallOffsets.length
-    ];
-
-if(species.column === 0){
-
-    x =
-
-        left
-
-        +
-
-        inner / 2
-
-        +
-
-        waterfall * 260;
-
-}
-else{
-
-    x =
-
-        left
-
-        +
-
-        inner / 2
-
-        +
-
-        species.column * 500;
-
-}
-
-y =
-
-    TOP_PADDING +
-
-    (
-        timeTop(centerYear)
-        / 100
-    )
-
-    *
-
-    TIMELINE_HEIGHT;
-
-cardWidth = CARD_WIDTH;
-            cardWidth = CARD_WIDTH;
+            x += zigzag[ancestorIndex % zigzag.length] * step;
+            ancestorIndex++;
 
         }
 
         card.style.left = `${x}px`;
         card.style.top = `${y}px`;
-        card.style.width = `${cardWidth}px`;
 
-        
+        y += Math.max(card.offsetHeight, MIN_ROW) + ROW_GAP;
 
     });
 
-    tree.style.height =
-`${TIMELINE_HEIGHT + 300}px`;
+    tree.style.height = `${y + BOTTOM_PADDING}px`;
 
 }
 
@@ -570,26 +496,13 @@ function buildPanel(species){
 const T0 = 7200000;
 
 // Escala de raíz cuadrada: da más espacio a los períodos recientes
-function timeTop(year){
-
-   function timelineYPixels(year, height){
-
-    return (
-        timeTop(year) / 100
-    ) * height;
-
-}
 function centerYear(species){
 
-    return (
-
-        species.start +
-
-        species.end
-
-    ) / 2;
+    return (species.start + species.end) / 2;
 
 }
+
+function timeTop(year){
 
     const ago = Math.min(Math.max(-year, 0), T0);
 
@@ -1233,7 +1146,7 @@ function anchor(id, side){
         x,
 
         y:
-            nodeRect.bottom
+            card.getBoundingClientRect().bottom
             -
             treeRect.top
 
@@ -1323,6 +1236,8 @@ treeLayer.setAttribute("aria-hidden", "true");
 tree.prepend(treeLayer);
 
 // Interpola año -> y usando la posición de cada especie en el árbol
+let yearAtY = null;
+
 function makeYMap(height){
 
     const anchors = evolutionData.species
@@ -1339,6 +1254,26 @@ function makeYMap(height){
 
     const years = [-T0, ...anchors.map(a=>a.year), 0].sort((a, b)=>a - b);
     const ys = [0, ...anchors.map(a=>a.y), height].sort((a, b)=>a - b);
+
+    yearAtY = y=>{
+
+        if(y <= ys[0]) return years[0];
+
+        for(let i = 1; i < ys.length; i++){
+
+            if(y <= ys[i]){
+
+                const span = ys[i] - ys[i - 1] || 1;
+
+                return years[i - 1] + (years[i] - years[i - 1]) * (y - ys[i - 1]) / span;
+
+            }
+
+        }
+
+        return years[years.length - 1];
+
+    };
 
     return year=>{
 
@@ -1402,7 +1337,7 @@ getMilestones();
 
 }).join("");
    
-   const MIN_MILESTONE_GAP = 78;
+   const MIN_MILESTONE_GAP = 56;
 
 let lastY = -9999;
 
@@ -1466,11 +1401,53 @@ const marks =
 
 }
 
+/* =====================================================
+   HUD de escala (siempre visible al desplazarse)
+===================================================== */
+
+const hud = document.createElement("div");
+
+hud.id = "scale-hud";
+hud.setAttribute("aria-hidden", "true");
+hud.innerHTML = `
+    <div><b id="hud-period"></b><span id="hud-epoch"></span></div>
+    <div><em id="hud-milestone"></em><small id="hud-year"></small></div>
+`;
+document.body.appendChild(hud);
+
+function updateHud(){
+
+    if(!yearAtY || currentIndex !== -1) return;
+
+    const treeTop = tree.getBoundingClientRect().top;
+    const inView = treeTop < window.innerHeight * .6 && tree.getBoundingClientRect().bottom > 0;
+
+    hud.classList.toggle("is-visible", inView);
+
+    if(!inView) return;
+
+    const year = yearAtY(window.innerHeight * .45 - treeTop);
+
+    const epoch = EPOCHS.find(e=>year >= e.start && year <= e.end) || EPOCHS[EPOCHS.length - 1];
+    const period = PERIODS.find(p=>year >= p.start && year <= p.end) || PERIODS[PERIODS.length - 1];
+
+    const passed = getMilestones().filter(m=>m.year <= year).pop();
+
+    document.getElementById("hud-period").textContent = period.name;
+    document.getElementById("hud-epoch").textContent = epoch.name;
+    document.getElementById("hud-milestone").textContent = passed ? passed.label : "";
+    document.getElementById("hud-year").textContent = formatYears(Math.round(year));
+
+}
+
+window.addEventListener("scroll", updateHud, { passive:true });
+
 function refresh(){
 
     layout();
     drawTree();
     drawTreeTimeline();
+    updateHud();
 
 }
 
