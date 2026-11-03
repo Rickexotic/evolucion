@@ -107,13 +107,67 @@ async function createSpecies(species){
 
     const image = await fetchWikipediaImage(species.name);
 
-    card.innerHTML = `
-        <div class="node">
-            <img src="${image}" alt="${species.name}" loading="lazy">
+  const startLabel =
+formatMillions(species.start);
+
+const endLabel =
+formatMillions(species.end);
+
+const parts =
+species.name.split(" ");
+
+const genus =
+parts.shift();
+
+const speciesName =
+parts.join(" ");
+
+card.innerHTML = `
+
+    <div class="species-visual">
+
+        <div class="species-candle">
+
+            <div class="candle-top">
+                ${startLabel}
+            </div>
+
+            <div class="candle-line"></div>
+
+            <div class="candle-body"></div>
+
+            <div class="candle-line"></div>
+
+            <div class="candle-bottom">
+                ${endLabel}
+            </div>
+
         </div>
-        <div class="species-name">${species.name}</div>
-        <div class="species-period">${formatPeriod(species)}</div>
-    `;
+
+        <div class="species-content">
+
+            <div class="node">
+
+                <img
+                    src="${image}"
+                    alt="${species.name}"
+                    loading="lazy">
+
+            </div>
+
+            <div class="species-name">
+
+                <span>${genus}</span>
+
+                <span>${speciesName}</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+`;
 
     card.addEventListener("click", ()=>openSpecies(species.id));
 
