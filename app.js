@@ -314,7 +314,7 @@ if(species.column === 0){
 
         +
 
-        waterfall * 120;
+        waterfall * 260;
 
 }
 else{
@@ -329,7 +329,7 @@ else{
 
         +
 
-        species.column * 300;
+        species.column * 500;
 
 }
 
